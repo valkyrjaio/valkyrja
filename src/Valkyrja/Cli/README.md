@@ -165,6 +165,26 @@ the container, and calls `InputHandler::run()`. The handler runs the
 middleware pipeline, writes the output messages, and calls `Exiter::exit()`
 with the output's exit code.
 
+`CliServerServiceProvider` publishes `InputHandler` under
+`InputHandlerContract`, and that binding is the extension point. An
+application that wants a different handler binds its own class to the same
+contract in its own service provider. `Cli::run()` resolves the contract, so
+it takes whatever the application bound.
+
+```php
+final class AppCliServerServiceProvider implements ServiceProviderContract
+{
+    public static function publishInputHandler(ContainerContract $container): void
+    {
+        $container->setSingleton(InputHandlerContract::class, new AppInputHandler());
+    }
+}
+```
+
+Every other contract this component publishes works the same way. The
+framework ships one default for each, and the application replaces the ones
+it needs.
+
 A binary is one executable file that calls `Cli::run()`:
 
 ```php
