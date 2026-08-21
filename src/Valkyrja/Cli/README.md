@@ -844,10 +844,13 @@ writes, when the stream mode carries no write intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
 routes a write throwable to the `ThrowableCaught` middleware. The recovery
-output writes to stdout, so the process still reaches `Exiter::exit()`. The
-recovery output carries `ExitCode::ERROR`, so the process reports `1` and not
-the exit code the command set. The `ProcessExiting` middleware receives the
-recovery output for the same reason.
+output writes to stdout, so the process still reaches `Exiter::exit()`. A
+`--silent` run writes nothing, because the recovery output copies the
+interaction flags from the `CliInteractionConfig`. `InputHandler::run()`
+replaces the output with the recovery output, so the recovery output carries
+`ExitCode::ERROR` and the process reports `1` and not the exit code the command
+set. The `ProcessExiting` middleware receives the recovery output, and not the
+output the command returned.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
