@@ -96,6 +96,7 @@ final class QuestionTest extends TestCase
 
         self::assertNotSame($answer, $askedAnswer);
         self::assertSame('*', $askedAnswer->getUserResponse());
+        self::assertTrue($askedAnswer->hasBeenAnswered());
     }
 
     public function testAskFalseFopen(): void
@@ -114,6 +115,7 @@ final class QuestionTest extends TestCase
 
         self::assertSame($answer, $askedAnswer);
         self::assertSame($defaultResponse, $askedAnswer->getUserResponse());
+        self::assertFalse($askedAnswer->hasBeenAnswered());
     }
 
     public function testAskFalseFgets(): void
@@ -132,6 +134,7 @@ final class QuestionTest extends TestCase
 
         self::assertSame($answer, $askedAnswer);
         self::assertSame($defaultResponse, $askedAnswer->getUserResponse());
+        self::assertFalse($askedAnswer->hasBeenAnswered());
     }
 
     public function testAskEmptyFgets(): void
@@ -150,6 +153,7 @@ final class QuestionTest extends TestCase
 
         self::assertSame($answer, $askedAnswer);
         self::assertSame($defaultResponse, $askedAnswer->getUserResponse());
+        self::assertFalse($askedAnswer->hasBeenAnswered());
     }
 
     public function questionCallable(OutputContract $output, Answer $answer): OutputContract
