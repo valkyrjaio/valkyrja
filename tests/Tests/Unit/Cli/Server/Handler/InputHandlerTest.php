@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Server\Handler;
 
+use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
@@ -255,8 +257,10 @@ final class InputHandlerTest extends TestCase
             ->with($input)
             ->willReturn($output);
 
+        $container = new Container();
+
         $inputHandler = new InputHandler(
-            container: new Container(),
+            container: $container,
             router: $router,
         );
 
@@ -270,6 +274,9 @@ final class InputHandlerTest extends TestCase
 
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         self::assertStringContainsString('takes no write', (string) $runOutput);
+        // The recovery output replaces the command's, so the process reports 1.
+        self::assertStringEndsWith('1', (string) $runOutput);
+        self::assertSame(ExitCode::ERROR, $container->get(OutputContract::class)->getExitCode());
     }
 
     public function testRunFallsBackToStdoutWhenTheRecoveryWriteAlsoFails(): void
@@ -288,12 +295,14 @@ final class InputHandlerTest extends TestCase
             ->with($input)
             ->willReturn($output);
 
-        // The middleware routes the recovery output back to the destination that just failed.
+        // The middleware routes the recovery output to a second destination that also fails.
+        $recoveryPath = Directory::storagePath('missing/recovery.txt');
+
         $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
         $throwableCaughtHandler
             ->expects($this->once())
             ->method('throwableCaught')
-            ->willReturn(new StreamOutput($readOnly)->withMessages(new Message('Recovery.')));
+            ->willReturn(new FileOutput($recoveryPath)->withMessages(new Message('Recovery.')));
 
         $container = new Container();
 
@@ -316,6 +325,9 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         // The last resort reports the throwable the command's own destination raised.
         self::assertStringContainsString('takes no write', (string) $runOutput);
+        // It also names the second destination, so the misconfiguration is visible.
+        self::assertStringContainsString('Recovery message:', (string) $runOutput);
+        self::assertStringContainsString($recoveryPath, (string) $runOutput);
         self::assertSame(ExitCode::ERROR, $containerOutput->getExitCode());
         self::assertNotInstanceOf(StreamOutput::class, $containerOutput);
     }

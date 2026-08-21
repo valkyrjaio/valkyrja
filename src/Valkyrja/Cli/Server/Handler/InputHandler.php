@@ -105,12 +105,17 @@ class InputHandler implements InputHandlerContract
 
             try {
                 $output->writeMessages();
-            } catch (Throwable) {
+            } catch (Throwable $recoveryThrowable) {
                 // A middleware can return an output whose destination is the one that just failed.
                 // This last resort echoes, so no configured factory can redirect it. It reports the
                 // throwable the command's own destination raised, which is the one a reader acts on.
-                $output = new Output(exitCode: ExitCode::ERROR)
-                    ->withMessages(...$this->getThrowableMessages($input, $throwable));
+                $messages   = $this->getThrowableMessages($input, $throwable);
+                $messages[] = new NewLine();
+                $messages[] = new NewLine();
+                $messages[] = new ErrorMessage('Recovery message:');
+                $messages[] = new Message(' ' . $recoveryThrowable->getMessage());
+
+                $output = new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
 
                 $output->writeMessages();
 
