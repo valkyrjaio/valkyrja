@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Cli\Server\Handler;
 
 use Valkyrja\Application\Directory\Directory;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
+use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -344,11 +345,17 @@ final class InputHandlerTest extends TestCase
             ->with($input)
             ->willReturn($output);
 
+        // The middleware receives the written output, not the one the command returned.
+        $exited      = null;
         $exitHandler = $this->createMock(ProcessExitingHandlerContract::class);
         $exitHandler
             ->expects($this->once())
             ->method('processExiting')
-            ->with($input, $output);
+            ->willReturnCallback(
+                static function (InputContract $exitInput, OutputContract $exitOutput) use (&$exited): void {
+                    $exited = $exitOutput;
+                }
+            );
 
         $container = new Container();
 
@@ -367,5 +374,8 @@ final class InputHandlerTest extends TestCase
         Exiter::unfreeze();
 
         self::assertSame($output->getMessages()[0]->getFormattedText() . '0', $runOutput);
+        self::assertInstanceOf(OutputContract::class, $exited);
+        self::assertFalse($exited->hasUnwrittenMessage());
+        self::assertTrue($exited->hasWrittenMessage());
     }
 }

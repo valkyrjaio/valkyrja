@@ -96,15 +96,13 @@ class InputHandler implements InputHandlerContract
         $output = $this->handle($input);
 
         try {
-            $output->writeMessages();
+            $output = $output->writeMessages();
         } catch (Throwable $throwable) {
             $output = $this->getOutputFromThrowable($input, $throwable);
             $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
 
-            $this->container->setSingleton(OutputContract::class, $output);
-
             try {
-                $output->writeMessages();
+                $output = $output->writeMessages();
             } catch (Throwable $recoveryThrowable) {
                 // A middleware can return an output whose destination is the one that just failed.
                 // This last resort echoes, so no configured factory can redirect it. It leads with
@@ -117,10 +115,10 @@ class InputHandler implements InputHandlerContract
 
                 $output = new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
 
-                $output->writeMessages();
-
-                $this->container->setSingleton(OutputContract::class, $output);
+                $output = $output->writeMessages();
             }
+
+            $this->container->setSingleton(OutputContract::class, $output);
         }
 
         $this->exit($input, $output);
