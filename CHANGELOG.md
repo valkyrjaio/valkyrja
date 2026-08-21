@@ -1,6 +1,14 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.13.5...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.14.0...26.x)
+
+## [v26.14.0](https://github.com/valkyrjaio/valkyrja/compare/v26.13.5...v26.14.0) - 2026-08-21
+
+* [Cli] docs: Settle the unreadable stdin behavior on Question::ask by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1224
+* [Orm] feat!: Remove the unimplemented EntityCast relationships parameter by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1226
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1231
+* [Workflow] ci: Update .github workflow refs to v26.25.2 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1232
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1233
 
 ## [v26.13.5](https://github.com/valkyrjaio/valkyrja/compare/v26.13.4...v26.13.5) - 2026-08-20
 
