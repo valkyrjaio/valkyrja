@@ -844,8 +844,10 @@ writes, when the stream mode carries no write intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
 routes a write throwable to the `ThrowableCaught` middleware. The recovery
-output writes to stdout, so the process still reaches `Exiter::exit()` and
-still carries the command's exit code.
+output writes to stdout, so the process still reaches `Exiter::exit()`. The
+recovery output carries `ExitCode::ERROR`, so the process reports `1` and not
+the exit code the command set. The `ProcessExiting` middleware receives the
+recovery output for the same reason.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
