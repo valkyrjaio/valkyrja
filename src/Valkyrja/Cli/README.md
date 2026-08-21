@@ -948,7 +948,7 @@ when a read from it reaches the end of input or fails. `ask()` returns the
 supplied answer unchanged in each of these cases, and sets the answered flag
 only when a non-empty response arrives. When that answer holds an allowed
 response, a container whose stdin is closed or empty behaves the same as
-`--no-interaction`, and a question never makes such a run fail.
+`--no-interaction`. The question then never makes the run fail.
 
 The default `QuestionWriter` on every output drives this flow. `getWriters()`
 and `withWriters()` expose the writer list; a custom `WriterContract` can
