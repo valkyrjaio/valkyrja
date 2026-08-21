@@ -938,12 +938,12 @@ return $this->outputFactory
 ```
 
 The rendered prompt lists the allowed responses and the default. An empty
-response takes the default. A response outside the allowed list re-asks the
-question, unless the validation callable accepts it. A non-interactive,
-quiet, or silent output does not read from stdin. The default response
-applies, so a scripted run never blocks.
+response leaves the supplied answer unchanged. A response outside the allowed
+list re-asks the question, unless the validation callable accepts it. A
+non-interactive, quiet, or silent output does not read from stdin. The
+supplied answer applies, so a scripted run never blocks.
 
-`ask()` also returns the supplied answer unchanged when the stdin stream
+`ask()` returns the supplied answer unchanged when the stdin stream
 does not open. `ask()` returns the answer unchanged when a read from the
 stream reaches the end of input or fails. `ask()` sets the answered flag
 only when a non-empty response arrives. When the answer holds an allowed
