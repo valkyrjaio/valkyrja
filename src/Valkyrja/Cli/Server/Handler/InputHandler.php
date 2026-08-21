@@ -97,6 +97,8 @@ class InputHandler implements InputHandlerContract
 
         try {
             $output = $output->writeMessages();
+
+            $this->container->setSingleton(OutputContract::class, $output);
         } catch (Throwable $throwable) {
             $output = $this->getOutputFromThrowable($input, $throwable);
             $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
