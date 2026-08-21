@@ -352,7 +352,9 @@ final class InputHandlerTest extends TestCase
             ->expects($this->once())
             ->method('processExiting')
             ->willReturnCallback(
-                static function (InputContract $exitInput, OutputContract $exitOutput) use (&$exited): void {
+                static function (InputContract $exitInput, OutputContract $exitOutput) use (&$exited, $input): void {
+                    self::assertSame($input, $exitInput);
+
                     $exited = $exitOutput;
                 }
             );
