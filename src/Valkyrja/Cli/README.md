@@ -943,11 +943,11 @@ question, unless the validation callable accepts it. A non-interactive,
 quiet, or silent output does not read from stdin. The default response
 applies, so a scripted run never blocks.
 
-The default response also applies when the stdin stream does not open, and
-when a read from it reaches the end of input or fails. `ask()` returns the
-supplied answer unchanged in each of these cases, and sets the answered flag
-only when a non-empty response arrives. When that answer holds an allowed
-response, a container whose stdin is closed or empty behaves the same as
+`ask()` also returns the supplied answer unchanged when the stdin stream
+does not open. `ask()` returns the answer unchanged when a read from the
+stream reaches the end of input or fails. `ask()` sets the answered flag
+only when a non-empty response arrives. When the answer holds an allowed
+response, a run whose stdin is closed or empty behaves the same as
 `--no-interaction`. The question then never makes the run fail.
 
 The default `QuestionWriter` on every output drives this flow. `getWriters()`
