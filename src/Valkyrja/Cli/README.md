@@ -172,14 +172,35 @@ contract in its own service provider. `Cli::run()` resolves the contract, so
 it takes whatever the application bound.
 
 ```php
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+
 final class AppCliServerServiceProvider implements ServiceProviderContract
 {
+    public function publishers(): array
+    {
+        return [
+            InputHandlerContract::class => [self::class, 'publishInputHandler'],
+        ];
+    }
+
     public static function publishInputHandler(ContainerContract $container): void
     {
-        $container->setSingleton(InputHandlerContract::class, new AppInputHandler());
+        $container->setSingleton(
+            InputHandlerContract::class,
+            new AppInputHandler(
+                container: $container,
+                router: $container->getSingleton(RouterContract::class),
+            )
+        );
     }
 }
 ```
+
+`publishers()` maps the service id to the publisher, so a publisher that no
+entry names never runs. Pass the dependencies the handler needs, because the
+constructor defaults build an empty container and an empty route collection.
 
 Every other contract this component publishes works the same way. The
 framework ships one default for each, and the application replaces the ones
@@ -851,6 +872,12 @@ current position. A sequence of messages concatenates.
 run, and the caller owns truncation. Delete the file before you construct the
 output when a run must start from an empty file.
 
+Warning: a factory-built `FileOutput` or `StreamOutput` copies the interaction
+flags. `--quiet` and `--silent` then suppress a file write and a stream write,
+and not only a terminal write. A quiet run that succeeds leaves the destination
+empty. Construct the output directly when the destination must take the
+messages whatever the flags say.
+
 `StreamOutput` offers the remainder again while the stream takes part of the
 data, because a non-blocking stream takes a large message over several calls.
 A stream that takes no byte of an offer throws
@@ -1200,7 +1227,14 @@ class CommandAuditMiddleware implements RouteDispatchedMiddlewareContract
 ### ThrowableCaught
 
 `ThrowableCaughtMiddlewareContract` fires when a throwable escapes any part
-of dispatch. It receives a default error output and the throwable, and
+of dispatch, and it fires again when the output write throws.
+
+The write runs after `handle()` returns, so the stage sees a throwable that no
+command raised. A middleware that reads the throwable receives
+`CliInteractionFileWriteException`, `CliInteractionStreamWriteException`, and
+`CliInteractionUnwritableStreamException` as well. The stage also runs twice in one invocation when a command
+throws and the recovery output then fails to write.
+`LogThrowableCaughtMiddleware` writes two entries for that run. It receives a default error output and the throwable, and
 returns the output to write:
 
 ```php
