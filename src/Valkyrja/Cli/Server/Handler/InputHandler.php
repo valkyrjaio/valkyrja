@@ -19,12 +19,14 @@ use Valkyrja\Cli\Interaction\Data\Contract\CliInteractionConfigContract;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Message\Banner;
+use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\ErrorMessage;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
+use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Middleware\Handler\Contract\InputReceivedHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ProcessExitingHandlerContract;
 use Valkyrja\Cli\Middleware\Handler\Contract\ThrowableCaughtHandlerContract;
@@ -99,13 +101,20 @@ class InputHandler implements InputHandlerContract
             $output = $this->getOutputFromThrowable($input, $throwable);
             $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
 
+            $this->container->setSingleton(OutputContract::class, $output);
+
             try {
                 $output->writeMessages();
-            } catch (Throwable $recoveryThrowable) {
+            } catch (Throwable) {
                 // A middleware can return an output whose destination is the one that just failed.
-                $output = $this->getOutputFromThrowable($input, $recoveryThrowable);
+                // This last resort echoes, so no configured factory can redirect it. It reports the
+                // throwable the command's own destination raised, which is the one a reader acts on.
+                $output = new Output(exitCode: ExitCode::ERROR)
+                    ->withMessages(...$this->getThrowableMessages($input, $throwable));
 
                 $output->writeMessages();
+
+                $this->container->setSingleton(OutputContract::class, $output);
             }
         }
 
@@ -152,19 +161,32 @@ class InputHandler implements InputHandlerContract
      */
     protected function getOutputFromThrowable(InputContract $input, Throwable $throwable): OutputContract
     {
-        $commandName = $input->getCommandName();
-
         return $this->outputFactory
             ->createOutput(exitCode: ExitCode::ERROR)
-            ->withMessages(
-                new Banner(new ErrorMessage('Cli Server Error:')),
-                new NewLine(),
-                new ErrorMessage('Command:'),
-                new Message(" $commandName"),
-                new NewLine(),
-                new NewLine(),
-                new ErrorMessage('Message:'),
-                new Message(' ' . $throwable->getMessage()),
-            );
+            ->withMessages(...$this->getThrowableMessages($input, $throwable));
+    }
+
+    /**
+     * Get the messages that report a throwable.
+     *
+     * @param InputContract $input     The input
+     * @param Throwable     $throwable The throwable
+     *
+     * @return MessageContract[]
+     */
+    protected function getThrowableMessages(InputContract $input, Throwable $throwable): array
+    {
+        $commandName = $input->getCommandName();
+
+        return [
+            new Banner(new ErrorMessage('Cli Server Error:')),
+            new NewLine(),
+            new ErrorMessage('Command:'),
+            new Message(" $commandName"),
+            new NewLine(),
+            new NewLine(),
+            new ErrorMessage('Message:'),
+            new Message(' ' . $throwable->getMessage()),
+        ];
     }
 }

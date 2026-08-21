@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Server\Handler;
 
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Input;
 use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
@@ -294,8 +295,10 @@ final class InputHandlerTest extends TestCase
             ->method('throwableCaught')
             ->willReturn(new StreamOutput($readOnly)->withMessages(new Message('Recovery.')));
 
+        $container = new Container();
+
         $inputHandler = new InputHandler(
-            container: new Container(),
+            container: $container,
             router: $router,
             throwableCaughtHandler: $throwableCaughtHandler,
         );
@@ -308,7 +311,13 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
+        $containerOutput = $container->get(OutputContract::class);
+
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        // The last resort reports the throwable the command's own destination raised.
+        self::assertStringContainsString('takes no write', (string) $runOutput);
+        self::assertSame(ExitCode::ERROR, $containerOutput->getExitCode());
+        self::assertNotInstanceOf(StreamOutput::class, $containerOutput);
     }
 
     public function testHandleExitHandler(): void
