@@ -19,13 +19,11 @@ use Valkyrja\Type\Enum\CastType;
 class EntityCast extends Cast
 {
     /**
-     * @param CastType|class-string<EntityContract> $type          The type
-     * @param string[]|null                         $relationships [optional] The relationships
+     * @param CastType|class-string<EntityContract> $type The type
      */
     public function __construct(
         CastType|string $type,
         public string|null $column = null,
-        public array|null $relationships = null,
         bool $convert = true,
         bool $isArray = false
     ) {

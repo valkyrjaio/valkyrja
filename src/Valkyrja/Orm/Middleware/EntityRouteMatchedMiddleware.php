@@ -176,14 +176,12 @@ class EntityRouteMatchedMiddleware implements RouteMatchedMiddlewareContract
         string $entityName,
         string|int $value
     ): EntityContract|null {
-        $cast          = $parameter->getCast();
-        $repository    = $this->orm->createRepository($entityName);
-        $field         = null;
-        $relationships = [];
+        $cast       = $parameter->getCast();
+        $repository = $this->orm->createRepository($entityName);
+        $field      = null;
 
         if ($cast instanceof EntityCast) {
-            $relationships = $cast->relationships ?? [];
-            $field         = $cast->column;
+            $field = $cast->column;
         }
 
         // If there is a field specified to use
