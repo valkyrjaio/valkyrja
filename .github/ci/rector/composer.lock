@@ -221,22 +221,22 @@
         },
         {
             "name": "valkyrja/ci-rector",
-            "version": "v26.3.27",
+            "version": "v26.3.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/valkyrjaio/ci-rector-php.git",
-                "reference": "e446b052157634cc6448fbec6f0ead04d4e07fb9"
+                "reference": "11a5e43bdf26e56d3deff2f53b1d2b2dfd6713e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/valkyrjaio/ci-rector-php/zipball/e446b052157634cc6448fbec6f0ead04d4e07fb9",
-                "reference": "e446b052157634cc6448fbec6f0ead04d4e07fb9",
+                "url": "https://api.github.com/repos/valkyrjaio/ci-rector-php/zipball/11a5e43bdf26e56d3deff2f53b1d2b2dfd6713e6",
+                "reference": "11a5e43bdf26e56d3deff2f53b1d2b2dfd6713e6",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^4.1.5",
                 "php": ">=8.4",
-                "rector/rector": "^2.6.5"
+                "rector/rector": "^2.6.6"
             },
             "type": "project",
             "autoload": {
@@ -263,9 +263,9 @@
             ],
             "support": {
                 "issues": "https://github.com/valkyrjaio/ci-rector-php/issues",
-                "source": "https://github.com/valkyrjaio/ci-rector-php/tree/v26.3.27"
+                "source": "https://github.com/valkyrjaio/ci-rector-php/tree/v26.3.28"
             },
-            "time": "2026-09-01T15:24:48+00:00"
+            "time": "2026-09-02T14:59:18+00:00"
         }
     ],
     "aliases": [],
