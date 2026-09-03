@@ -31,6 +31,7 @@ use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Input\InputRaisingCommandNameFixture;
+use Valkyrja\Tests\Fixtures\Cli\Server\Handler\UnwritableReportInputHandlerFixture;
 use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -296,6 +297,49 @@ final class InputHandlerTest extends TestCase
         // The report names no command, because reading the command name is what raised.
         self::assertStringNotContainsString('Command:', (string) $runOutput);
         self::assertStringEndsWith("\n" . ExitCode::ERROR->value, (string) $runOutput);
+    }
+
+    public function testRunKeepsTheCommandWhenTheExitStageReportWriteFails(): void
+    {
+        $output = new Output(exitCode: ExitCode::USAGE_ERROR);
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $processExitingHandler = $this->createMock(ProcessExitingHandlerContract::class);
+        $processExitingHandler
+            ->expects($this->once())
+            ->method('processExiting')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The exit stage failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new UnwritableReportInputHandlerFixture(
+            container: $container,
+            router: $router,
+            processExitingHandler: $processExitingHandler,
+        );
+        // The first report writes to a filepath under a directory that does not exist.
+        $inputHandler->reportFilepath = Directory::storagePath('missing/report.txt');
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The input reads, so the report that answers the failed one still names the command.
+        self::assertStringContainsString('Command:', (string) $runOutput);
+        self::assertStringContainsString('The exit stage failed.', (string) $runOutput);
+        self::assertStringContainsString('Recovery message:', (string) $runOutput);
+        self::assertStringEndsWith("\n" . ExitCode::USAGE_ERROR->value, (string) $runOutput);
     }
 
     public function testRunSignalsTheExitCodeWhenTheExitStageReportAlsoRaises(): void
