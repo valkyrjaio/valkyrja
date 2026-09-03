@@ -915,14 +915,15 @@ fails as well, and again when the exit stage's own first report raises. The
 report names the command. It names no command when reading the command name
 from the input is itself one of the raises it answers.
 
-`run()` builds one more plain `Output` when reading the exit code from the
-output raises. That report reads no input at all, so it names the raise alone.
+`run()` builds that second report once more when reading the exit code from
+the output raises. That report names the raise, and it names the command
+whenever the input reads.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
 `--silent` run suppresses. A raise inside that report makes `run()` write the
-second report, which echoes. The code that output reports at that point still
-reaches `Exiter::exit()`.
+second report, which echoes. The code the run's own output reports at that
+point still reaches `Exiter::exit()`.
 
 Warning: the guard on the `ProcessExiting` stage routes nothing to the
 `ThrowableCaught` stage. A `ProcessExiting` failure therefore writes no log
@@ -1436,7 +1437,7 @@ the first two; the interaction options set the output flags:
    outside that guard.
 9. The output's messages write to the destination the output holds. A write
    throwable lands in the `ThrowableCaught` middleware as well, and whichever
-   output that stage produced takes the steps below.
+   output the recovery produced takes the steps below.
 10. The `ProcessExiting` middleware runs under a guard of its own, and
     `Exiter::exit()` ends the process with the code the output reports.
 
