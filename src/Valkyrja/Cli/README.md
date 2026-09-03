@@ -1073,12 +1073,21 @@ intercept any message type the same way.
 ### Interactivity, Quiet, and Silent
 
 Every output carries three flags, read from `CliInteractionConfig` at
-creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. A silent output
-writes nothing. A quiet output writes nothing while the exit code is identical
-to `ExitCode::SUCCESS`, so an output that holds an error code still prints, and
-so does one that holds the integer `0`. A non-interactive output writes the
-question and reads no answer from stdin, so the question keeps the answer it
-already holds. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
+creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. The flags govern
+the write, and they govern the answer a question reads:
+
+- A silent output writes nothing.
+- A quiet output writes nothing while the exit code is identical to
+  `ExitCode::SUCCESS`. An output that holds an error code still writes, and so
+  does one that holds the integer `0`.
+- A question reads an answer from stdin only on an interactive output that is
+  neither quiet nor silent. Every other output keeps the answer the question
+  already holds.
+
+A quiet run whose output holds an error code therefore writes the whole prompt
+and reads no answer.
+
+The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `--silent`/`-s` set the flags for any command. `withIsInteractive()`,
 `withIsQuiet()`, and `withIsSilent()` override them per output.
 
