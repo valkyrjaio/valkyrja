@@ -908,14 +908,14 @@ carries `ExitCode::ERROR`, so a `--quiet` run leaves each one alone.
 `InputHandler` builds a recovery report itself instead, which no configured
 factory can redirect and no flag suppresses.
 
-`InputHandler::handle()` and `InputHandler::run()` both build a recovery report.
-Each builds it when `getOutputFromThrowable()` raises or when the
-`ThrowableCaught` stage raises. `run()` builds it when the recovery write
-fails as well, again when the exit stage's own first report raises, and again
-when reading the exit code from the output raises.
+`InputHandler::handle()` and `InputHandler::run()` both build a recovery
+report. Each builds it when `getOutputFromThrowable()` raises or when the
+`ThrowableCaught` stage raises. `run()` builds it when the write of the output
+that stage returned fails as well, again when the exit stage's own first
+report raises, and again when reading the exit code from the output raises.
 
-Every recovery report names the command. It names none when reading the command
-name from the input is itself what raised.
+Every recovery report names the command. It names no command when reading the
+command name from the input is itself what raised.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
