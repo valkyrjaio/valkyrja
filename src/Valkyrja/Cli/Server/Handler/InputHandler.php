@@ -64,8 +64,13 @@ class InputHandler implements InputHandlerContract
         try {
             $output = $this->dispatchRouter($input);
         } catch (Throwable $throwable) {
-            $output = $this->getOutputFromThrowable($input, $throwable);
-            $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
+            try {
+                // A middleware runs here, so the dispatch belongs under a guard of its own.
+                $output = $this->getOutputFromThrowable($input, $throwable);
+                $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
+            } catch (Throwable $recoveryThrowable) {
+                $output = $this->getOutputFromThrowable($input, $throwable, $recoveryThrowable);
+            }
         }
 
         // Set the returned output in the container
@@ -111,11 +116,7 @@ class InputHandler implements InputHandlerContract
                 // return an output whose destination is the one that just failed. This last resort
                 // echoes, so no configured factory can redirect it. It leads with the throwable the
                 // command's own destination raised, and it names both failures.
-                $messages   = $this->getThrowableMessages($input, $throwable);
-                $messages[] = new NewLine();
-                $messages[] = new NewLine();
-                $messages[] = new ErrorMessage('Recovery message:');
-                $messages[] = new Message(' ' . $recoveryThrowable->getMessage());
+                $messages = $this->getThrowableMessages($input, $throwable, $recoveryThrowable);
 
                 $output = new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
 
@@ -163,29 +164,37 @@ class InputHandler implements InputHandlerContract
     /**
      * Get an output from a throwable.
      *
-     * @param InputContract $input     The input
-     * @param Throwable     $throwable The throwable
+     * @param InputContract  $input             The input
+     * @param Throwable      $throwable         The throwable
+     * @param Throwable|null $recoveryThrowable [optional] The throwable the recovery raised
      */
-    protected function getOutputFromThrowable(InputContract $input, Throwable $throwable): OutputContract
-    {
+    protected function getOutputFromThrowable(
+        InputContract $input,
+        Throwable $throwable,
+        Throwable|null $recoveryThrowable = null
+    ): OutputContract {
         return $this->outputFactory
             ->createOutput(exitCode: ExitCode::ERROR)
-            ->withMessages(...$this->getThrowableMessages($input, $throwable));
+            ->withMessages(...$this->getThrowableMessages($input, $throwable, $recoveryThrowable));
     }
 
     /**
      * Get the messages that report a throwable.
      *
-     * @param InputContract $input     The input
-     * @param Throwable     $throwable The throwable
+     * @param InputContract  $input             The input
+     * @param Throwable      $throwable         The throwable
+     * @param Throwable|null $recoveryThrowable [optional] The throwable the recovery raised
      *
      * @return MessageContract[]
      */
-    protected function getThrowableMessages(InputContract $input, Throwable $throwable): array
-    {
+    protected function getThrowableMessages(
+        InputContract $input,
+        Throwable $throwable,
+        Throwable|null $recoveryThrowable = null
+    ): array {
         $commandName = $input->getCommandName();
 
-        return [
+        $messages = [
             new Banner(new ErrorMessage('Cli Server Error:')),
             new NewLine(),
             new ErrorMessage('Command:'),
@@ -195,5 +204,14 @@ class InputHandler implements InputHandlerContract
             new ErrorMessage('Message:'),
             new Message(' ' . $throwable->getMessage()),
         ];
+
+        if ($recoveryThrowable !== null) {
+            $messages[] = new NewLine();
+            $messages[] = new NewLine();
+            $messages[] = new ErrorMessage('Recovery message:');
+            $messages[] = new Message(' ' . $recoveryThrowable->getMessage());
+        }
+
+        return $messages;
     }
 }

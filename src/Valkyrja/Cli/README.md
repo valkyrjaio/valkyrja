@@ -1239,6 +1239,10 @@ command raised. A middleware that reads the throwable receives
 `CliInteractionFileWriteException`, `CliInteractionStreamWriteException`, and
 `CliInteractionUnwritableStreamException` as well.
 
+A middleware of this stage can itself throw. `handle()` then builds an output
+that names the command's throwable and the middleware's, and the caller still
+receives an output.
+
 Warning: the second run resumes the chain rather than restarting it. `Handler`
 advances its index once for each middleware it resolves and never rewinds it,
 and `CliMiddlewareServiceProvider` publishes one handler as a singleton. A

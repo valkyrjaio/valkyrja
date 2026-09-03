@@ -212,6 +212,46 @@ final class InputHandlerTest extends TestCase
         self::assertSame($output, $container->get(OutputContract::class));
     }
 
+    public function testHandleReportsBothThrowablesWhenTheThrowableCaughtMiddlewareThrows(): void
+    {
+        $input     = new Input();
+        $exception = new ValkyrjaRuntimeExceptionFixture('The command failed.');
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willThrowException($exception);
+
+        // The middleware itself fails, so the stage cannot build the output it owns.
+        $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
+        $throwableCaughtHandler
+            ->expects($this->once())
+            ->method('throwableCaught')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The middleware failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            throwableCaughtHandler: $throwableCaughtHandler,
+        );
+
+        $handledOutput = $inputHandler->handle($input);
+
+        ob_start();
+        $handledOutput->writeMessages();
+        $handledText = ob_get_clean();
+
+        self::assertStringContainsString('The command failed.', (string) $handledText);
+        self::assertStringContainsString('Recovery message:', (string) $handledText);
+        self::assertStringContainsString('The middleware failed.', (string) $handledText);
+        self::assertSame(ExitCode::ERROR, $handledOutput->getExitCode());
+        self::assertSame($handledOutput, $container->get(OutputContract::class));
+    }
+
     public function testRun(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));
