@@ -915,10 +915,10 @@ It names no command when reading the command name from the input is itself one
 of the raises it answers.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
-throws there makes `InputHandler::run()` write a first report, which the
-interaction flags govern. A raise inside that report makes `run()` write the
-last resort. The code the output holds at that point still reaches
-`Exiter::exit()`.
+throws there makes `InputHandler::run()` write a first report, which a
+`--silent` run suppresses. A raise inside that report makes `run()` write the
+second report, which echoes. The code the output holds at that point still
+reaches `Exiter::exit()`.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
