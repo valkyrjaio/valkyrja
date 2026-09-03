@@ -210,7 +210,7 @@ class InputHandler implements InputHandlerContract
      *
      * @param InputContract  $input             The input
      * @param Throwable      $throwable         The throwable
-     * @param Throwable|null $recoveryThrowable [optional] The throwable that ended a first report
+     * @param Throwable|null $recoveryThrowable [optional] The throwable a recovery raised
      */
     private function getRecoveryOutput(
         InputContract $input,
