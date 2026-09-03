@@ -230,10 +230,11 @@ when you cannot annotate the class. One provider can use both. A provider that
 uses only attributes returns an empty array from `getRoutes()`. The example
 under [Pre-Built Routes](#pre-built-routes) shows both methods on one provider.
 
-The CLI server component registers the built-in commands through its own
-provider, `Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider`. That
-class also carries the static handler that each built-in command's
-`#[RouteHandler]` names.
+The CLI routing component registers the built-in commands the same way.
+`CliRoutingComponentProvider::getCliProviders()` returns
+`Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider`, which lists the
+four built-in command classes and carries the four static handlers that their
+`#[RouteHandler]` attributes name.
 
 A component provider returns route providers from its `getCliProviders()`
 method, and `CliConfig`'s `providers` array lists the component providers:
@@ -343,9 +344,9 @@ class AppCliRouteProvider implements CliRouteProviderContract
 }
 ```
 
-`GreetCommand` is the attributed command shown under
-[Attribute Registration](#attribute-registration); its `#[RouteHandler]`
-points back at `greetHandler`.
+`GreetCommand` and `UserPurgeCommand` are the attributed commands shown under
+[Attribute Registration](#attribute-registration); each one's `#[RouteHandler]`
+points back at a static handler on this provider.
 
 ### Attribute Registration
 
@@ -681,19 +682,26 @@ public function run(): OutputContract
 }
 ```
 
-A `REQUIRED` option must arrive:
+A `REQUIRED` option must arrive. Every invocation of the command declares it:
 
 ```php
-use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 
-new OptionParameter(
+#[Route(name: 'report:build', description: 'Build a report')]
+#[OptionParameter(
     name:             'destination',
-    description:      'The directory to write the export to',
+    description:      'The directory to write the report to',
     valueDisplayName: 'directory',
     mode:             OptionMode::REQUIRED,
-);
-// php myapp user:export --destination=/tmp/users
+)]
+public function run(): OutputContract
+{
+    // php myapp report:build --destination=/tmp/reports
+    // php myapp report:build   -> the router throws, because the option is missing
+    $destination = $this->route->getOption('destination')->getFirstValue();
+}
 ```
 
 Reusable option parameters for the global options ship in
