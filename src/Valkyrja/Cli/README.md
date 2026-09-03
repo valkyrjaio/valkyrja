@@ -902,18 +902,20 @@ sets `ExitCode::ERROR` on that output, so the process reports `1` and not the
 exit code the command set. `InputHandler::run()` replaces the output, so the
 `ProcessExiting` middleware receives the recovery output.
 
-A second failure takes the last resort. `InputHandler::run()` builds a plain
-`Output` when `getOutputFromThrowable()` raises, when the `ThrowableCaught`
-stage raises, or when the recovery write fails. That output carries the
-default flags, so it writes both failures to stdout even on a `--silent` run,
-and no configured factory can redirect it. The last resort names no command,
-because reading the command name from the input is one of the raises it
-answers.
+A first report goes through the `OutputFactory`, so the interaction flags
+govern it. A report that answers a failed report is built directly. That
+report echoes whatever the flags say, and no configured factory can redirect
+it, because it is the only trace of a failure that already defeated the
+configured destination.
+
+A second failure takes the last resort. `InputHandler::run()` builds that
+report when the `ThrowableCaught` stage raises, or when the recovery write
+fails. The report names the command. It names no command when reading the
+command name from the input is itself one of the raises it answers.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
-throws there writes a report through the `OutputFactory`, which the
-interaction flags govern, and the code the output holds at that point still
-reaches `Exiter::exit()`.
+throws there makes `InputHandler::run()` write a report. The code the output
+holds at that point still reaches `Exiter::exit()`.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets

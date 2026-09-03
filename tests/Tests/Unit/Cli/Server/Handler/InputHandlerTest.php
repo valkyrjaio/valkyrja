@@ -330,8 +330,13 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The report leaves no trace, and the frozen exiter still prints the command's code.
-        self::assertSame((string) ExitCode::USAGE_ERROR->value, $runOutput);
+        // The full report reads the input, so the report that reads nothing takes its place.
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        self::assertStringContainsString('The exit stage failed.', (string) $runOutput);
+        self::assertStringContainsString('The input failed.', (string) $runOutput);
+        self::assertStringNotContainsString('Command:', (string) $runOutput);
+        // The frozen exiter still prints the command's own code.
+        self::assertStringEndsWith("\n" . ExitCode::USAGE_ERROR->value, (string) $runOutput);
     }
 
     public function testRunReportsAProcessExitingThrowableAndKeepsTheExitCode(): void
