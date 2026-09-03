@@ -113,6 +113,21 @@ final class FileOutputTest extends TestCase
         $output->writeMessages();
     }
 
+    public function testOutputMessageWritesNothingWhenTheOutputIsQuiet(): void
+    {
+        $filepath = $this->getFilepath();
+
+        $output = new FileOutput($filepath, isQuiet: true)
+            ->withAddedMessage(new Message('text'));
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        // A quiet run that succeeds leaves the destination empty.
+        self::assertFileDoesNotExist($filepath);
+    }
+
     public function testFilePath(): void
     {
         $filepath  = $this->getFilepath();

@@ -333,6 +333,40 @@ final class InputHandlerTest extends TestCase
         self::assertNotInstanceOf(StreamOutput::class, $containerOutput);
     }
 
+    public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
+    {
+        $output = new Output()->withMessages(new Message('This is a test.'));
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        ob_get_clean();
+
+        Exiter::unfreeze();
+
+        $registered = $container->get(OutputContract::class);
+
+        self::assertNotSame($output, $registered);
+        self::assertTrue($registered->hasWrittenMessage());
+        self::assertFalse($registered->hasUnwrittenMessage());
+    }
+
     public function testHandleExitHandler(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));
