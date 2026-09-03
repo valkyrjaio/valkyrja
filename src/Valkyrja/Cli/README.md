@@ -903,9 +903,10 @@ exit code the command set. `InputHandler::run()` replaces the output, so the
 
 A second failure takes the last resort. `InputHandler::run()` builds a plain
 `Output` when `getOutputFromThrowable()` raises, when the `ThrowableCaught`
-stage raises, or when the recovery write fails. That output carries the default
-flags, so it writes both failures to stdout even on a `--silent` run, and no
-configured factory can redirect it.
+stage raises, or when the recovery write fails. That output carries the
+default flags, so it writes both failures to stdout even on a `--silent` run,
+and no configured factory can redirect it. A raise inside the last resort
+itself leaves no report, and the exit code still reaches `Exiter::exit()`.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there writes the error banner to stdout, and the code the command set

@@ -112,15 +112,19 @@ class InputHandler implements InputHandlerContract
                 $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
                 $output = $output->writeMessages();
             } catch (Throwable $recoveryThrowable) {
-                // The dispatch or the recovery write failed. A middleware can throw, or it can
-                // return an output whose destination is the one that just failed. This last resort
-                // echoes, so no configured factory can redirect it. It leads with the throwable the
-                // command's own destination raised, and it names both failures.
-                $messages = $this->getThrowableMessages($input, $throwable, $recoveryThrowable);
+                try {
+                    // The dispatch or the recovery write failed. A middleware can throw, or it can
+                    // return an output whose destination is the one that just failed. This last
+                    // resort echoes, so no configured factory can redirect it. It leads with the
+                    // throwable the command's own destination raised, and it names both failures.
+                    $messages = $this->getThrowableMessages($input, $throwable, $recoveryThrowable);
 
-                $output = new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
+                    $output = new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
 
-                $output = $output->writeMessages();
+                    $output = $output->writeMessages();
+                } catch (Throwable) {
+                    // The report is the last write, so a failure here leaves no trace to write.
+                }
             }
 
             $this->container->setSingleton(OutputContract::class, $output);

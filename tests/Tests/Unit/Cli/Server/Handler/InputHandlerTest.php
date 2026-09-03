@@ -30,6 +30,7 @@ use Valkyrja\Cli\Routing\Dispatcher\Router;
 use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Input\InputRaisingCommandNameFixture;
 use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -250,6 +251,43 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('The middleware failed.', (string) $handledText);
         self::assertSame(ExitCode::ERROR, $handledOutput->getExitCode());
         self::assertSame($handledOutput, $container->get(OutputContract::class));
+    }
+
+    public function testRunSignalsTheExitCodeWhenTheLastResortAlsoRaises(): void
+    {
+        $readOnly = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($readOnly);
+
+        $output = new StreamOutput($readOnly, exitCode: ExitCode::USAGE_ERROR)
+            ->withMessages(new Message('This is a test.'));
+        // The report reads the command name, so every report of this run raises.
+        $input = new InputRaisingCommandNameFixture();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The last resort leaves no report, and the frozen exiter still prints the code.
+        self::assertSame((string) ExitCode::USAGE_ERROR->value, $runOutput);
     }
 
     public function testRunReportsAProcessExitingThrowableAndKeepsTheExitCode(): void
