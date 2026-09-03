@@ -135,7 +135,7 @@ class InputHandler implements InputHandlerContract
             }
         }
 
-        Exiter::exit($this->getExitCode($output));
+        Exiter::exit($this->getExitCode($input, $output));
     }
 
     /**
@@ -181,17 +181,16 @@ class InputHandler implements InputHandlerContract
      * An output supplies this value, and a contract implementation can raise on the read. The
      * code must reach the shell either way.
      *
+     * @param InputContract  $input  The input
      * @param OutputContract $output The output the run ends with
      */
-    private function getExitCode(OutputContract $output): int
+    private function getExitCode(InputContract $input, OutputContract $output): int
     {
         try {
             $exitCode = $output->getExitCode();
         } catch (Throwable $codeThrowable) {
             // This read runs last, so the report is the only trace the failure leaves.
-            new Output(exitCode: ExitCode::ERROR)
-                ->withMessages(...$this->getBareThrowableMessages($codeThrowable))
-                ->writeMessages();
+            $this->getRecoveryOutput($input, $codeThrowable)->writeMessages();
 
             return ExitCode::ERROR->value;
         }
@@ -209,24 +208,31 @@ class InputHandler implements InputHandlerContract
      * suppresses. Each write in `run()` that carries no guard rests on that, so this method and
      * the messages it builds take no override.
      *
-     * @param InputContract $input             The input
-     * @param Throwable     $throwable         The throwable
-     * @param Throwable     $recoveryThrowable The throwable the recovery raised
+     * @param InputContract  $input             The input
+     * @param Throwable      $throwable         The throwable
+     * @param Throwable|null $recoveryThrowable [optional] The throwable that ended a first report
      */
     private function getRecoveryOutput(
         InputContract $input,
         Throwable $throwable,
-        Throwable $recoveryThrowable
+        Throwable|null $recoveryThrowable = null
     ): OutputContract {
+        $recoveryMessages = $recoveryThrowable !== null
+            ? $this->getRecoveryMessages($recoveryThrowable)
+            : [];
+
         try {
             $messages = [
                 ...$this->getThrowableMessages($input, $throwable),
-                ...$this->getRecoveryMessages($recoveryThrowable),
+                ...$recoveryMessages,
             ];
         } catch (Throwable) {
             // The full report reads the command name from the input, so an input that raises there
             // takes the report with it.
-            $messages = $this->getFallbackThrowableMessages($throwable, $recoveryThrowable);
+            $messages = [
+                ...$this->getBareThrowableMessages($throwable),
+                ...$recoveryMessages,
+            ];
         }
 
         return new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
@@ -246,26 +252,6 @@ class InputHandler implements InputHandlerContract
             new ErrorMessage('Recovery message:'),
             new Message(' ' . $recoveryThrowable->getMessage()),
             new NewLine(),
-        ];
-    }
-
-    /**
-     * Get the messages that report a throwable when the full report raised.
-     *
-     * The full report reads the command name from the input, so an input that raises there takes
-     * the report with it. These messages read the throwables alone, and `Throwable::getMessage()`
-     * is final, so this report raises nothing.
-     *
-     * @param Throwable $throwable         The throwable
-     * @param Throwable $recoveryThrowable The throwable the recovery raised
-     *
-     * @return MessageContract[]
-     */
-    private function getFallbackThrowableMessages(Throwable $throwable, Throwable $recoveryThrowable): array
-    {
-        return [
-            ...$this->getBareThrowableMessages($throwable),
-            ...$this->getRecoveryMessages($recoveryThrowable),
         ];
     }
 

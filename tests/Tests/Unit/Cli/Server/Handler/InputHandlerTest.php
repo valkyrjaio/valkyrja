@@ -831,8 +831,9 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The guard names what it swallowed, and the code still reaches the shell.
+        // The guard names what it swallowed, and the input reads, so it names the command.
         self::assertStringContainsString('The exit code failed.', (string) $runOutput);
+        self::assertStringContainsString('Command:', (string) $runOutput);
         self::assertStringEndsWith((string) ExitCode::ERROR->value, (string) $runOutput);
     }
 
@@ -909,6 +910,39 @@ final class InputHandlerTest extends TestCase
         Exiter::unfreeze();
 
         self::assertSame('5', $runOutput);
+    }
+
+    public function testRunEchoesTheExitCodeReportOnASilentRun(): void
+    {
+        // An output supplies the code, and this one raises on the read.
+        $output = new OutputRaisingExitCodeFixture();
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            outputFactory: new OutputFactory(new CliInteractionConfig(isSilent: true)),
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The report takes a plain Output, so a silent run still reads it.
+        self::assertStringContainsString('The exit code failed.', (string) $runOutput);
     }
 
     public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
