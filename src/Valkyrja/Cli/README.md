@@ -1435,7 +1435,7 @@ the first two; the interaction options set the output flags:
 | ------------------ | ----- | --------------------------------------------------------------------------------------------------------- |
 | `--help`           | `-h`  | Shows the command's help page                                                                             |
 | `--version`        | `-v`  | Shows the application version                                                                             |
-| `--quiet`          | `-q`  | Suppresses output while the exit code is identical to `ExitCode::SUCCESS`, and reads no answer from stdin |
+| `--quiet`          | `-q`  | Reads no answer from stdin, and suppresses output while the exit code is identical to `ExitCode::SUCCESS` |
 | `--silent`         | `-s`  | Suppresses all output, and reads no answer from stdin                                                     |
 | `--no-interaction` | `-N`  | Reads no answer from stdin                                                                                |
 
