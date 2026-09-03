@@ -919,6 +919,11 @@ throws there makes `InputHandler::run()` write a first report, which a
 second report, which echoes. The code the output holds at that point still
 reaches `Exiter::exit()`.
 
+Warning: the guard on the `ProcessExiting` stage routes nothing to the
+`ThrowableCaught` stage. A `--silent` run therefore takes a failure of that
+stage with no output and no log entry. Register a `ProcessExiting` middleware
+that reports its own failures when a run must record them.
+
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
 the exit code. The `InputHandler` calls `writeMessages()` after dispatch, so
