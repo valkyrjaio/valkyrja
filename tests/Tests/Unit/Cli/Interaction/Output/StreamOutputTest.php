@@ -179,6 +179,26 @@ final class StreamOutputTest extends TestCase
         self::fail('The write did not throw.');
     }
 
+    public function testOutputMessageWritesNothingWhenTheOutputIsQuiet(): void
+    {
+        $stream = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($stream);
+
+        // A read mode would fail verifyWritable, so a quiet write must not reach it.
+        $output = new StreamOutput($stream, isQuiet: true)
+            ->withAddedMessage(new Message('text'));
+
+        ob_start();
+        $output->writeMessages();
+        $contents = ob_get_clean();
+
+        rewind($stream);
+
+        self::assertEmpty($contents);
+        self::assertSame('', stream_get_contents($stream));
+    }
+
     public function testStream(): void
     {
         $stream  = $this->createStream();
