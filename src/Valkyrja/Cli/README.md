@@ -917,6 +917,9 @@ report raises, and again when reading the exit code from the output raises.
 Every recovery report names the command. It names no command when reading the
 command name from the input is itself what raised.
 
+Every report this handler builds ends with a new line, so the shell prompt does
+not land on the line the report wrote last.
+
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
 `--silent` run suppresses. A raise inside that report makes `run()` write the

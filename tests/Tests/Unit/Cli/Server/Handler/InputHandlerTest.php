@@ -181,6 +181,9 @@ final class InputHandlerTest extends TestCase
         self::assertInstanceOf(NewLine::class, $handledResponse->getMessages()[5]);
         self::assertSame('Message:', $handledResponse->getMessages()[6]->getText());
         self::assertSame(' ' . $exception->getMessage(), $handledResponse->getMessages()[7]->getText());
+        // The report ends the line it wrote, so the shell prompt does not land on it.
+        self::assertInstanceOf(NewLine::class, $handledResponse->getMessages()[8]);
+        self::assertCount(9, $handledResponse->getMessages());
     }
 
     public function testHandleExceptionWithThrowableCaughtMiddleware(): void
