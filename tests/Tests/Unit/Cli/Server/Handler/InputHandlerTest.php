@@ -253,15 +253,14 @@ final class InputHandlerTest extends TestCase
         self::assertSame($handledOutput, $container->get(OutputContract::class));
     }
 
-    public function testRunSignalsTheExitCodeWhenTheLastResortAlsoRaises(): void
+    public function testRunTakesTheLastResortWhenTheFullReportRaises(): void
     {
         $readOnly = fopen(filename: 'php://memory', mode: 'rb');
 
         self::assertNotFalse($readOnly);
 
-        $output = new StreamOutput($readOnly, exitCode: ExitCode::USAGE_ERROR)
-            ->withMessages(new Message('This is a test.'));
-        // The report reads the command name, so every report of this run raises.
+        $output = new StreamOutput($readOnly)->withMessages(new Message('This is a test.'));
+        // The full report reads the command name, so every report that reads the input raises.
         $input = new InputRaisingCommandNameFixture();
 
         $router = $this->createMock(Router::class);
@@ -286,8 +285,14 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The last resort leaves no report, and the frozen exiter still prints the code.
-        self::assertSame((string) ExitCode::USAGE_ERROR->value, $runOutput);
+        // The last resort reads no input, so it names both throwables and reaches the exiter.
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        self::assertStringContainsString('takes no write', (string) $runOutput);
+        self::assertStringContainsString('Recovery message:', (string) $runOutput);
+        self::assertStringContainsString('The input failed.', (string) $runOutput);
+        // The report names no command, because reading the command name is what raised.
+        self::assertStringNotContainsString('Command:', (string) $runOutput);
+        self::assertStringEndsWith("\n" . ExitCode::ERROR->value, (string) $runOutput);
     }
 
     public function testRunReportsAProcessExitingThrowableAndKeepsTheExitCode(): void

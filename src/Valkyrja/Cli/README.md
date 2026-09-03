@@ -906,8 +906,9 @@ A second failure takes the last resort. `InputHandler::run()` builds a plain
 `Output` when `getOutputFromThrowable()` raises, when the `ThrowableCaught`
 stage raises, or when the recovery write fails. That output carries the
 default flags, so it writes both failures to stdout even on a `--silent` run,
-and no configured factory can redirect it. A raise inside the last resort
-itself leaves no report, and the exit code still reaches `Exiter::exit()`.
+and no configured factory can redirect it. The last resort names no command,
+because reading the command name from the input is one of the raises it
+answers.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there writes a report through the `OutputFactory`, which the

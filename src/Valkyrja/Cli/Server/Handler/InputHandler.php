@@ -69,7 +69,8 @@ class InputHandler implements InputHandlerContract
                 $output = $this->getOutputFromThrowable($input, $throwable);
                 $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
             } catch (Throwable $recoveryThrowable) {
-                $output = $this->getOutputFromThrowable($input, $throwable, $recoveryThrowable);
+                $output = new Output(exitCode: ExitCode::ERROR)
+                    ->withMessages(...$this->getFallbackThrowableMessages($throwable, $recoveryThrowable));
             }
         }
 
@@ -112,19 +113,15 @@ class InputHandler implements InputHandlerContract
                 $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
                 $output = $output->writeMessages();
             } catch (Throwable $recoveryThrowable) {
-                try {
-                    // The dispatch or the recovery write failed. A middleware can throw, or it can
-                    // return an output whose destination is the one that just failed. This last
-                    // resort echoes, so no configured factory can redirect it. It leads with the
-                    // throwable the command's own destination raised, and it names both failures.
-                    $messages = $this->getThrowableMessages($input, $throwable, $recoveryThrowable);
+                // The dispatch or the recovery write failed. A middleware can throw, or it can
+                // return an output whose destination is the one that just failed. This last resort
+                // echoes, so no configured factory can redirect it. It leads with the throwable the
+                // command's own destination raised, and it names both failures.
+                $messages = $this->getFallbackThrowableMessages($throwable, $recoveryThrowable);
 
-                    $output = new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
+                $output = new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
 
-                    $output = $output->writeMessages();
-                } catch (Throwable) {
-                    // The report is the last write, so a failure here leaves no trace to write.
-                }
+                $output = $output->writeMessages();
             }
 
             $this->container->setSingleton(OutputContract::class, $output);
@@ -178,37 +175,56 @@ class InputHandler implements InputHandlerContract
     /**
      * Get an output from a throwable.
      *
-     * @param InputContract  $input             The input
-     * @param Throwable      $throwable         The throwable
-     * @param Throwable|null $recoveryThrowable [optional] The throwable the recovery raised
+     * @param InputContract $input     The input
+     * @param Throwable     $throwable The throwable
      */
-    protected function getOutputFromThrowable(
-        InputContract $input,
-        Throwable $throwable,
-        Throwable|null $recoveryThrowable = null
-    ): OutputContract {
+    protected function getOutputFromThrowable(InputContract $input, Throwable $throwable): OutputContract
+    {
         return $this->outputFactory
             ->createOutput(exitCode: ExitCode::ERROR)
-            ->withMessages(...$this->getThrowableMessages($input, $throwable, $recoveryThrowable));
+            ->withMessages(...$this->getThrowableMessages($input, $throwable));
+    }
+
+    /**
+     * Get the messages that report a throwable when the full report raised.
+     *
+     * The full report reads the command name from the input, so an input that raises there takes
+     * the report with it. These messages read the throwables alone, and `Throwable::getMessage()`
+     * is final, so this report raises nothing.
+     *
+     * @param Throwable $throwable         The throwable
+     * @param Throwable $recoveryThrowable The throwable the recovery raised
+     *
+     * @return MessageContract[]
+     */
+    protected function getFallbackThrowableMessages(Throwable $throwable, Throwable $recoveryThrowable): array
+    {
+        return [
+            new Banner(new ErrorMessage('Cli Server Error:')),
+            new NewLine(),
+            new ErrorMessage('Message:'),
+            new Message(' ' . $throwable->getMessage()),
+            new NewLine(),
+            new NewLine(),
+            new ErrorMessage('Recovery message:'),
+            new Message(' ' . $recoveryThrowable->getMessage()),
+            new NewLine(),
+        ];
     }
 
     /**
      * Get the messages that report a throwable.
      *
-     * @param InputContract  $input             The input
-     * @param Throwable      $throwable         The throwable
-     * @param Throwable|null $recoveryThrowable [optional] The throwable the recovery raised
+     * @param InputContract $input     The input
+     * @param Throwable     $throwable The throwable
      *
      * @return MessageContract[]
      */
-    protected function getThrowableMessages(
-        InputContract $input,
-        Throwable $throwable,
-        Throwable|null $recoveryThrowable = null
-    ): array {
+    protected function getThrowableMessages(InputContract $input, Throwable $throwable): array
+    {
         $commandName = $input->getCommandName();
 
-        $messages = [
+        return [
             new Banner(new ErrorMessage('Cli Server Error:')),
             new NewLine(),
             new ErrorMessage('Command:'),
@@ -217,18 +233,8 @@ class InputHandler implements InputHandlerContract
             new NewLine(),
             new ErrorMessage('Message:'),
             new Message(' ' . $throwable->getMessage()),
+            // The report ends the line it wrote, so the shell prompt does not land on it.
+            new NewLine(),
         ];
-
-        if ($recoveryThrowable !== null) {
-            $messages[] = new NewLine();
-            $messages[] = new NewLine();
-            $messages[] = new ErrorMessage('Recovery message:');
-            $messages[] = new Message(' ' . $recoveryThrowable->getMessage());
-        }
-
-        // The report ends the line it wrote, so the shell prompt does not land on it.
-        $messages[] = new NewLine();
-
-        return $messages;
     }
 }
