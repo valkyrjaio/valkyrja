@@ -249,6 +249,9 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('The command failed.', (string) $handledText);
         self::assertStringContainsString('Recovery message:', (string) $handledText);
         self::assertStringContainsString('The middleware failed.', (string) $handledText);
+        // The full report names the command, which the report that reads no input cannot.
+        self::assertStringContainsString('Command:', (string) $handledText);
+        self::assertStringContainsString('list', (string) $handledText);
         self::assertSame(ExitCode::ERROR, $handledOutput->getExitCode());
         self::assertSame($handledOutput, $container->get(OutputContract::class));
     }
@@ -497,6 +500,8 @@ final class InputHandlerTest extends TestCase
         // It also names the second destination, so the misconfiguration is visible.
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
         self::assertStringContainsString($recoveryPath, (string) $runOutput);
+        // The input reads, so the last resort keeps the command the full report names.
+        self::assertStringContainsString('Command:', (string) $runOutput);
         self::assertSame(ExitCode::ERROR, $containerOutput->getExitCode());
         self::assertNotInstanceOf(StreamOutput::class, $containerOutput);
     }
