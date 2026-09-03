@@ -289,7 +289,7 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The last resort reads no input, so it names both throwables and reaches the exiter.
+        // The second report reads no input, so it names both throwables and reaches the exiter.
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         self::assertStringContainsString('takes no write', (string) $runOutput);
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
@@ -539,12 +539,12 @@ final class InputHandlerTest extends TestCase
         $containerOutput = $container->get(OutputContract::class);
 
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
-        // The last resort reports the throwable the command's own destination raised.
+        // The second report names the throwable the command's own destination raised.
         self::assertStringContainsString('takes no write', (string) $runOutput);
         // It also names the second destination, so the misconfiguration is visible.
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
         self::assertStringContainsString($recoveryPath, (string) $runOutput);
-        // The input reads, so the last resort keeps the command the full report names.
+        // The input reads, so the second report keeps the command the first report names.
         self::assertStringContainsString('Command:', (string) $runOutput);
         self::assertSame(ExitCode::ERROR, $containerOutput->getExitCode());
         self::assertNotInstanceOf(StreamOutput::class, $containerOutput);
@@ -592,7 +592,7 @@ final class InputHandlerTest extends TestCase
         $containerOutput = $container->get(OutputContract::class);
 
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
-        // The last resort reports the throwable the command's own destination raised.
+        // The second report names the throwable the command's own destination raised.
         self::assertStringContainsString('takes no write', (string) $runOutput);
         // It also names the middleware failure, so neither throwable is lost.
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
