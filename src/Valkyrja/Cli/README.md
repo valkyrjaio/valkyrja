@@ -895,10 +895,11 @@ intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
 routes a write throwable to the `ThrowableCaught` middleware. The guard around
-that write carries the run to `Exiter::exit()`. `run()` replaces the output
-with the first report, so the `ProcessExiting` middleware receives that
-report. `getOutputFromThrowable()` sets `ExitCode::ERROR` on it, so the
-process reports `1` and not the exit code the command set.
+that write carries the run to `Exiter::exit()`. `run()` keeps whichever output
+the recovery produced, so the `ProcessExiting` middleware receives that output
+and the process reports the exit code it holds. Every recovery output carries
+`ExitCode::ERROR`, so the process reports `1` and not the exit code the
+command set.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
 `--silent` run suppresses that report. Every first report carries
