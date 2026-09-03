@@ -892,13 +892,13 @@ writes, when the stream mode carries no write intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
 routes a write throwable to the `ThrowableCaught` middleware, when dispatch
-itself did not already throw. The recovery
-output writes to stdout, so the process still reaches `Exiter::exit()`. A
-`--silent` run writes nothing, because the recovery output copies the
-interaction flags from the `CliInteractionConfig`. `getOutputFromThrowable()`
-sets `ExitCode::ERROR` on that output, so the process reports `1` and not the
-exit code the command set. `InputHandler::run()` replaces the output, so the
-`ProcessExiting` middleware receives the recovery output.
+itself did not already throw. The recovery output writes to stdout, so the
+process still reaches `Exiter::exit()`. A `--silent` run writes nothing,
+because the recovery output copies the interaction flags from the
+`CliInteractionConfig`. `getOutputFromThrowable()` sets `ExitCode::ERROR` on
+that output, so the process reports `1` and not the exit code the command
+set. `InputHandler::run()` replaces the output, so the `ProcessExiting`
+middleware receives the recovery output.
 
 A second failure takes the last resort. When the recovery write also fails,
 `InputHandler::run()` builds a plain `Output` with the default flags. That
@@ -1236,11 +1236,11 @@ command raised. A middleware that reads the throwable receives
 `CliInteractionFileWriteException`, `CliInteractionStreamWriteException`, and
 `CliInteractionUnwritableStreamException` as well.
 
-Warning: the stage runs no middleware for a write throwable when a throwable
-already escaped dispatch. `Handler` advances an index that it never rewinds,
-and `CliMiddlewareServiceProvider` publishes one handler as a singleton, so
-the pass that `handle()` starts exhausts the chain. The second dispatch
-returns the output it received.
+Warning: the second run resumes the chain rather than restarting it. `Handler`
+advances its index once for each middleware it resolves and never rewinds it,
+and `CliMiddlewareServiceProvider` publishes one handler as a singleton. A
+first run that reached the end of the chain therefore leaves no middleware for
+the second one.
 
 `ThrowableCaughtMiddlewareContract` receives a default error output and the
 throwable, and returns the output to write:
