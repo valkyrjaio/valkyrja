@@ -1257,9 +1257,9 @@ command raised. A middleware that reads the throwable receives
 `CliInteractionFileWriteException`, `CliInteractionStreamWriteException`, and
 `CliInteractionUnwritableStreamException` as well.
 
-A middleware of this stage can itself throw. `handle()` then builds an output
-that names the command's throwable and the middleware's, and the caller still
-receives an output.
+A middleware of this stage can itself throw. `handle()` and `run()` each build
+a second report then, which names the throwable it answered and the
+middleware's, and the caller still receives an output.
 
 Warning: the run in `run()` resumes the chain rather than restarting it.
 `Handler` advances its index once for each middleware it resolves and never
@@ -1305,9 +1305,9 @@ message.
 
 ### ProcessExiting
 
-`ProcessExitingMiddlewareContract` fires after the output is written and
-before the process exits. The middleware returns nothing, because the output
-already reached the destination it holds. Use this stage for deferred cleanup:
+`ProcessExitingMiddlewareContract` fires after the write of the output runs
+and before the process exits. The middleware returns nothing, because no later
+stage writes the output again. Use this stage for deferred cleanup:
 
 ```php
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
