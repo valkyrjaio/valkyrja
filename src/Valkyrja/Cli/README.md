@@ -901,9 +901,10 @@ sets `ExitCode::ERROR` on that output, so the process reports `1` and not the
 exit code the command set. `InputHandler::run()` replaces the output, so the
 `ProcessExiting` middleware receives the recovery output.
 
-A second failure takes the last resort. When the middleware throws, or when the
-recovery write also fails, `InputHandler::run()` builds a plain `Output` and
-writes both failures to stdout. No configured factory can redirect that output.
+A second failure takes the last resort. `InputHandler::run()` builds a plain
+`Output` when `getOutputFromThrowable()` raises, when the `ThrowableCaught`
+stage raises, or when the recovery write fails. That output writes both
+failures to stdout, and no configured factory can redirect it.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
