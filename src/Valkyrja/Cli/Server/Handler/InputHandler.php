@@ -205,8 +205,8 @@ class InputHandler implements InputHandlerContract
      *
      * A first report goes through the `OutputFactory`, so a `--silent` run suppresses it. This
      * second report takes a plain `Output`, which no configured factory can redirect and no flag
-     * suppresses. Each write in `run()` that carries no guard rests on that, so this method and
-     * the messages it builds take no override.
+     * suppresses. Every unguarded write of this output rests on that, so this method and the
+     * messages it builds take no override.
      *
      * @param InputContract  $input             The input
      * @param Throwable      $throwable         The throwable

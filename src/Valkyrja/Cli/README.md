@@ -911,13 +911,11 @@ redirect and no flag suppresses.
 `InputHandler::handle()` and `InputHandler::run()` both build that second
 report. Each builds it when `getOutputFromThrowable()` raises or when the
 `ThrowableCaught` stage raises. `run()` builds it when the recovery write
-fails as well, and again when the exit stage's own first report raises. The
-report names the command. It names no command when reading the command name
-from the input is itself one of the raises it answers.
+fails as well, again when the exit stage's own first report raises, and again
+when reading the exit code from the output raises.
 
-`run()` builds that second report once more when reading the exit code from
-the output raises. That report names the raise, and it names the command
-whenever the input reads.
+Every second report names the command. It names none when reading the command
+name from the input is itself what raised.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
@@ -1347,8 +1345,10 @@ class FlushLogsMiddleware implements ProcessExitingMiddlewareContract
 
 `InputHandler::run()` runs this stage under a guard. A middleware that throws
 here does not stop the run, and the code the output reports still reaches
-`Exiter::exit()`. The throwable reaches no `ThrowableCaught` middleware.
-Report a failure from inside the middleware when a run must record it.
+`Exiter::exit()`. The guard writes a first report naming the throwable, which
+a `--silent` run suppresses. The throwable reaches no `ThrowableCaught`
+middleware. Report a failure from inside the middleware when a run must record
+it.
 
 ### Registering Middleware
 
