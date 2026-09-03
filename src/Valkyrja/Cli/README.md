@@ -884,9 +884,9 @@ flags say.
 Warning: `isInteractive` suppresses no write. A question on a factory-built
 `FileOutput` or `StreamOutput` writes the prompt to that destination, so a
 destination other than the terminal shows the reader no prompt. An interactive
-output that is neither quiet nor silent then waits on stdin, and the default
-flags leave a factory-built output interactive. Clear the interactive flag when
-such a run must not block.
+output that is neither quiet nor silent then reads stdin, and the default flags
+leave a factory-built output interactive. Such a run waits while stdin stays
+open, so clear the interactive flag when the run must not wait.
 
 `StreamOutput` offers the remainder again while the stream takes part of the
 data, because a non-blocking stream takes a large message over several calls.
