@@ -894,13 +894,11 @@ writes, when the stream is closed, or when the stream mode carries no write
 intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
-routes a write throwable to the `ThrowableCaught` middleware. The recovery
-output writes to stdout, so the process still reaches `Exiter::exit()`. The
-recovery output copies the interaction flags from the `CliInteractionConfig`,
-so a `--silent` run writes no recovery output. `getOutputFromThrowable()`
-sets `ExitCode::ERROR` on that output, so the process reports `1` and not the
-exit code the command set. `InputHandler::run()` replaces the output, so the
-`ProcessExiting` middleware receives the recovery output.
+routes a write throwable to the `ThrowableCaught` middleware. The guard around
+that write carries the run to `Exiter::exit()`. `run()` replaces the output
+with the first report, so the `ProcessExiting` middleware receives that
+report. `getOutputFromThrowable()` sets `ExitCode::ERROR` on it, so the
+process reports `1` and not the exit code the command set.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
 `--silent` run suppresses that report. Every first report carries
