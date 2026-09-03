@@ -13,8 +13,11 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
 use Valkyrja\Application\Directory\Directory;
+use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionFileWriteException;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\FileOutputShortFilePutContentsFixture;
@@ -126,6 +129,29 @@ final class FileOutputTest extends TestCase
 
         // A quiet run that succeeds leaves the destination empty.
         self::assertFileDoesNotExist($filepath);
+    }
+
+    public function testOutputMessageWritesAQuestionToTheFile(): void
+    {
+        $filepath = $this->getFilepath();
+
+        $question = new Question(
+            text: 'Continue?',
+            callable: static fn (OutputContract $output): OutputContract => $output,
+            answer: new Answer('yes')
+        );
+
+        // The output reads no answer while it is not interactive, and it writes the prompt to
+        // the file all the same.
+        $output = new FileOutput($filepath, isInteractive: false)
+            ->withAddedMessage($question);
+
+        ob_start();
+        $output->writeMessages();
+        $terminal = ob_get_clean();
+
+        self::assertStringContainsString('Continue?', (string) file_get_contents($filepath));
+        self::assertSame('', (string) $terminal);
     }
 
     public function testFilePath(): void

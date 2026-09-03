@@ -12,8 +12,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
+use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\Question;
 use Valkyrja\Cli\Interaction\Message\SuccessMessage;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionStreamWriteException;
 use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamException;
@@ -226,6 +229,31 @@ final class StreamOutputTest extends TestCase
         self::assertNotSame($output, $output2);
         self::assertSame($stream, $output->getStream());
         self::assertSame($stream2, $output2->getStream());
+    }
+
+    public function testOutputMessageWritesAQuestionToTheStream(): void
+    {
+        $stream = $this->createStream();
+
+        $question = new Question(
+            text: 'Continue?',
+            callable: static fn (OutputContract $output): OutputContract => $output,
+            answer: new Answer('yes')
+        );
+
+        // The output reads no answer while it is not interactive, and it writes the prompt to
+        // the stream all the same.
+        $output = new StreamOutput($stream, isInteractive: false)
+            ->withAddedMessage($question);
+
+        ob_start();
+        $output->writeMessages();
+        $terminal = ob_get_clean();
+
+        rewind($stream);
+
+        self::assertStringContainsString('Continue?', (string) stream_get_contents($stream));
+        self::assertSame('', (string) $terminal);
     }
 
     /**
