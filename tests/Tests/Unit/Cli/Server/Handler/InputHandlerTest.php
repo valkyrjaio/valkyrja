@@ -768,6 +768,40 @@ final class InputHandlerTest extends TestCase
         self::assertStringEndsWith("\n" . ExitCode::USAGE_ERROR->value, (string) $runOutput);
     }
 
+    public function testHandleTakesTheSecondReportWhenTheFirstReportRaises(): void
+    {
+        // The first report reads the command name, so building it raises inside handle().
+        $input     = new InputRaisingCommandNameFixture();
+        $exception = new ValkyrjaRuntimeExceptionFixture('The command failed.');
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willThrowException($exception);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+        );
+
+        $handledOutput = $inputHandler->handle($input);
+
+        ob_start();
+        $handledOutput->writeMessages();
+        $handledText = ob_get_clean();
+
+        // The second report reads no input, so it names both throwables and no command.
+        self::assertStringContainsString('The command failed.', (string) $handledText);
+        self::assertStringContainsString('Recovery message:', (string) $handledText);
+        self::assertStringContainsString('The input failed.', (string) $handledText);
+        self::assertStringNotContainsString('Command:', (string) $handledText);
+        self::assertSame(ExitCode::ERROR, $handledOutput->getExitCode());
+    }
+
     public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));
