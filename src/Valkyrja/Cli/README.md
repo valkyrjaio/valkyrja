@@ -874,10 +874,11 @@ run, and the caller owns truncation. Delete the file before you construct the
 output when a run must start from an empty file.
 
 Warning: a factory-built `FileOutput` or `StreamOutput` copies the interaction
-flags. `--quiet` and `--silent` then suppress a file write and a stream write,
-and not only a terminal write. A quiet run that succeeds leaves the destination
-empty. Construct the output directly when the destination must take the
-messages whatever the flags say.
+flags, so a flag suppresses a file write and a stream write, and not only a
+terminal write. `--silent` suppresses every write. `--quiet` suppresses a write
+only while the exit code is `ExitCode::SUCCESS`, so a command that fails still
+writes each message to its destination. Construct the output directly when the
+destination must take the messages whatever the flags say.
 
 `StreamOutput` offers the remainder again while the stream takes part of the
 data, because a non-blocking stream takes a large message over several calls.
