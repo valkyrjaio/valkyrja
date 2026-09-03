@@ -252,6 +252,47 @@ final class InputHandlerTest extends TestCase
         self::assertSame($handledOutput, $container->get(OutputContract::class));
     }
 
+    public function testRunReportsAProcessExitingThrowableAndKeepsTheExitCode(): void
+    {
+        $output = new Output(exitCode: ExitCode::USAGE_ERROR);
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $processExitingHandler = $this->createMock(ProcessExitingHandlerContract::class);
+        $processExitingHandler
+            ->expects($this->once())
+            ->method('processExiting')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The exit stage failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            processExitingHandler: $processExitingHandler,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The report is the only trace the failure leaves.
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        self::assertStringContainsString('The exit stage failed.', (string) $runOutput);
+        // The frozen exiter echoes the code, so the command's own code reaches the shell.
+        self::assertStringEndsWith((string) ExitCode::USAGE_ERROR->value, (string) $runOutput);
+    }
+
     public function testRun(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));

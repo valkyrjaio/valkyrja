@@ -126,7 +126,17 @@ class InputHandler implements InputHandlerContract
             $this->container->setSingleton(OutputContract::class, $output);
         }
 
-        $this->exit($input, $output);
+        try {
+            $this->exit($input, $output);
+        } catch (Throwable $exitThrowable) {
+            try {
+                // A middleware runs here, and the command's code still reaches the shell, so this
+                // report is the only trace the failure leaves.
+                $this->getOutputFromThrowable($input, $exitThrowable)->writeMessages();
+            } catch (Throwable) {
+                // The report is the last write, so a failure here leaves no trace to write.
+            }
+        }
 
         $exitCode = $output->getExitCode();
 

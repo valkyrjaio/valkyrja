@@ -906,6 +906,10 @@ A second failure takes the last resort. `InputHandler::run()` builds a plain
 stage raises, or when the recovery write fails. That output writes both
 failures to stdout, and no configured factory can redirect it.
 
+The `ProcessExiting` stage runs under a guard of its own. A middleware that
+throws there writes the error banner to stdout, and the code the command set
+still reaches `Exiter::exit()`.
+
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
 the exit code. The `InputHandler` calls `writeMessages()` after dispatch, so
