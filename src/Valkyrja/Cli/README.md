@@ -1247,11 +1247,12 @@ A middleware of this stage can itself throw. `handle()` then builds an output
 that names the command's throwable and the middleware's, and the caller still
 receives an output.
 
-Warning: the second run resumes the chain rather than restarting it. `Handler`
-advances its index once for each middleware it resolves and never rewinds it,
-and `CliMiddlewareServiceProvider` publishes one handler as a singleton. A
-first run that reached the end of the chain therefore leaves no middleware for
-the second one.
+Warning: the run in `run()` resumes the chain rather than restarting it.
+`Handler` advances its index once for each middleware it resolves and never
+rewinds it, and `CliMiddlewareServiceProvider` publishes one handler as a
+singleton. A command that throws makes `handle()` run the stage first, so a
+first run that reached the end of the chain leaves no middleware for the one
+in `run()`.
 
 `ThrowableCaughtMiddlewareContract` receives a default error output and the
 throwable, and returns the output to write:
