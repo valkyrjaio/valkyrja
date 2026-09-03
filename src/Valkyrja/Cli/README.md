@@ -1404,7 +1404,7 @@ public function run(): OutputContract
 | `RouteNotMatched` | `RouteNotMatchedMiddlewareContract` | When no command matches                      | No        |
 | `RouteDispatched` | `RouteDispatchedMiddlewareContract` | After dispatch                               | Yes       |
 | `ThrowableCaught` | `ThrowableCaughtMiddlewareContract` | When a throwable is caught                   | Yes       |
-| `ProcessExiting`  | `ProcessExitingMiddlewareContract`  | After output is written, before process exit | Yes       |
+| `ProcessExiting`  | `ProcessExitingMiddlewareContract`  | After the write of the output runs, before the process exits | Yes       |
 
 ## Built-In Commands
 
