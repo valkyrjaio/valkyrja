@@ -74,7 +74,8 @@ interface OutputContract
     /**
      * Write all unwritten messages.
      *
-     * @throws CliInteractionRuntimeException When a destination does not take the whole message
+     * @throws CliInteractionRuntimeException When a destination refuses the message, or takes
+     *                                        less than the whole of it
      */
     public function writeMessages(): static;
 
@@ -83,7 +84,8 @@ interface OutputContract
      *
      * @param MessageContract $message The message
      *
-     * @throws CliInteractionRuntimeException When a destination does not take the whole message
+     * @throws CliInteractionRuntimeException When a destination refuses the message, or takes
+     *                                        less than the whole of it
      */
     public function writeMessage(MessageContract $message): static;
 
