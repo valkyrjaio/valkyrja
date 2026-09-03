@@ -866,8 +866,9 @@ copies the interaction flags from the `CliInteractionConfig`.
 
 `FileOutput` and `StreamOutput` write the same formatted text to a different
 destination. `FileOutput` appends to the filepath, and it makes the file when
-the file does not exist. `StreamOutput` writes to the stream resource at the
-current position. A sequence of messages concatenates.
+the file does not exist. It makes no directory, so a filepath under a
+directory that does not exist fails the write. `StreamOutput` writes to the
+stream resource at the current position. A sequence of messages concatenates.
 
 `FileOutput` never truncates. The file keeps the messages from each earlier
 run, and the caller owns truncation. Delete the file before you construct the
