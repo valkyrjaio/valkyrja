@@ -333,6 +333,56 @@ final class InputHandlerTest extends TestCase
         self::assertNotInstanceOf(StreamOutput::class, $containerOutput);
     }
 
+    public function testRunFallsBackToStdoutWhenTheThrowableCaughtMiddlewareThrows(): void
+    {
+        $readOnly = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($readOnly);
+
+        $output = new StreamOutput($readOnly)->withMessages(new Message('This is a test.'));
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        // The middleware itself fails, so the dispatch throws before any recovery write runs.
+        $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
+        $throwableCaughtHandler
+            ->expects($this->once())
+            ->method('throwableCaught')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The middleware failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            throwableCaughtHandler: $throwableCaughtHandler,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        $containerOutput = $container->get(OutputContract::class);
+
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        // The last resort reports the throwable the command's own destination raised.
+        self::assertStringContainsString('takes no write', (string) $runOutput);
+        // It also names the middleware failure, so neither throwable is lost.
+        self::assertStringContainsString('Recovery message:', (string) $runOutput);
+        self::assertStringContainsString('The middleware failed.', (string) $runOutput);
+        self::assertSame(ExitCode::ERROR, $containerOutput->getExitCode());
+    }
+
     public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));
