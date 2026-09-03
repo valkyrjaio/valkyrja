@@ -226,6 +226,9 @@ class InputHandler implements InputHandlerContract
             $messages[] = new Message(' ' . $recoveryThrowable->getMessage());
         }
 
+        // The report ends the line it wrote, so the shell prompt does not land on it.
+        $messages[] = new NewLine();
+
         return $messages;
     }
 }
