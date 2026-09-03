@@ -910,8 +910,9 @@ and no configured factory can redirect it. A raise inside the last resort
 itself leaves no report, and the exit code still reaches `Exiter::exit()`.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
-throws there writes the error banner to stdout, and the code the command set
-still reaches `Exiter::exit()`.
+throws there writes a report through the `OutputFactory`, which the
+interaction flags govern, and the code the output holds at that point still
+reaches `Exiter::exit()`.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
