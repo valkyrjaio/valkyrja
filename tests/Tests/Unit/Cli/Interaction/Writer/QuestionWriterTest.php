@@ -69,10 +69,12 @@ final class QuestionWriterTest extends TestCase
 
         // The silent flag alone stops the read.
         ob_start();
-        $result = $writer->write(new Output(isSilent: true), $question);
-        ob_get_clean();
+        $result  = $writer->write(new Output(isSilent: true), $question);
+        $printed = ob_get_clean();
 
         self::assertTrue($called);
+        // A silent output writes no prompt, and the silent flag also stops the read.
+        self::assertSame('', (string) $printed);
         self::assertSame(0, $question->getTimesAsked());
         self::assertInstanceOf(OutputContract::class, $result);
     }
@@ -95,10 +97,12 @@ final class QuestionWriterTest extends TestCase
 
         // The interactive flag alone stops the read.
         ob_start();
-        $result = $writer->write(new Output(isInteractive: false), $question);
-        ob_get_clean();
+        $result  = $writer->write(new Output(isInteractive: false), $question);
+        $printed = ob_get_clean();
 
         self::assertTrue($called);
+        // The prompt still reaches the destination, and the interactive flag stops the read.
+        self::assertStringContainsString('text', (string) $printed);
         self::assertSame(0, $question->getTimesAsked());
         self::assertInstanceOf(OutputContract::class, $result);
     }
@@ -124,10 +128,12 @@ final class QuestionWriterTest extends TestCase
         $output = new Output(isQuiet: true)->withExitCode(ExitCode::ERROR);
 
         ob_start();
-        $result = $writer->write($output, $question);
-        ob_get_clean();
+        $result  = $writer->write($output, $question);
+        $printed = ob_get_clean();
 
         self::assertTrue($called);
+        // The prompt still reaches the destination, and the quiet flag stops the read.
+        self::assertStringContainsString('text', (string) $printed);
         self::assertSame(0, $question->getTimesAsked());
         self::assertInstanceOf(OutputContract::class, $result);
     }
