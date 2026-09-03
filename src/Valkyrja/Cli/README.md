@@ -1431,13 +1431,13 @@ The HTTP routing component registers `http:list` through its own provider,
 The global options work on every command. The `InputReceived` defaults handle
 the first two; the interaction options set the output flags:
 
-| Option             | Short | Effect                                   |
-| ------------------ | ----- | ---------------------------------------- |
-| `--help`           | `-h`  | Shows the command's help page            |
-| `--version`        | `-v`  | Shows the application version            |
-| `--quiet`          | `-q`  | Suppresses output unless an error occurs |
-| `--silent`         | `-s`  | Suppresses all output                    |
-| `--no-interaction` | `-N`  | Answers every question with its default  |
+| Option             | Short | Effect                                                                    |
+| ------------------ | ----- | ------------------------------------------------------------------------- |
+| `--help`           | `-h`  | Shows the command's help page                                             |
+| `--version`        | `-v`  | Shows the application version                                             |
+| `--quiet`          | `-q`  | Suppresses output while the exit code is identical to `ExitCode::SUCCESS` |
+| `--silent`         | `-s`  | Suppresses all output                                                     |
+| `--no-interaction` | `-N`  | Answers every question with its default                                   |
 
 ## Lifecycle
 
