@@ -1307,7 +1307,7 @@ message.
 
 `ProcessExitingMiddlewareContract` fires after the output is written and
 before the process exits. The middleware returns nothing, because the output
-is already on the terminal. Use this stage for deferred cleanup:
+already reached the destination it holds. Use this stage for deferred cleanup:
 
 ```php
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
