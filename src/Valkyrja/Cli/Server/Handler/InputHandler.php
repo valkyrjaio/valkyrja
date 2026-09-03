@@ -126,9 +126,9 @@ class InputHandler implements InputHandlerContract
             $this->exit($input, $output);
         } catch (Throwable $exitThrowable) {
             try {
-                // A middleware runs here, and the code the output holds still reaches the
+                // A middleware runs here, and the code the run reports still reaches the
                 // shell. A silent run suppresses this report, and a raise inside it takes the
-                // second report.
+                // plain report.
                 $this->getOutputFromThrowable($input, $exitThrowable)->writeMessages();
             } catch (Throwable $reportThrowable) {
                 $this->getRecoveryOutput($input, $exitThrowable, $reportThrowable)->writeMessages();
@@ -204,7 +204,7 @@ class InputHandler implements InputHandlerContract
      * Get the output that reports a throwable and the throwable a recovery raised.
      *
      * A first report goes through the `OutputFactory`, so a `--silent` run suppresses it. This
-     * second report takes a plain `Output`, which no configured factory can redirect and no flag
+     * plain report builds its own `Output`, which no configured factory can redirect and no flag
      * suppresses. Every unguarded write of this output rests on that, so this method and the
      * messages it builds take no override.
      *
