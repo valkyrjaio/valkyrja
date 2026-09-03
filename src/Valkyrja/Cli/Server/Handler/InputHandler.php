@@ -126,8 +126,9 @@ class InputHandler implements InputHandlerContract
             $this->exit($input, $output);
         } catch (Throwable $exitThrowable) {
             try {
-                // A middleware runs here, and the command's code still reaches the shell. The
-                // interaction flags govern this report, so a silent run writes no trace.
+                // A middleware runs here, and the code the output holds still reaches the
+                // shell. A silent run suppresses this report, and a raise inside it takes the
+                // second report, which echoes whatever the flags say.
                 $this->getOutputFromThrowable($input, $exitThrowable)->writeMessages();
             } catch (Throwable $reportThrowable) {
                 $this->getRecoveryOutput($input, $exitThrowable, $reportThrowable)->writeMessages();
