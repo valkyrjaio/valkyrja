@@ -903,8 +903,8 @@ set. `InputHandler::run()` replaces the output, so the `ProcessExiting`
 middleware receives the recovery output.
 
 A second failure takes the last resort. When the recovery write also fails,
-`InputHandler::run()` builds a plain `Output` with the default flags. That
-output prints under `--silent`, and it names both failures.
+`InputHandler::run()` builds a plain `Output` and writes both failures to
+stdout. No configured factory can redirect that output.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
