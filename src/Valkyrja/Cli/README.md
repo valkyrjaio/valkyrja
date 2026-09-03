@@ -1233,9 +1233,12 @@ of dispatch, and it fires when the output write throws.
 The write runs after `handle()` returns, so the stage sees a throwable that no
 command raised. A middleware that reads the throwable receives
 `CliInteractionFileWriteException`, `CliInteractionStreamWriteException`, and
-`CliInteractionUnwritableStreamException` as well. The stage runs twice in one
-invocation when a command throws and the recovery output then fails to write.
-`LogThrowableCaughtMiddleware` writes two entries for that run.
+`CliInteractionUnwritableStreamException` as well.
+
+Warning: the stage runs no middleware for a write throwable when the command
+itself threw. `Handler` advances an index that it never rewinds, and the
+container publishes one handler, so the pass that `handle()` starts exhausts
+the chain. The second dispatch returns the output it received.
 
 `ThrowableCaughtMiddlewareContract` receives a default error output and the
 throwable, and returns the output to write:
