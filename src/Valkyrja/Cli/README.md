@@ -1423,11 +1423,13 @@ the first two; the interaction options set the output flags:
 7. The route handler runs as `$handler($container, $route)`. Then the
    `RouteDispatched` middleware runs on the handler's output.
 8. A throwable from steps 3 through 7 lands in the `ThrowableCaught`
-   middleware, which produces the error output. Boot, argv parsing, and the
-   steps below all run outside that guard.
-9. The output's messages write to the terminal.
-10. The `ProcessExiting` middleware runs, and `Exiter::exit()` ends the
-    process with the output's exit code.
+   middleware, which produces the error output. Boot and argv parsing run
+   outside that guard.
+9. The output's messages write to the terminal. A write throwable lands in
+   the `ThrowableCaught` middleware as well, and the recovery output takes
+   the steps below.
+10. The `ProcessExiting` middleware runs under a guard of its own, and
+    `Exiter::exit()` ends the process with the output's exit code.
 
 ```mermaid
 flowchart TD
@@ -1448,7 +1450,9 @@ flowchart TD
     I -->|throwable| J
     I --> H
     J --> H
+    H -->|throwable| J
     H --> K[Stage 6 - ProcessExiting]
+    K -->|throwable| L
     K --> L["Exiter::exit(ExitCode)"]
     L --> M([Process ends])
 ```
