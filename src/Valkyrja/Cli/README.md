@@ -922,9 +922,9 @@ reaches `Exiter::exit()`.
 
 Warning: the guard on the `ProcessExiting` stage routes nothing to the
 `ThrowableCaught` stage. A `ProcessExiting` failure therefore writes no log
-entry on any run, and a `--silent` run takes it with no output either.
-Register a `ProcessExiting` middleware that reports its own failures when a
-run must record them.
+entry on any run. A `--silent` run takes it with no output as well, unless the
+first report raises and the second report echoes. Register a `ProcessExiting`
+middleware that reports its own failures when a run must record them.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
