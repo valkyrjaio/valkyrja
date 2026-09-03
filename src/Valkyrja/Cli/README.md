@@ -1336,6 +1336,11 @@ class FlushLogsMiddleware implements ProcessExitingMiddlewareContract
 }
 ```
 
+`InputHandler::run()` runs this stage under a guard. A middleware that throws
+here no longer stops the run, and the exit code still reaches
+`Exiter::exit()`. The throwable reaches no `ThrowableCaught` middleware, so a
+middleware of this stage reports its own failures.
+
 ### Registering Middleware
 
 Every stage accepts global middleware through its `CliConfig` array (see
