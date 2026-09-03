@@ -1055,9 +1055,8 @@ The rendered prompt lists the allowed responses and the default. A new
 `Answer` starts with the default response as its user response. An empty
 response leaves the supplied answer unchanged, so the default response
 stands. A response outside the allowed list re-asks the question, unless
-the validation callable accepts it. A non-interactive, quiet, or silent
-output reads no answer from stdin. The supplied answer applies, so a
-scripted run never blocks.
+the validation callable accepts it. An output that reads no answer keeps
+the answer the question already holds, so a scripted run never blocks.
 
 `ask()` returns the supplied answer unchanged when the stdin stream
 does not open. `ask()` returns the answer unchanged when a read from the
