@@ -394,8 +394,8 @@ final class InputHandlerTest extends TestCase
 
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         self::assertStringContainsString('takes no write', (string) $runOutput);
-        // The recovery output replaces the command's, so the process reports 1.
-        self::assertStringEndsWith('1', (string) $runOutput);
+        // The report ends its own line, so the exiter's code starts a new one.
+        self::assertStringEndsWith("\n" . ExitCode::ERROR->value, (string) $runOutput);
         self::assertSame(ExitCode::ERROR, $container->get(OutputContract::class)->getExitCode());
     }
 
