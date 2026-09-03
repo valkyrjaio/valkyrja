@@ -201,7 +201,7 @@ class InputHandler implements InputHandlerContract
     }
 
     /**
-     * Get the output that reports a throwable and the throwable a recovery raised.
+     * Get the output that reports a throwable, and any throwable a recovery raised.
      *
      * A first report goes through the `OutputFactory`, so a `--silent` run suppresses it. This
      * recovery report takes an `Output` this handler builds, which no configured factory can
