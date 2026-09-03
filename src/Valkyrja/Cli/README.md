@@ -230,8 +230,8 @@ when you cannot annotate the class. One provider can use both. A provider that
 uses only attributes returns an empty array from `getRoutes()`. The example
 under [Pre-Built Routes](#pre-built-routes) shows both methods on one provider.
 
-The CLI routing component registers the built-in commands the same way.
-`CliRoutingComponentProvider::getCliProviders()` returns
+The CLI routing component registers the built-in commands through the same
+contract. `CliRoutingComponentProvider::getCliProviders()` returns
 `Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider`, which lists the
 four built-in command classes and carries the four static handlers that their
 `#[RouteHandler]` attributes name.
@@ -682,7 +682,8 @@ public function run(): OutputContract
 }
 ```
 
-A `REQUIRED` option must arrive. Every invocation of the command declares it:
+A `REQUIRED` option must arrive. The `Router` throws when the invocation omits
+it:
 
 ```php
 use Valkyrja\Cli\Routing\Attribute\OptionParameter;
