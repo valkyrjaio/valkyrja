@@ -908,9 +908,10 @@ takes a plain `Output` instead. That report echoes whatever the flags say, and
 no configured factory can redirect it.
 
 A second failure takes the last resort. `InputHandler::run()` builds that
-report when the `ThrowableCaught` stage raises, or when the recovery write
-fails. The report names the command. It names no command when reading the
-command name from the input is itself one of the raises it answers.
+report when `getOutputFromThrowable()` raises, when the `ThrowableCaught`
+stage raises, or when the recovery write fails. The report names the command.
+It names no command when reading the command name from the input is itself one
+of the raises it answers.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a report. The code the output
