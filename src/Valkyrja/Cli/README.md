@@ -881,6 +881,10 @@ terminal write (see
 the output directly when the destination must take the messages whatever the
 flags say.
 
+Warning: `isInteractive` suppresses no write. A question on a factory-built
+`FileOutput` or `StreamOutput` writes the prompt to that destination, and then
+reads the answer from stdin. The terminal shows no prompt.
+
 `StreamOutput` offers the remainder again while the stream takes part of the
 data, because a non-blocking stream takes a large message over several calls.
 A stream that takes no byte of an offer throws
