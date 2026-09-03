@@ -295,6 +295,45 @@ final class InputHandlerTest extends TestCase
         self::assertStringEndsWith("\n" . ExitCode::ERROR->value, (string) $runOutput);
     }
 
+    public function testRunSignalsTheExitCodeWhenTheExitStageReportAlsoRaises(): void
+    {
+        $output = new Output(exitCode: ExitCode::USAGE_ERROR);
+        // The report of the exit throwable reads the command name, so it raises with it.
+        $input = new InputRaisingCommandNameFixture();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $processExitingHandler = $this->createMock(ProcessExitingHandlerContract::class);
+        $processExitingHandler
+            ->expects($this->once())
+            ->method('processExiting')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The exit stage failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            processExitingHandler: $processExitingHandler,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The report leaves no trace, and the frozen exiter still prints the command's code.
+        self::assertSame((string) ExitCode::USAGE_ERROR->value, $runOutput);
+    }
+
     public function testRunReportsAProcessExitingThrowableAndKeepsTheExitCode(): void
     {
         $output = new Output(exitCode: ExitCode::USAGE_ERROR);
