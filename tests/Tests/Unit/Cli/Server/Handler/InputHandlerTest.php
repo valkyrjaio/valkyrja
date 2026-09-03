@@ -253,21 +253,21 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('The command failed.', (string) $handledText);
         self::assertStringContainsString('Recovery message:', (string) $handledText);
         self::assertStringContainsString('The middleware failed.', (string) $handledText);
-        // The full report names the command, which the report that reads no input cannot.
+        // The first report names the command, which the report that reads no input cannot.
         self::assertStringContainsString('Command:', (string) $handledText);
         self::assertStringContainsString('list', (string) $handledText);
         self::assertSame(ExitCode::ERROR, $handledOutput->getExitCode());
         self::assertSame($handledOutput, $container->get(OutputContract::class));
     }
 
-    public function testRunTakesTheRecoveryReportWhenTheFullReportRaises(): void
+    public function testRunTakesTheRecoveryReportWhenTheFirstReportRaises(): void
     {
         $readOnly = fopen(filename: 'php://memory', mode: 'rb');
 
         self::assertNotFalse($readOnly);
 
         $output = new StreamOutput($readOnly)->withMessages(new Message('This is a test.'));
-        // The full report reads the command name, so every report that reads the input raises.
+        // The first report reads the command name, so every report that reads the input raises.
         $input = new InputRaisingCommandNameFixture();
 
         $router = $this->createMock(Router::class);
@@ -380,7 +380,7 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The full report reads the input, so the report that reads nothing takes its place.
+        // The first report reads the input, so the report that reads nothing takes its place.
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         self::assertStringContainsString('The exit stage failed.', (string) $runOutput);
         self::assertStringContainsString('The input failed.', (string) $runOutput);
@@ -498,7 +498,7 @@ final class InputHandlerTest extends TestCase
         self::assertSame(ExitCode::ERROR, $container->get(OutputContract::class)->getExitCode());
     }
 
-    public function testRunFallsBackToStdoutWhenTheRecoveryWriteAlsoFails(): void
+    public function testRunFallsBackToStdoutWhenTheMiddlewareOutputAlsoFails(): void
     {
         $readOnly = fopen(filename: 'php://memory', mode: 'rb');
 
@@ -569,7 +569,7 @@ final class InputHandlerTest extends TestCase
             ->with($input)
             ->willReturn($output);
 
-        // The middleware itself fails, so the dispatch throws before any recovery write runs.
+        // The middleware itself fails, so the dispatch throws before any write of its output.
         $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
         $throwableCaughtHandler
             ->expects($this->once())

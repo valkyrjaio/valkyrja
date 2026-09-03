@@ -227,7 +227,8 @@ class InputHandler implements InputHandlerContract
                 ...$recoveryMessages,
             ];
         } catch (Throwable) {
-            // The full report reads the command name from the input, so an input that raises there
+            // The first report reads the command name from the input, so an input that raises
+            // there
             // takes the report with it.
             $messages = [
                 ...$this->getBareThrowableMessages($throwable),
