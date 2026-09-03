@@ -112,8 +112,8 @@ class InputHandler implements InputHandlerContract
                 $output = $this->throwableCaughtHandler->throwableCaught($input, $output, $throwable);
                 $output = $output->writeMessages();
             } catch (Throwable $recoveryThrowable) {
-                // The dispatch or the recovery write failed. A middleware can throw, or it can
-                // return an output whose destination is the one that just failed.
+                // The build of the first report, the dispatch, or the write of the output the
+                // stage returned failed. That output can hold the destination that just failed.
                 $output = $this->getRecoveryOutput($input, $throwable, $recoveryThrowable);
 
                 $output = $output->writeMessages();

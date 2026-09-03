@@ -727,7 +727,7 @@ final class InputHandlerTest extends TestCase
         self::assertSame((string) ExitCode::USAGE_ERROR->value, $runOutput);
     }
 
-    public function testRunEchoesTheSecondExitStageReportOnASilentRun(): void
+    public function testRunEchoesTheExitStageRecoveryReportOnASilentRun(): void
     {
         $output = new Output(exitCode: ExitCode::USAGE_ERROR);
         // The first report reads the command name, so it raises and the recovery report runs.
