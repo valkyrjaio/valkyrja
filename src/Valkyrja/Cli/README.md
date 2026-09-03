@@ -916,8 +916,8 @@ of the raises it answers.
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which the
 interaction flags govern. A raise inside that report makes `run()` write the
-report that reads no input. The code the output holds at that point still
-reaches `Exiter::exit()`.
+last resort. The code the output holds at that point still reaches
+`Exiter::exit()`.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets

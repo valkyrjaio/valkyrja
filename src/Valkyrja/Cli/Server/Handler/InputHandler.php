@@ -130,7 +130,7 @@ class InputHandler implements InputHandlerContract
                 // report is the only trace the failure leaves.
                 $this->getOutputFromThrowable($input, $exitThrowable)->writeMessages();
             } catch (Throwable $reportThrowable) {
-                $this->getFallbackOutput($exitThrowable, $reportThrowable)->writeMessages();
+                $this->getRecoveryOutput($input, $exitThrowable, $reportThrowable)->writeMessages();
             }
         }
 
@@ -208,18 +208,6 @@ class InputHandler implements InputHandlerContract
         }
 
         return new Output(exitCode: ExitCode::ERROR)->withMessages(...$messages);
-    }
-
-    /**
-     * Get the output that reports two throwables without reading the input.
-     *
-     * @param Throwable $throwable         The throwable
-     * @param Throwable $recoveryThrowable The throwable the recovery raised
-     */
-    protected function getFallbackOutput(Throwable $throwable, Throwable $recoveryThrowable): OutputContract
-    {
-        return new Output(exitCode: ExitCode::ERROR)
-            ->withMessages(...$this->getFallbackThrowableMessages($throwable, $recoveryThrowable));
     }
 
     /**
