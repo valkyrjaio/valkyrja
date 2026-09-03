@@ -1259,7 +1259,7 @@ command raised. A middleware that reads the throwable receives
 
 A middleware of this stage can itself throw. `handle()` and `run()` each build
 a second report then, which names the throwable it answered and the
-middleware's, and the caller still receives an output.
+middleware's. `handle()` returns that report, and `run()` writes it.
 
 Warning: the run in `run()` resumes the chain rather than restarting it.
 `Handler` advances its index once for each middleware it resolves and never
