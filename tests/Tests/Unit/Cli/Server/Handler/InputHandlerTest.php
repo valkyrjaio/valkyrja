@@ -686,6 +686,88 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('The middleware failed.', (string) $runOutput);
     }
 
+    public function testRunWritesNoExitStageReportOnASilentRun(): void
+    {
+        $output = new Output(exitCode: ExitCode::USAGE_ERROR);
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $processExitingHandler = $this->createMock(ProcessExitingHandlerContract::class);
+        $processExitingHandler
+            ->expects($this->once())
+            ->method('processExiting')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The exit stage failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            processExitingHandler: $processExitingHandler,
+            outputFactory: new OutputFactory(new CliInteractionConfig(isSilent: true)),
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The factory copies the silent flag, so the first report of the exit throwable
+        // writes nothing, and the frozen exiter prints the command's own code alone.
+        self::assertSame((string) ExitCode::USAGE_ERROR->value, $runOutput);
+    }
+
+    public function testRunEchoesTheSecondExitStageReportOnASilentRun(): void
+    {
+        $output = new Output(exitCode: ExitCode::USAGE_ERROR);
+        // The first report reads the command name, so it raises and the second report runs.
+        $input = new InputRaisingCommandNameFixture();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $processExitingHandler = $this->createMock(ProcessExitingHandlerContract::class);
+        $processExitingHandler
+            ->expects($this->once())
+            ->method('processExiting')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The exit stage failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            processExitingHandler: $processExitingHandler,
+            outputFactory: new OutputFactory(new CliInteractionConfig(isSilent: true)),
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The second report takes a plain Output, so a silent run reads it.
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        self::assertStringContainsString('The exit stage failed.', (string) $runOutput);
+        self::assertStringEndsWith("\n" . ExitCode::USAGE_ERROR->value, (string) $runOutput);
+    }
+
     public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));
