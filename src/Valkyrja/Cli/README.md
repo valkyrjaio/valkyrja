@@ -897,8 +897,8 @@ intent.
 routes a write throwable to the `ThrowableCaught` middleware. The guard around
 that write carries the run to `Exiter::exit()`. `run()` keeps whichever output
 the recovery produced, so the `ProcessExiting` middleware receives that output
-and the process reports the exit code it holds. A command that only failed to
-write therefore exits `1`. It exits with another code when a `ThrowableCaught`
+and the process reports the exit code that output reports. A command that only
+failed to write therefore exits `1`. It exits with another code when a `ThrowableCaught`
 middleware returns an output holding one and the write of that output returns.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
@@ -1070,7 +1070,9 @@ prompts. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `ExitCode` mirrors most of the BSD sysexits codes. Two cases deviate:
 `sysexits.h` assigns 66 to a missing input and 67 to an unknown user, while
 `ExitCode` assigns 67 and 68. `InputHandler::run()` passes the code's integer
-value to `Exiter::exit()` after the `ProcessExiting` middleware runs:
+value to `Exiter::exit()` after the `ProcessExiting` middleware runs. It
+passes `ERROR` instead when reading the code from the output raises, and it
+reports that raise:
 
 | Case             | Value | Meaning                           |
 | ---------------- | ----- | --------------------------------- |
@@ -1432,7 +1434,7 @@ the first two; the interaction options set the output flags:
    throwable lands in the `ThrowableCaught` middleware as well, and whichever
    output that stage produced takes the steps below.
 10. The `ProcessExiting` middleware runs under a guard of its own, and
-    `Exiter::exit()` ends the process with the output's exit code.
+    `Exiter::exit()` ends the process with the code the output reports.
 
 ```mermaid
 flowchart TD
