@@ -894,13 +894,12 @@ intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
 routes a write throwable to the `ThrowableCaught` middleware. The recovery
-output writes to stdout, so the
-process still reaches `Exiter::exit()`. A `--silent` run writes nothing,
-because the recovery output copies the interaction flags from the
-`CliInteractionConfig`. `getOutputFromThrowable()` sets `ExitCode::ERROR` on
-that output, so the process reports `1` and not the exit code the command
-set. `InputHandler::run()` replaces the output, so the `ProcessExiting`
-middleware receives the recovery output.
+output writes to stdout, so the process still reaches `Exiter::exit()`. A
+`--silent` run writes nothing, because the recovery output copies the
+interaction flags from the `CliInteractionConfig`. `getOutputFromThrowable()`
+sets `ExitCode::ERROR` on that output, so the process reports `1` and not the
+exit code the command set. `InputHandler::run()` replaces the output, so the
+`ProcessExiting` middleware receives the recovery output.
 
 A second failure takes the last resort. When the recovery write also fails,
 `InputHandler::run()` builds a plain `Output` and writes both failures to
