@@ -186,13 +186,14 @@ class InputHandler implements InputHandlerContract
      *
      * A first report goes through the `OutputFactory`, so a `--silent` run suppresses it. This
      * second report takes a plain `Output`, so it echoes on a `--quiet` or a `--silent` run, and
-     * no configured factory can redirect it.
+     * no configured factory can redirect it. The two writes in `run()` that carry no guard rest
+     * on that, so this method and the messages it builds take no override.
      *
      * @param InputContract $input             The input
      * @param Throwable     $throwable         The throwable
      * @param Throwable     $recoveryThrowable The throwable the recovery raised
      */
-    protected function getRecoveryOutput(
+    private function getRecoveryOutput(
         InputContract $input,
         Throwable $throwable,
         Throwable $recoveryThrowable
@@ -218,7 +219,7 @@ class InputHandler implements InputHandlerContract
      *
      * @return MessageContract[]
      */
-    protected function getRecoveryMessages(Throwable $recoveryThrowable): array
+    private function getRecoveryMessages(Throwable $recoveryThrowable): array
     {
         return [
             new NewLine(),
@@ -240,7 +241,7 @@ class InputHandler implements InputHandlerContract
      *
      * @return MessageContract[]
      */
-    protected function getFallbackThrowableMessages(Throwable $throwable, Throwable $recoveryThrowable): array
+    private function getFallbackThrowableMessages(Throwable $throwable, Throwable $recoveryThrowable): array
     {
         return [
             new Banner(new ErrorMessage('Cli Server Error:')),
@@ -260,7 +261,7 @@ class InputHandler implements InputHandlerContract
      *
      * @return MessageContract[]
      */
-    protected function getThrowableMessages(InputContract $input, Throwable $throwable): array
+    private function getThrowableMessages(InputContract $input, Throwable $throwable): array
     {
         $commandName = $input->getCommandName();
 
