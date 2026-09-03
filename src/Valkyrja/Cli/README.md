@@ -907,11 +907,11 @@ exit code the command set. `InputHandler::run()` replaces the output, so the
 instead. That report echoes on a `--quiet` or a `--silent` run, and no
 configured factory can redirect it.
 
-`InputHandler::run()` builds that second report when
-`getOutputFromThrowable()` raises, when the `ThrowableCaught` stage raises, or
-when the recovery write fails. The report names the command. It names no
-command when reading the command name from the input is itself one of the
-raises it answers.
+`InputHandler::handle()` and `InputHandler::run()` both build that second
+report. Each builds it when `getOutputFromThrowable()` raises or when the
+`ThrowableCaught` stage raises, and `run()` builds it when the recovery write
+fails as well. The report names the command. It names no command when reading
+the command name from the input is itself one of the raises it answers.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
