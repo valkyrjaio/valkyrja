@@ -24,6 +24,9 @@ use Valkyrja\Cli\Interaction\Writer\QuestionWriter;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function ob_get_clean;
+use function ob_start;
+
 final class QuestionWriterTest extends TestCase
 {
     public function testShouldWriteMessage(): void
@@ -65,7 +68,9 @@ final class QuestionWriterTest extends TestCase
         $writer = new QuestionWriter();
 
         // The silent flag alone stops the read.
+        ob_start();
         $result = $writer->write(new Output(isSilent: true), $question);
+        ob_get_clean();
 
         self::assertTrue($called);
         self::assertSame(0, $question->getTimesAsked());
@@ -89,7 +94,9 @@ final class QuestionWriterTest extends TestCase
         $writer = new QuestionWriter();
 
         // The interactive flag alone stops the read.
+        ob_start();
         $result = $writer->write(new Output(isInteractive: false), $question);
+        ob_get_clean();
 
         self::assertTrue($called);
         self::assertSame(0, $question->getTimesAsked());
@@ -116,7 +123,9 @@ final class QuestionWriterTest extends TestCase
         // read.
         $output = new Output(isQuiet: true)->withExitCode(ExitCode::ERROR);
 
+        ob_start();
         $result = $writer->write($output, $question);
+        ob_get_clean();
 
         self::assertTrue($called);
         self::assertSame(0, $question->getTimesAsked());
