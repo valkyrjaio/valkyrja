@@ -260,7 +260,7 @@ final class InputHandlerTest extends TestCase
         self::assertSame($handledOutput, $container->get(OutputContract::class));
     }
 
-    public function testRunTakesTheLastResortWhenTheFullReportRaises(): void
+    public function testRunTakesTheRecoveryReportWhenTheFullReportRaises(): void
     {
         $readOnly = fopen(filename: 'php://memory', mode: 'rb');
 
@@ -642,7 +642,7 @@ final class InputHandlerTest extends TestCase
         self::assertSame((string) ExitCode::ERROR->value, $runOutput);
     }
 
-    public function testRunEchoesTheSecondReportOnASilentRun(): void
+    public function testRunEchoesTheRecoveryReportOnASilentRun(): void
     {
         $readOnly = fopen(filename: 'php://memory', mode: 'rb');
 
@@ -769,7 +769,7 @@ final class InputHandlerTest extends TestCase
         self::assertStringEndsWith("\n" . ExitCode::USAGE_ERROR->value, (string) $runOutput);
     }
 
-    public function testHandleTakesTheSecondReportWhenTheFirstReportRaises(): void
+    public function testHandleTakesTheRecoveryReportWhenTheFirstReportRaises(): void
     {
         // The first report reads the command name, so building it raises inside handle().
         $input     = new InputRaisingCommandNameFixture();
@@ -941,7 +941,7 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The report takes a plain Output, so a silent run still reads it.
+        // The report takes an Output this handler builds, so a silent run still reads it.
         self::assertStringContainsString('The exit code failed.', (string) $runOutput);
     }
 
