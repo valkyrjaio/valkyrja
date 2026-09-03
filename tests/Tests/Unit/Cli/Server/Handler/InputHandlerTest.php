@@ -292,7 +292,7 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The direct report reads no input, so it names both throwables and reaches the exiter.
+        // The recovery report reads no input, so it names both throwables and reaches the exiter.
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         self::assertStringContainsString('takes no write', (string) $runOutput);
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
@@ -542,12 +542,12 @@ final class InputHandlerTest extends TestCase
         $containerOutput = $container->get(OutputContract::class);
 
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
-        // The direct report names the throwable the command's own destination raised.
+        // The recovery report names the throwable the command's own destination raised.
         self::assertStringContainsString('takes no write', (string) $runOutput);
         // It also names the second destination, so the misconfiguration is visible.
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
         self::assertStringContainsString($recoveryPath, (string) $runOutput);
-        // The input reads, so the direct report keeps the command the first report names.
+        // The input reads, so the recovery report keeps the command the first report names.
         self::assertStringContainsString('Command:', (string) $runOutput);
         self::assertSame(ExitCode::ERROR, $containerOutput->getExitCode());
         self::assertNotInstanceOf(StreamOutput::class, $containerOutput);
@@ -595,7 +595,7 @@ final class InputHandlerTest extends TestCase
         $containerOutput = $container->get(OutputContract::class);
 
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
-        // The direct report names the throwable the command's own destination raised.
+        // The recovery report names the throwable the command's own destination raised.
         self::assertStringContainsString('takes no write', (string) $runOutput);
         // It also names the middleware failure, so neither throwable is lost.
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
@@ -658,7 +658,7 @@ final class InputHandlerTest extends TestCase
             ->with($input)
             ->willReturn($output);
 
-        // The middleware raises, so the run reaches the direct report.
+        // The middleware raises, so the run reaches the recovery report.
         $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
         $throwableCaughtHandler
             ->expects($this->once())
@@ -682,7 +682,7 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The direct report takes an Output this handler builds, so a silent run reads it.
+        // The recovery report takes an Output this handler builds, so a silent run reads it.
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         self::assertStringContainsString('The middleware failed.', (string) $runOutput);
     }
@@ -730,7 +730,7 @@ final class InputHandlerTest extends TestCase
     public function testRunEchoesTheSecondExitStageReportOnASilentRun(): void
     {
         $output = new Output(exitCode: ExitCode::USAGE_ERROR);
-        // The first report reads the command name, so it raises and the direct report runs.
+        // The first report reads the command name, so it raises and the recovery report runs.
         $input = new InputRaisingCommandNameFixture();
 
         $router = $this->createMock(Router::class);
@@ -763,7 +763,7 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The direct report takes an Output this handler builds, so a silent run reads it.
+        // The recovery report takes an Output this handler builds, so a silent run reads it.
         self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
         self::assertStringContainsString('The exit stage failed.', (string) $runOutput);
         self::assertStringEndsWith("\n" . ExitCode::USAGE_ERROR->value, (string) $runOutput);
@@ -795,7 +795,7 @@ final class InputHandlerTest extends TestCase
         $handledOutput->writeMessages();
         $handledText = ob_get_clean();
 
-        // The direct report reads no input, so it names both throwables and no command.
+        // The recovery report reads no input, so it names both throwables and no command.
         self::assertStringContainsString('The command failed.', (string) $handledText);
         self::assertStringContainsString('Recovery message:', (string) $handledText);
         self::assertStringContainsString('The input failed.', (string) $handledText);

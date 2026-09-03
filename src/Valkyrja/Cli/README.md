@@ -905,28 +905,28 @@ that output returns.
 `InputHandler` builds a first report through the `OutputFactory`, so a
 `--silent` run suppresses that report. Every report this handler builds
 carries `ExitCode::ERROR`, so a `--quiet` run leaves each one alone.
-`InputHandler` builds a direct report itself instead, which no configured
+`InputHandler` builds a recovery report itself instead, which no configured
 factory can redirect and no flag suppresses.
 
-`InputHandler::handle()` and `InputHandler::run()` both build a direct report.
+`InputHandler::handle()` and `InputHandler::run()` both build a recovery report.
 Each builds it when `getOutputFromThrowable()` raises or when the
 `ThrowableCaught` stage raises. `run()` builds it when the recovery write
 fails as well, again when the exit stage's own first report raises, and again
 when reading the exit code from the output raises.
 
-Every direct report names the command. It names none when reading the command
+Every recovery report names the command. It names none when reading the command
 name from the input is itself what raised.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
 `--silent` run suppresses. A raise inside that report makes `run()` write the
-direct report, which echoes. The code the run's own output reports at that
+recovery report, which echoes. The code the run's own output reports at that
 point still reaches `Exiter::exit()`.
 
 Warning: the guard on the `ProcessExiting` stage routes nothing to the
 `ThrowableCaught` stage. A `ProcessExiting` failure therefore writes no log
 entry on any run. A `--silent` run leaves the failure no output either, unless
-the first report raises. The direct report then echoes. Register a
+the first report raises. The recovery report then echoes. Register a
 `ProcessExiting` middleware that reports its own failures when a run must
 record them.
 
@@ -1266,7 +1266,7 @@ command raised. A middleware that reads the throwable receives
 `CliInteractionUnwritableStreamException` as well.
 
 A middleware of this stage can itself throw. `handle()` and `run()` each build
-a direct report then, which names the throwable it answered and the
+a recovery report then, which names the throwable it answered and the
 middleware's. `handle()` returns that report, and `run()` writes it.
 
 Warning: the run in `run()` resumes the chain rather than restarting it.
