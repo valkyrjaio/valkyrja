@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Writer;
 
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Question;
@@ -66,6 +67,33 @@ final class QuestionWriterTest extends TestCase
         $result = $writer->write(new Output(isSilent: true), $question);
 
         self::assertTrue($called);
+        self::assertInstanceOf(OutputContract::class, $result);
+    }
+
+    public function testReadsNoAnswerForAQuietOutputThatHoldsAnErrorCode(): void
+    {
+        $called   = false;
+        $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
+            $called = true;
+
+            return $output;
+        };
+        $question = new QuestionAskManipulationFixture(
+            text: 'text',
+            callable: $callable,
+            answer: new Answer(defaultResponse: 'defaultResponse', allowedResponses: ['defaultResponse']),
+        );
+
+        $writer = new QuestionWriter();
+
+        // A quiet output that holds an error code writes, and the quiet flag alone stops the
+        // read.
+        $output = new Output(isQuiet: true)->withExitCode(ExitCode::ERROR);
+
+        $result = $writer->write($output, $question);
+
+        self::assertTrue($called);
+        self::assertSame(0, $question->getTimesAsked());
         self::assertInstanceOf(OutputContract::class, $result);
     }
 
