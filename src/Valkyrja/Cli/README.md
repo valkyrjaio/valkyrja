@@ -891,7 +891,8 @@ diagnostic of the failed write, when PHP records one.
 writes, when the stream mode carries no write intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
-routes a write throwable to the `ThrowableCaught` middleware. The recovery
+routes a write throwable to the `ThrowableCaught` middleware, when dispatch
+itself did not already throw. The recovery
 output writes to stdout, so the process still reaches `Exiter::exit()`. A
 `--silent` run writes nothing, because the recovery output copies the
 interaction flags from the `CliInteractionConfig`. `getOutputFromThrowable()`
@@ -1235,10 +1236,11 @@ command raised. A middleware that reads the throwable receives
 `CliInteractionFileWriteException`, `CliInteractionStreamWriteException`, and
 `CliInteractionUnwritableStreamException` as well.
 
-Warning: the stage runs no middleware for a write throwable when the command
-itself threw. `Handler` advances an index that it never rewinds, and the
-container publishes one handler, so the pass that `handle()` starts exhausts
-the chain. The second dispatch returns the output it received.
+Warning: the stage runs no middleware for a write throwable when a throwable
+already escaped dispatch. `Handler` advances an index that it never rewinds,
+and `CliMiddlewareServiceProvider` publishes one handler as a singleton, so
+the pass that `handle()` starts exhausts the chain. The second dispatch
+returns the output it received.
 
 `ThrowableCaughtMiddlewareContract` receives a default error output and the
 throwable, and returns the output to write:
