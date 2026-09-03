@@ -899,7 +899,7 @@ that write carries the run to `Exiter::exit()`. `run()` keeps whichever output
 the recovery produced, so the `ProcessExiting` middleware receives that output
 and the process reports the exit code it holds. A command that only failed to
 write therefore exits `1`. It exits with another code when a `ThrowableCaught`
-middleware returns an output holding one.
+middleware returns an output holding one and the write of that output returns.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
 `--silent` run suppresses that report. Every report this handler builds
