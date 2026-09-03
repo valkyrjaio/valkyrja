@@ -1452,7 +1452,6 @@ flowchart TD
     J --> H
     H -->|throwable| J
     H --> K[Stage 6 - ProcessExiting]
-    K -->|throwable| L
     K --> L["Exiter::exit(ExitCode)"]
     L --> M([Process ends])
 ```
