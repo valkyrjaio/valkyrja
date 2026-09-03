@@ -1056,7 +1056,7 @@ The rendered prompt lists the allowed responses and the default. A new
 response leaves the supplied answer unchanged, so the default response
 stands. A response outside the allowed list re-asks the question, unless
 the validation callable accepts it. An output that reads no answer keeps
-the answer the question already holds, so a scripted run never blocks.
+the answer the question already holds.
 
 `ask()` returns the supplied answer unchanged when the stdin stream
 does not open. `ask()` returns the answer unchanged when a read from the
