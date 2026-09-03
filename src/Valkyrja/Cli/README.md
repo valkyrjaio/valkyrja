@@ -1338,7 +1338,7 @@ class FlushLogsMiddleware implements ProcessExitingMiddlewareContract
 ```
 
 `InputHandler::run()` runs this stage under a guard. A middleware that throws
-here no longer stops the run, and the code the output holds still reaches
+here does not stop the run, and the code the output holds still reaches
 `Exiter::exit()`. The throwable reaches no `ThrowableCaught` middleware.
 Report a failure from inside the middleware when a run must record it.
 
