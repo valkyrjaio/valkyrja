@@ -904,8 +904,9 @@ exit code the command set. `InputHandler::run()` replaces the output, so the
 
 `InputHandler` builds a first report through the `OutputFactory`, so the
 interaction flags govern that report. A report that answers a failed report
-takes a plain `Output` instead. That report echoes whatever the flags say, and
-no configured factory can redirect it.
+takes a plain `Output` instead. That report carries the default flags, so it
+echoes on a `--quiet` or `--silent` run, and no configured factory can
+redirect it.
 
 A second failure takes the last resort. `InputHandler::run()` builds that
 report when `getOutputFromThrowable()` raises, when the `ThrowableCaught`
