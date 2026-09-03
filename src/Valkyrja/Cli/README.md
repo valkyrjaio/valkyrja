@@ -897,14 +897,13 @@ intent.
 routes a write throwable to the `ThrowableCaught` middleware. The guard around
 that write carries the run to `Exiter::exit()`. `run()` keeps whichever output
 the recovery produced, so the `ProcessExiting` middleware receives that output
-and the process reports the exit code it holds. Every report this handler
-builds carries `ExitCode::ERROR`, so a command that only failed to write exits
-`1`. It exits with another code when a `ThrowableCaught` middleware returns an
-output holding one and that output writes.
+and the process reports the exit code it holds. A command that only failed to
+write therefore exits `1`. It exits with another code when a `ThrowableCaught`
+middleware returns an output holding one.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
-`--silent` run suppresses that report. Every first report carries
-`ExitCode::ERROR`, so a `--quiet` run leaves it alone. A second report takes a
+`--silent` run suppresses that report. Every report this handler builds carries
+`ExitCode::ERROR`, so a `--quiet` run leaves each one alone. A second report takes a
 plain `Output` instead, which no configured factory can redirect and no flag
 suppresses.
 
