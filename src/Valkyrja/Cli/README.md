@@ -1015,12 +1015,13 @@ your own house style.
 
 ### Questions
 
-A `Question` is a message that the output writes to its destination. The
-question's `ask()` then reads a line from stdin, unless the output is
-non-interactive, quiet, or silent. It pairs with an `Answer`, which holds the
-default response, the allowed responses, and an optional validation callable.
-The question's callable receives the output and the final answer, and returns
-the output to continue with:
+A `Question` is a message that the output writes to its destination.
+`QuestionWriter` then calls the question's `ask()`, unless the output is
+non-interactive, quiet, or silent. `ask()` reads a line from stdin. A `Question`
+pairs with an `Answer`, which holds the default response, the allowed
+responses, and an optional validation callable. The question's callable
+receives the output and the final answer, and returns the output to continue
+with:
 
 ```php
 use Valkyrja\Cli\Interaction\Message\Answer;
@@ -1077,9 +1078,7 @@ writes nothing. A quiet output writes nothing while the exit code is identical
 to `ExitCode::SUCCESS`, so an output that holds an error code still prints, and
 so does one that holds the integer `0`. A non-interactive output writes the
 question and reads no answer from stdin, so the question keeps the answer it
-already holds. A quiet output and a silent output read no answer either, so a
-quiet run that prints an error code writes the whole prompt and waits for
-nothing. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
+already holds. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `--silent`/`-s` set the flags for any command. `withIsInteractive()`,
 `withIsQuiet()`, and `withIsSilent()` override them per output.
 
