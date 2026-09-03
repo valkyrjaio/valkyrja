@@ -514,7 +514,7 @@ final class InputHandlerTest extends TestCase
             ->with($input)
             ->willReturn($output);
 
-        // The middleware returns an output whose destination fails the same way.
+        // The middleware returns an output whose destination also fails, for its own reason.
         $recoveryPath = Directory::storagePath('missing/recovery.txt');
 
         $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
