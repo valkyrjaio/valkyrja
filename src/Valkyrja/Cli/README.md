@@ -1017,7 +1017,7 @@ your own house style.
 
 A `Question` is a message that the output writes to its destination.
 `QuestionWriter` then calls the question's `ask()`, unless the output is
-non-interactive, quiet, or silent. `ask()` reads a line from stdin. A `Question`
+non-interactive, quiet, or silent. `ask()` reads an answer from stdin. A `Question`
 pairs with an `Answer`, which holds the default response, the allowed
 responses, and an optional validation callable. The question's callable
 receives the output and the final answer, and returns the output to continue
@@ -1056,7 +1056,7 @@ The rendered prompt lists the allowed responses and the default. A new
 response leaves the supplied answer unchanged, so the default response
 stands. A response outside the allowed list re-asks the question, unless
 the validation callable accepts it. A non-interactive, quiet, or silent
-output does not read from stdin. The supplied answer applies, so a
+output reads no answer from stdin. The supplied answer applies, so a
 scripted run never blocks.
 
 `ask()` returns the supplied answer unchanged when the stdin stream
