@@ -1016,10 +1016,10 @@ your own house style.
 ### Questions
 
 A `Question` is a message that the output writes to its destination. The
-`Question` then reads a line from stdin. It pairs with an `Answer`, which holds
-the default response, the allowed responses, and an optional validation
-callable. The question's callable receives the output and the final answer, and
-returns the output to continue with:
+`Question` then reads a line from stdin, under the conditions below. It pairs
+with an `Answer`, which holds the default response, the allowed responses, and
+an optional validation callable. The question's callable receives the output and
+the final answer, and returns the output to continue with:
 
 ```php
 use Valkyrja\Cli\Interaction\Message\Answer;
