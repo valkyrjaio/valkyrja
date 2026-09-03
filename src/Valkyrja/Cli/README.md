@@ -921,9 +921,11 @@ factory can redirect and no flag suppresses.
 
 `InputHandler::handle()` and `InputHandler::run()` both build a recovery
 report. Each builds it when `getOutputFromThrowable()` raises or when the
-`ThrowableCaught` stage raises. `run()` builds it when the write of the output
-that stage returned fails as well, again when the exit stage's own first
-report raises, and again when reading the exit code from the output raises.
+`ThrowableCaught` stage raises. `run()` builds it at three more points:
+
+- when the write of the output that stage returned fails
+- when the exit stage's own first report raises
+- when reading the exit code from the output raises
 
 Every recovery report names the command. It names no command when reading the
 command name from the input is itself what raised.
