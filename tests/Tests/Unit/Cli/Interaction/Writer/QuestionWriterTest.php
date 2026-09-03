@@ -48,7 +48,7 @@ final class QuestionWriterTest extends TestCase
         $questionWriter->write(new Output(), new Message('text'));
     }
 
-    public function testWritesQuestionAndInvokesCallableForASilentOutput(): void
+    public function testReadsNoAnswerForASilentOutput(): void
     {
         $called   = false;
         $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
