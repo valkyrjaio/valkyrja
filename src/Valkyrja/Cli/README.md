@@ -1437,7 +1437,7 @@ the first two; the interaction options set the output flags:
 | `--version`        | `-v`  | Shows the application version                                             |
 | `--quiet`          | `-q`  | Suppresses output while the exit code is identical to `ExitCode::SUCCESS` |
 | `--silent`         | `-s`  | Suppresses all output                                                     |
-| `--no-interaction` | `-N`  | Answers every question with its default                                   |
+| `--no-interaction` | `-N`  | Keeps the answer each question already holds                              |
 
 ## Lifecycle
 
