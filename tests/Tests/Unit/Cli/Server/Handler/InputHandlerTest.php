@@ -803,6 +803,8 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('Recovery message:', (string) $handledText);
         self::assertStringContainsString('The input failed.', (string) $handledText);
         self::assertStringNotContainsString('Command:', (string) $handledText);
+        // The report ends the line it wrote, so the shell prompt does not land on it.
+        self::assertStringEndsWith("\n", (string) $handledText);
         self::assertSame(ExitCode::ERROR, $handledOutput->getExitCode());
     }
 
@@ -837,7 +839,43 @@ final class InputHandlerTest extends TestCase
         // The guard names what it swallowed, and the input reads, so it names the command.
         self::assertStringContainsString('The exit code failed.', (string) $runOutput);
         self::assertStringContainsString('Command:', (string) $runOutput);
-        self::assertStringEndsWith((string) ExitCode::ERROR->value, (string) $runOutput);
+        // The report ends the line it wrote, so the shell prompt does not land on it.
+        self::assertStringEndsWith("\n" . ExitCode::ERROR->value, (string) $runOutput);
+    }
+
+    public function testRunEndsTheReportThatReadsNoInputWithANewLine(): void
+    {
+        // The exit code raises, and the report of that raise reads a command name that raises
+        // as well, so the report that reads no input takes its place.
+        $output = new OutputRaisingExitCodeFixture();
+        $input  = new InputRaisingCommandNameFixture();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        self::assertStringContainsString('The exit code failed.', (string) $runOutput);
+        self::assertStringNotContainsString('Command:', (string) $runOutput);
+        // The report ends the line it wrote, so the shell prompt does not land on it.
+        self::assertStringEndsWith("\n" . ExitCode::ERROR->value, (string) $runOutput);
     }
 
     public function testRunKeepsTheExitCodeOfAnOutputAThrowableCaughtMiddlewareReturns(): void
