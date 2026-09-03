@@ -230,8 +230,10 @@ when you cannot annotate the class. One provider can use both. A provider that
 uses only attributes returns an empty array from `getRoutes()`. The example
 under [Pre-Built Routes](#pre-built-routes) shows both methods on one provider.
 
-The framework registers its own built-in commands through the same contract.
-Run `php myapp list` to read the current set.
+The CLI server component registers the built-in commands through its own
+provider, `Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider`. That
+class also carries the static handler that each built-in command's
+`#[RouteHandler]` names.
 
 A component provider returns route providers from its `getCliProviders()`
 method, and `CliConfig`'s `providers` array lists the component providers:
@@ -288,6 +290,7 @@ class AppCliRouteProvider implements CliRouteProviderContract
     {
         return [
             GreetCommand::class,
+            UserPurgeCommand::class,
         ];
     }
 
@@ -332,6 +335,11 @@ class AppCliRouteProvider implements CliRouteProviderContract
     {
         return $container->getSingleton(GreetCommand::class)->run();
     }
+
+    public static function userPurgeHandler(ContainerContract $container, RouteContract $route): OutputContract
+    {
+        return $container->getSingleton(UserPurgeCommand::class)->run();
+    }
 }
 ```
 
@@ -362,15 +370,15 @@ use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
 
-class GreetCommand
+class UserPurgeCommand
 {
-    #[Route(name: 'user:greet', description: 'Greet a user')]
-    #[Route(name: 'greet', description: 'Greet a user')]
-    #[RouteHandler([AppCliRouteProvider::class, 'greetHandler'])]
+    #[Route(name: 'user:purge', description: 'Purge deleted users')]
+    #[Route(name: 'user:prune', description: 'Purge deleted users')]
+    #[RouteHandler([AppCliRouteProvider::class, 'userPurgeHandler'])]
     public function run(): OutputContract
     {
-        // php myapp user:greet
-        // php myapp greet
+        // php myapp user:purge
+        // php myapp user:prune
     }
 }
 ```
@@ -680,12 +688,12 @@ use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 
 new OptionParameter(
-    name:             'format',
-    description:      'The output format to write',
-    valueDisplayName: 'format',
+    name:             'destination',
+    description:      'The directory to write the export to',
+    valueDisplayName: 'directory',
     mode:             OptionMode::REQUIRED,
 );
-// php myapp user:list --format=json
+// php myapp user:export --destination=/tmp/users
 ```
 
 Reusable option parameters for the global options ship in
