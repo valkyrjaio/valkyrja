@@ -1077,7 +1077,9 @@ writes nothing. A quiet output writes nothing while the exit code is identical
 to `ExitCode::SUCCESS`, so an output that holds an error code still prints, and
 so does one that holds the integer `0`. A non-interactive output writes the
 question and reads no answer from stdin, so the question keeps the answer it
-already holds. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
+already holds. A quiet output and a silent output read no answer either, so a
+quiet run that prints an error code writes the whole prompt and waits for
+nothing. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `--silent`/`-s` set the flags for any command. `withIsInteractive()`,
 `withIsQuiet()`, and `withIsSilent()` override them per output.
 
