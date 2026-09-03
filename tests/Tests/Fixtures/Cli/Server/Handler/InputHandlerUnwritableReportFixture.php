@@ -23,7 +23,7 @@ use Valkyrja\Cli\Server\Handler\InputHandler;
 /**
  * Testable InputHandler whose throwable report writes to a filepath that takes no write.
  */
-final class UnwritableReportInputHandlerFixture extends InputHandler
+final class InputHandlerUnwritableReportFixture extends InputHandler
 {
     /** @var non-empty-string */
     public string $reportFilepath = 'unset';

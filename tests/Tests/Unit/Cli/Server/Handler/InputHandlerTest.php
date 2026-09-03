@@ -34,7 +34,7 @@ use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Input\InputRaisingCommandNameFixture;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\OutputRaisingExitCodeFixture;
-use Valkyrja\Tests\Fixtures\Cli\Server\Handler\UnwritableReportInputHandlerFixture;
+use Valkyrja\Tests\Fixtures\Cli\Server\Handler\InputHandlerUnwritableReportFixture;
 use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
@@ -325,7 +325,7 @@ final class InputHandlerTest extends TestCase
 
         $container = new Container();
 
-        $inputHandler = new UnwritableReportInputHandlerFixture(
+        $inputHandler = new InputHandlerUnwritableReportFixture(
             container: $container,
             router: $router,
             processExitingHandler: $processExitingHandler,
