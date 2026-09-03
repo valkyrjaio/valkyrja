@@ -226,34 +226,15 @@ two instance methods. `getControllerClasses()` returns classes that carry
 `#[Route]` attributes. This method is the common way, because the command
 definition sits beside the command code. `getRoutes()` returns pre-built
 `RouteContract` objects. Use `getRoutes()` for commands built at runtime, or
-when you cannot annotate the class. One provider can use both. The framework's
-own provider registers the built-in commands:
+when you cannot annotate the class. One provider can use both. A provider that
+uses only attributes returns an empty array from `getRoutes()`. The example
+under [Pre-Built Routes](#pre-built-routes) shows both methods on one provider.
 
-```php
-use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
-use Valkyrja\Cli\Server\Command\HelpCommand;
-use Valkyrja\Cli\Server\Command\ListBashCommand;
-use Valkyrja\Cli\Server\Command\ListCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
-
-class CliRoutingCliRouteProvider implements CliRouteProviderContract
-{
-    public function getControllerClasses(): array
-    {
-        return [
-            HelpCommand::class,
-            ListBashCommand::class,
-            ListCommand::class,
-            VersionCommand::class,
-        ];
-    }
-
-    public function getRoutes(): array
-    {
-        return [];
-    }
-}
-```
+The CLI routing component registers the built-in commands through the same
+contract. `CliRoutingComponentProvider::getCliProviders()` returns
+`Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider`, which lists the
+four built-in command classes and carries the four static handlers that their
+`#[RouteHandler]` attributes name.
 
 A component provider returns route providers from its `getCliProviders()`
 method, and `CliConfig`'s `providers` array lists the component providers:
@@ -310,6 +291,7 @@ class AppCliRouteProvider implements CliRouteProviderContract
     {
         return [
             GreetCommand::class,
+            UserPurgeCommand::class,
         ];
     }
 
@@ -354,12 +336,17 @@ class AppCliRouteProvider implements CliRouteProviderContract
     {
         return $container->getSingleton(GreetCommand::class)->run();
     }
+
+    public static function userPurgeHandler(ContainerContract $container, RouteContract $route): OutputContract
+    {
+        return $container->getSingleton(UserPurgeCommand::class)->run();
+    }
 }
 ```
 
-`GreetCommand` is the attributed command shown under
-[Attribute Registration](#attribute-registration); its `#[RouteHandler]`
-points back at `greetHandler`.
+`GreetCommand` and `UserPurgeCommand` are the attributed commands shown under
+[Attribute Registration](#attribute-registration); each one's `#[RouteHandler]`
+points back at a static handler on this provider.
 
 ### Attribute Registration
 
@@ -383,17 +370,16 @@ names from one method:
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
-use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 
-class ListCommand
+class UserPurgeCommand
 {
-    #[Route(name: 'list', description: 'List all commands')]
-    #[Route(name: 'commands', description: 'List all commands')]
-    #[RouteHandler([CliRoutingCliRouteProvider::class, 'listHandler'])]
+    #[Route(name: 'user:purge', description: 'Purge deleted users')]
+    #[Route(name: 'user:prune', description: 'Purge deleted users')]
+    #[RouteHandler([AppCliRouteProvider::class, 'userPurgeHandler'])]
     public function run(): OutputContract
     {
-        // php myapp list
-        // php myapp commands
+        // php myapp user:purge
+        // php myapp user:prune
     }
 }
 ```
@@ -477,12 +463,11 @@ resolves the command class from the container and calls it:
 ```php
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
+public static function greetHandler(ContainerContract $container, RouteContract $route): OutputContract
 {
-    return $container->getSingleton(ListCommand::class)->run();
+    return $container->getSingleton(GreetCommand::class)->run();
 }
 ```
 
@@ -697,19 +682,27 @@ public function run(): OutputContract
 }
 ```
 
-A `REQUIRED` option must arrive. The built-in `help` command declares one:
+A `REQUIRED` option must arrive. The `Router` throws when the invocation omits
+it:
 
 ```php
-use Valkyrja\Cli\Routing\Data\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\OptionParameter;
+use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 
-new OptionParameter(
-    name:             'command',
-    description:      'The name of the command to get help for',
-    valueDisplayName: 'command',
+#[Route(name: 'report:build', description: 'Build a report')]
+#[OptionParameter(
+    name:             'destination',
+    description:      'The directory to write the report to',
+    valueDisplayName: 'directory',
     mode:             OptionMode::REQUIRED,
-);
-// php myapp help --command=list
+)]
+public function run(): OutputContract
+{
+    // php myapp report:build --destination=/tmp/reports
+    // php myapp report:build   -> the router throws, because the option is missing
+    $destination = $this->route->getOption('destination')->getFirstValue();
+}
 ```
 
 Reusable option parameters for the global options ship in
@@ -762,7 +755,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 
 public static function help(): MessageContract
 {
-    return new Message('A command to get help for a specific command.');
+    return new Message('A command to greet a user by name.');
 }
 ```
 
