@@ -907,15 +907,17 @@ suppresses.
 
 `InputHandler::handle()` and `InputHandler::run()` both build that second
 report. Each builds it when `getOutputFromThrowable()` raises or when the
-`ThrowableCaught` stage raises, and `run()` builds it when the recovery write
-fails as well. The report names the command. It names no command when reading
-the command name from the input is itself one of the raises it answers.
+`ThrowableCaught` stage raises. `run()` builds it when the recovery write
+fails as well, and again when the exit stage's own first report raises. The
+report names the command. It names no command when reading the command name
+from the input is itself one of the raises it answers.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
 `--silent` run suppresses. A raise inside that report makes `run()` write the
 second report, which echoes. The code the output holds at that point still
-reaches `Exiter::exit()`.
+reaches `Exiter::exit()`. A command whose own write failed holds
+`ExitCode::ERROR` by then, so that command exits `1`.
 
 Warning: the guard on the `ProcessExiting` stage routes nothing to the
 `ThrowableCaught` stage. A `ProcessExiting` failure therefore writes no log
