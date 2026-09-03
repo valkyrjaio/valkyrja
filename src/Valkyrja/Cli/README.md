@@ -890,7 +890,7 @@ message throws `CliInteractionFileWriteException`. Each throwable carries the
 diagnostic of the failed write, when PHP records one.
 
 `StreamOutput` throws `CliInteractionUnwritableStreamException` before it
-writes, when the stream is closed and when the stream mode carries no write
+writes, when the stream is closed, or when the stream mode carries no write
 intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
