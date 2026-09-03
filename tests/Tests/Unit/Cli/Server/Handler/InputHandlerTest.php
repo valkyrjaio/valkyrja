@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Cli\Server\Handler;
 
 use Valkyrja\Application\Directory\Directory;
+use Valkyrja\Cli\Interaction\Data\CliInteractionConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
 use Valkyrja\Cli\Interaction\Input\Input;
@@ -20,6 +21,7 @@ use Valkyrja\Cli\Interaction\Message\Banner;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\NewLine;
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
+use Valkyrja\Cli\Interaction\Output\Factory\OutputFactory;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
 use Valkyrja\Cli\Interaction\Output\Output;
 use Valkyrja\Cli\Interaction\Output\StreamOutput;
@@ -598,6 +600,90 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('Recovery message:', (string) $runOutput);
         self::assertStringContainsString('The middleware failed.', (string) $runOutput);
         self::assertSame(ExitCode::ERROR, $containerOutput->getExitCode());
+    }
+
+    public function testRunWritesNoFirstReportOnASilentRun(): void
+    {
+        $readOnly = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($readOnly);
+
+        // The output is built directly, so the silent flag reaches the reports and not the write.
+        $output = new StreamOutput($readOnly)->withMessages(new Message('This is a test.'));
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            outputFactory: new OutputFactory(new CliInteractionConfig(isSilent: true)),
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The write failed, so the first report replaced the output and the exiter still ran.
+        self::assertSame(ExitCode::ERROR, $container->get(OutputContract::class)->getExitCode());
+        // The factory copies the silent flag, so that report wrote nothing.
+        self::assertSame((string) ExitCode::ERROR->value, $runOutput);
+    }
+
+    public function testRunEchoesTheSecondReportOnASilentRun(): void
+    {
+        $readOnly = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($readOnly);
+
+        $output = new StreamOutput($readOnly)->withMessages(new Message('This is a test.'));
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        // The middleware raises, so the run reaches the second report.
+        $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
+        $throwableCaughtHandler
+            ->expects($this->once())
+            ->method('throwableCaught')
+            ->willThrowException(new ValkyrjaRuntimeExceptionFixture('The middleware failed.'));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            throwableCaughtHandler: $throwableCaughtHandler,
+            outputFactory: new OutputFactory(new CliInteractionConfig(isSilent: true)),
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The second report takes a plain Output, so a silent run reads it.
+        self::assertStringContainsString('Cli Server Error:', (string) $runOutput);
+        self::assertStringContainsString('The middleware failed.', (string) $runOutput);
     }
 
     public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
