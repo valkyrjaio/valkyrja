@@ -898,8 +898,9 @@ routes a write throwable to the `ThrowableCaught` middleware. The guard around
 that write carries the run to `Exiter::exit()`. `run()` keeps whichever output
 the recovery produced, so the `ProcessExiting` middleware receives that output
 and the process reports the exit code that output reports. A command that only
-failed to write therefore exits `1`. It exits with another code when a `ThrowableCaught`
-middleware returns an output holding one and the write of that output returns.
+failed to write therefore exits `1`. It exits with another code when a
+`ThrowableCaught` middleware returns an output holding one and the write of
+that output returns.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
 `--silent` run suppresses that report. Every report this handler builds
@@ -913,6 +914,10 @@ report. Each builds it when `getOutputFromThrowable()` raises or when the
 fails as well, and again when the exit stage's own first report raises. The
 report names the command. It names no command when reading the command name
 from the input is itself one of the raises it answers.
+
+`run()` builds one more plain `Output` when reading the exit code from the
+output raises. That report names the raise alone, because reading the input is
+not what it answers.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
