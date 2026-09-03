@@ -903,9 +903,10 @@ exit code the command set. `InputHandler::run()` replaces the output, so the
 `ProcessExiting` middleware receives the recovery output.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
-`--silent` run suppresses that report. A second report takes a plain `Output`
-instead. That report echoes on a `--quiet` or a `--silent` run, and no
-configured factory can redirect it.
+`--silent` run suppresses that report. Every first report carries
+`ExitCode::ERROR`, so a `--quiet` run leaves it alone. A second report takes a
+plain `Output` instead, which no configured factory can redirect and no flag
+suppresses.
 
 `InputHandler::handle()` and `InputHandler::run()` both build that second
 report. Each builds it when `getOutputFromThrowable()` raises or when the
@@ -920,10 +921,10 @@ second report, which echoes. The code the output holds at that point still
 reaches `Exiter::exit()`.
 
 Warning: the guard on the `ProcessExiting` stage routes nothing to the
-`ThrowableCaught` stage, so no run of that stage writes a log entry for a
-failure. A `--silent` run takes such a failure with no output either. Register
-a `ProcessExiting` middleware that reports its own failures when a run must
-record them.
+`ThrowableCaught` stage. A `ProcessExiting` failure therefore writes no log
+entry on any run, and a `--silent` run takes it with no output either.
+Register a `ProcessExiting` middleware that reports its own failures when a
+run must record them.
 
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
@@ -1337,9 +1338,9 @@ class FlushLogsMiddleware implements ProcessExitingMiddlewareContract
 ```
 
 `InputHandler::run()` runs this stage under a guard. A middleware that throws
-here no longer stops the run, and the exit code still reaches
-`Exiter::exit()`. The throwable reaches no `ThrowableCaught` middleware, so a
-middleware of this stage reports its own failures.
+here no longer stops the run, and the code the output holds still reaches
+`Exiter::exit()`. The throwable reaches no `ThrowableCaught` middleware.
+Report a failure from inside the middleware when a run must record it.
 
 ### Registering Middleware
 
