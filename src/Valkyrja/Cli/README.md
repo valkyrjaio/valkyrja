@@ -902,10 +902,10 @@ write therefore exits `1`. It exits with another code when a `ThrowableCaught`
 middleware returns an output holding one.
 
 `InputHandler` builds a first report through the `OutputFactory`, so a
-`--silent` run suppresses that report. Every report this handler builds carries
-`ExitCode::ERROR`, so a `--quiet` run leaves each one alone. A second report takes a
-plain `Output` instead, which no configured factory can redirect and no flag
-suppresses.
+`--silent` run suppresses that report. Every report this handler builds
+carries `ExitCode::ERROR`, so a `--quiet` run leaves each one alone. A second
+report takes a plain `Output` instead, which no configured factory can
+redirect and no flag suppresses.
 
 `InputHandler::handle()` and `InputHandler::run()` both build that second
 report. Each builds it when `getOutputFromThrowable()` raises or when the
