@@ -279,6 +279,23 @@ points to, and returns `null` when the id is not an alias. The method reads
 one hop. It does not follow a chain of aliases, so a caller that must reach
 the end of a chain calls the method again.
 
+### getServiceCallable()
+
+`getServiceCallable(string $id): callable|null` returns the binding for an id,
+and returns `null` when the id has no service binding. The method does not run
+the binding, so the caller chooses the container that the factory receives:
+
+```php
+$callable = $container->getServiceCallable(LoggerContract::class);
+
+if ($callable !== null) {
+    $logger = $callable($otherContainer, []);
+}
+```
+
+The method reads the service map only. It does not publish a deferred service,
+and it does not follow an alias.
+
 ### Prefer the Specific Method
 
 The type-specific methods throw `ContainerInvalidReferenceException` when the
@@ -334,10 +351,25 @@ checks `isSingletonInstance()` first. A shutdown hook is one example. The
 hook logs only when the logger is already built:
 
 ```php
+// Wrong — getSingleton() runs a deferred publish callback before it reads the
+// cache, so the check does not make the resolution free of side effects.
 if ($container->isSingletonInstance(LoggerContract::class)) {
     $container->getSingleton(LoggerContract::class)->info('Shutting down.');
 }
 ```
+
+```php
+// Right — getSingletonInstance() reads the cache and does nothing else.
+$logger = $container->getSingletonInstance(LoggerContract::class);
+
+if ($logger !== null) {
+    $logger->info('Shutting down.');
+}
+```
+
+`getSingletonInstance(string $id): object|null` returns the cached instance for
+an id, and returns `null` when the container has not built it. The method never
+builds a service, and it never publishes one.
 
 The binding-versus-instance distinction is also what
 [child containers](#child-containers) use to decide when a parent instance is

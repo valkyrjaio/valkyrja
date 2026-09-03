@@ -160,6 +160,15 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
     public function getService(string $id, array $arguments = []): object;
 
     /**
+     * Get the service class binding for a given id.
+     *
+     * @param class-string $id The service id
+     *
+     * @return callable(ContainerContract, array<array-key, mixed>):object|null
+     */
+    public function getServiceCallable(string $id): callable|null;
+
+    /**
      * Get a singleton from the container.
      *
      * @template T of object
@@ -169,4 +178,15 @@ interface ContainerContract extends ContainerInterface, ProvidersAwareContract
      * @return T
      */
     public function getSingleton(string $id): object;
+
+    /**
+     * Get a cached singleton instance for a given id.
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $id The service id
+     *
+     * @return T|null
+     */
+    public function getSingletonInstance(string $id): object|null;
 }

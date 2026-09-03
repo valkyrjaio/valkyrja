@@ -120,6 +120,45 @@ final class ContainerTest extends TestCase
         self::assertSame('second', $container->getAliasedId('first'));
     }
 
+    public function testGetSingletonInstanceReadsTheCacheWithoutBuilding(): void
+    {
+        $container = $this->container;
+        $instance  = new SingletonFixture();
+
+        $container->setSingleton(SingletonFixture::class, $instance);
+
+        self::assertSame($instance, $container->getSingletonInstance(SingletonFixture::class));
+    }
+
+    public function testGetSingletonInstanceReturnsNullForAnUnresolvedBinding(): void
+    {
+        $container = $this->container;
+
+        $container->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+
+        self::assertNull($container->getSingletonInstance(SingletonFixture::class));
+        self::assertNull($container->getSingletonInstance('unknown'));
+    }
+
+    public function testGetServiceCallableReturnsTheBinding(): void
+    {
+        $container = $this->container;
+
+        $container->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+
+        $callable = $container->getServiceCallable(ServiceFixture::class);
+
+        self::assertNotNull($callable);
+        self::assertInstanceOf(ServiceFixture::class, $callable($container, []));
+    }
+
+    public function testGetServiceCallableReturnsNullForAnUnboundId(): void
+    {
+        $container = $this->container;
+
+        self::assertNull($container->getServiceCallable(ServiceFixture::class));
+    }
+
     public function testBindSingleton(): void
     {
         $container = $this->container;

@@ -303,6 +303,39 @@ class Container implements ContainerContract
     }
 
     /**
+     * @inheritDoc
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $id The service id
+     *
+     * @return T|null
+     */
+    #[Override]
+    public function getSingletonInstance(string $id): object|null
+    {
+        /** @var T|null $instance */
+        $instance = $this->instances[$id]
+            ?? null;
+
+        return $instance;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @return callable(ContainerContract, array<array-key, mixed>):object|null
+     */
+    #[Override]
+    public function getServiceCallable(string $id): callable|null
+    {
+        return $this->services[$id]
+            ?? null;
+    }
+
+    /**
      * Get an aliased service from the container without trying to ensuring published.
      *
      * @param class-string            $id        The service id
@@ -357,29 +390,5 @@ class Container implements ContainerContract
 
         // Make the object by dispatching the service
         return $service($this, $arguments);
-    }
-
-    /**
-     * Get a cached singleton instance for a given id.
-     *
-     * @param class-string $id The service id
-     */
-    protected function getSingletonInstance(string $id): object|null
-    {
-        return $this->instances[$id]
-            ?? null;
-    }
-
-    /**
-     * Get the service class binding for a given id.
-     *
-     * @param class-string $id The service id
-     *
-     * @return callable(ContainerContract, array<array-key, mixed>):object|null
-     */
-    protected function getServiceCallable(string $id): callable|null
-    {
-        return $this->services[$id]
-            ?? null;
     }
 }

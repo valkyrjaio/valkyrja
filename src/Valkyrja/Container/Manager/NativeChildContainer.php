@@ -113,6 +113,41 @@ class NativeChildContainer extends Container
     /**
      * @inheritDoc
      *
+     * @template T of object
+     *
+     * @param class-string<T> $id The service id
+     *
+     * @return T|null
+     */
+    #[Override]
+    public function getSingletonInstance(string $id): object|null
+    {
+        /** @var T|null $instance */
+        $instance = $this->instances[$id]
+            ?? $this->parent->instances[$id]
+            ?? null;
+
+        return $instance;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The service id
+     *
+     * @return callable(ContainerContract, array<array-key, mixed>):object|null
+     */
+    #[Override]
+    public function getServiceCallable(string $id): callable|null
+    {
+        return $this->services[$id]
+            ?? $this->parent->services[$id]
+            ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     *
      * @param class-string            $id        The service id
      * @param array<array-key, mixed> $arguments [optional] The arguments
      */
@@ -194,34 +229,6 @@ class NativeChildContainer extends Container
     {
         return $this->callbacks[$id]
             ?? $this->parent->callbacks[$id]
-            ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     */
-    #[Override]
-    protected function getSingletonInstance(string $id): object|null
-    {
-        return $this->instances[$id]
-            ?? $this->parent->instances[$id]
-            ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @param class-string $id The service id
-     *
-     * @return callable(ContainerContract, array<array-key, mixed>):object|null
-     */
-    #[Override]
-    protected function getServiceCallable(string $id): callable|null
-    {
-        return $this->services[$id]
-            ?? $this->parent->services[$id]
             ?? null;
     }
 }
