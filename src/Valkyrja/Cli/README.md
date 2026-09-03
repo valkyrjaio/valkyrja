@@ -1073,8 +1073,8 @@ intercept any message type the same way.
 ### Interactivity, Quiet, and Silent
 
 Every output carries three flags, read from `CliInteractionConfig` at
-creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. The flags govern
-the write, and they govern the answer a question reads:
+creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. The flags act on
+the write and on the answer a question reads:
 
 - A silent output writes nothing.
 - A quiet output writes nothing while the exit code is identical to
