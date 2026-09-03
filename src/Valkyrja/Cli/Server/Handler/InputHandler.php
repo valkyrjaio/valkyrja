@@ -185,9 +185,9 @@ class InputHandler implements InputHandlerContract
      * Get the output that reports a throwable and the throwable a recovery raised.
      *
      * A first report goes through the `OutputFactory`, so a `--silent` run suppresses it. This
-     * second report takes a plain `Output`, so it echoes on a `--quiet` or a `--silent` run, and
-     * no configured factory can redirect it. The two writes in `run()` that carry no guard rest
-     * on that, so this method and the messages it builds take no override.
+     * second report takes a plain `Output`, which no configured factory can redirect and no flag
+     * suppresses. The two writes in `run()` that carry no guard rest on that, so this method and
+     * the messages it builds take no override.
      *
      * @param InputContract $input             The input
      * @param Throwable     $throwable         The throwable
