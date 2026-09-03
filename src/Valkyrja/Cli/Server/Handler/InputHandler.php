@@ -135,13 +135,7 @@ class InputHandler implements InputHandlerContract
             }
         }
 
-        $exitCode = $output->getExitCode();
-
-        if ($exitCode instanceof ExitCode) {
-            $exitCode = $exitCode->value;
-        }
-
-        Exiter::exit($exitCode);
+        Exiter::exit($this->getExitCode($output));
     }
 
     /**
@@ -179,6 +173,27 @@ class InputHandler implements InputHandlerContract
         return $this->outputFactory
             ->createOutput(exitCode: ExitCode::ERROR)
             ->withMessages(...$this->getThrowableMessages($input, $throwable));
+    }
+
+    /**
+     * Get the code the output ends the process with.
+     *
+     * An output supplies this value, and a contract implementation can raise on the read. The
+     * code must reach the shell either way.
+     *
+     * @param OutputContract $output The output the run ends with
+     */
+    private function getExitCode(OutputContract $output): int
+    {
+        try {
+            $exitCode = $output->getExitCode();
+        } catch (Throwable) {
+            return ExitCode::ERROR->value;
+        }
+
+        return $exitCode instanceof ExitCode
+            ? $exitCode->value
+            : $exitCode;
     }
 
     /**

@@ -33,6 +33,7 @@ use Valkyrja\Cli\Server\Handler\InputHandler;
 use Valkyrja\Cli\Server\Support\Exiter;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Input\InputRaisingCommandNameFixture;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\OutputRaisingExitCodeFixture;
 use Valkyrja\Tests\Fixtures\Cli\Server\Handler\UnwritableReportInputHandlerFixture;
 use Valkyrja\Tests\Fixtures\Throwable\Exception\ValkyrjaRuntimeExceptionFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
@@ -800,6 +801,82 @@ final class InputHandlerTest extends TestCase
         self::assertStringContainsString('The input failed.', (string) $handledText);
         self::assertStringNotContainsString('Command:', (string) $handledText);
         self::assertSame(ExitCode::ERROR, $handledOutput->getExitCode());
+    }
+
+    public function testRunExitsWithTheErrorCodeWhenTheOutputRaisesOnItsCode(): void
+    {
+        // An output supplies the code, and this one raises on the read.
+        $output = new OutputRaisingExitCodeFixture();
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        // The code still reaches the shell, and the run reports an error.
+        self::assertSame((string) ExitCode::ERROR->value, $runOutput);
+    }
+
+    public function testRunKeepsTheExitCodeOfAnOutputAThrowableCaughtMiddlewareReturns(): void
+    {
+        $readOnly = fopen(filename: 'php://memory', mode: 'rb');
+
+        self::assertNotFalse($readOnly);
+
+        $output = new StreamOutput($readOnly)->withMessages(new Message('This is a test.'));
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        // The middleware returns an output that writes, so the run keeps its code.
+        $throwableCaughtHandler = $this->createMock(ThrowableCaughtHandler::class);
+        $throwableCaughtHandler
+            ->expects($this->once())
+            ->method('throwableCaught')
+            ->willReturn(new Output(exitCode: ExitCode::USAGE_ERROR)->withMessages(new Message('Recovered.')));
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+            throwableCaughtHandler: $throwableCaughtHandler,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        self::assertStringContainsString('Recovered.', (string) $runOutput);
+        self::assertStringEndsWith((string) ExitCode::USAGE_ERROR->value, (string) $runOutput);
+        self::assertSame(ExitCode::USAGE_ERROR, $container->get(OutputContract::class)->getExitCode());
     }
 
     public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
