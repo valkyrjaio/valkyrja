@@ -206,6 +206,34 @@ class Route implements RouteContract
      * @inheritDoc
      */
     #[Override]
+    public function hasProvidedArgument(string $name): bool
+    {
+        $arguments = $this->filterArgumentByName($name);
+        $argument  = reset($arguments);
+
+        return $argument !== false && $argument->isProvided();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getArgumentValue(string $name, string $default = ''): string
+    {
+        $arguments = $this->filterArgumentByName($name);
+        $argument  = reset($arguments);
+
+        if ($argument === false || ! $argument->hasFirstValue()) {
+            return $default;
+        }
+
+        return $argument->getFirstValue();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     public function withArguments(ArgumentParameterContract ...$arguments): static
     {
         $new = clone $this;
@@ -268,6 +296,40 @@ class Route implements RouteContract
 
         return reset($options)
             ?: throw new CliRoutingInvalidOptionNameException("The option `$name` was not found");
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function hasProvidedOption(string $name): bool
+    {
+        $options = $this->filterOptionByName($name);
+        $option  = reset($options);
+
+        return $option !== false && $option->isProvided();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function getOptionValue(string $name, string|null $default = null): string
+    {
+        $options = $this->filterOptionByName($name);
+        $option  = reset($options);
+
+        if ($option !== false && $option->hasFirstValue()) {
+            return $option->getFirstValue();
+        }
+
+        if ($default !== null) {
+            return $default;
+        }
+
+        return $option !== false
+            ? $option->getDefaultValue()
+            : '';
     }
 
     /**

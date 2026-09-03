@@ -299,7 +299,7 @@ class OptionParameter extends Parameter implements OptionParameterContract
      * @inheritDoc
      */
     #[Override]
-    public function hasFirstValue(): bool
+    public function isProvided(): bool
     {
         return isset($this->options[0]);
     }

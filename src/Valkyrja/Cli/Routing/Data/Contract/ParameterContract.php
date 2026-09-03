@@ -74,7 +74,12 @@ interface ParameterContract
     public function getCastValues(): array;
 
     /**
-     * Determine if there is a first item value.
+     * Determine if the input provided the parameter, with or without a value.
+     */
+    public function isProvided(): bool;
+
+    /**
+     * Determine if the input provided the parameter with a non-empty first value.
      */
     public function hasFirstValue(): bool;
 

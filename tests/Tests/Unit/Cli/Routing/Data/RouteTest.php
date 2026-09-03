@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Routing\Data;
 
+use Valkyrja\Cli\Interaction\Argument\Argument;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Option\Option;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
@@ -928,5 +930,79 @@ final class RouteTest extends TestCase
             handler: static fn (): null => null,
             helpText: static fn (): MessageContract => new Message('closure help text')
         );
+    }
+
+    public function testHasProvidedOptionAndGetOptionValue(): void
+    {
+        $declared = new OptionParameter(name: 'namespace', description: 'A namespace');
+        $provided = $declared->withOptions(new Option('namespace', 'db:'));
+
+        $withoutOption = new Route(name: 'list', description: 'List', handler: static fn (): null => null);
+        $unprovided    = $withoutOption->withOptions($declared);
+        $route         = $withoutOption->withOptions($provided);
+
+        // The route does not declare the option.
+        self::assertFalse($withoutOption->hasProvidedOption('namespace'));
+        self::assertSame('', $withoutOption->getOptionValue('namespace'));
+        self::assertSame('all', $withoutOption->getOptionValue('namespace', 'all'));
+
+        // The route declares the option, and the input provided nothing.
+        self::assertFalse($unprovided->hasProvidedOption('namespace'));
+        self::assertSame('all', $unprovided->getOptionValue('namespace', 'all'));
+
+        // The input provided the option.
+        self::assertTrue($route->hasProvidedOption('namespace'));
+        self::assertSame('db:', $route->getOptionValue('namespace', 'all'));
+
+        // The input provided the option with no value, so the default stands.
+        $empty = $withoutOption->withOptions($declared->withOptions(new Option('namespace')));
+
+        self::assertTrue($empty->hasProvidedOption('namespace'));
+        self::assertSame('all', $empty->getOptionValue('namespace', 'all'));
+
+        // The option declares a default, and the invocation gave no value.
+        $withDefault = $withoutOption->withOptions(
+            new OptionParameter(name: 'namespace', description: 'A namespace', defaultValue: 'app:')
+        );
+
+        self::assertSame('app:', $withDefault->getOptionValue('namespace'));
+        // A default given at the call site overrides the declared one.
+        self::assertSame('all', $withDefault->getOptionValue('namespace', 'all'));
+        // An option that declares no default falls back to an empty string.
+        self::assertSame('', $unprovided->getOptionValue('namespace'));
+
+        // An empty string given at the call site counts as given, so it suppresses
+        // the declared default. Only an omitted default reaches the declaration.
+        self::assertSame('', $withDefault->getOptionValue('namespace', ''));
+        self::assertSame('app:', $withDefault->getOptionValue('namespace', null));
+    }
+
+    public function testHasProvidedArgumentAndGetArgumentValue(): void
+    {
+        $declared = new ArgumentParameter(name: 'namespace', description: 'A namespace');
+        $provided = $declared->withArguments(new Argument('db:'));
+
+        $withoutArgument = new Route(name: 'list:bash', description: 'List', handler: static fn (): null => null);
+        $unprovided      = $withoutArgument->withArguments($declared);
+        $route           = $withoutArgument->withArguments($provided);
+
+        // The route does not declare the argument.
+        self::assertFalse($withoutArgument->hasProvidedArgument('namespace'));
+        self::assertSame('', $withoutArgument->getArgumentValue('namespace'));
+        self::assertSame('all', $withoutArgument->getArgumentValue('namespace', 'all'));
+
+        // The route declares the argument, and the input provided nothing.
+        self::assertFalse($unprovided->hasProvidedArgument('namespace'));
+        self::assertSame('all', $unprovided->getArgumentValue('namespace', 'all'));
+
+        // The input provided the argument.
+        self::assertTrue($route->hasProvidedArgument('namespace'));
+        self::assertSame('db:', $route->getArgumentValue('namespace', 'all'));
+
+        // The input provided the argument with no value, so the default stands.
+        $empty = $withoutArgument->withArguments($declared->withArguments(new Argument('')));
+
+        self::assertTrue($empty->hasProvidedArgument('namespace'));
+        self::assertSame('all', $empty->getArgumentValue('namespace', 'all'));
     }
 }

@@ -139,7 +139,7 @@ class ArgumentParameter extends Parameter implements ArgumentParameterContract
      * @inheritDoc
      */
     #[Override]
-    public function hasFirstValue(): bool
+    public function isProvided(): bool
     {
         return isset($this->arguments[0]);
     }
