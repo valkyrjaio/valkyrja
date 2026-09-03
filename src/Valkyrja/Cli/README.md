@@ -875,11 +875,10 @@ output when a run must start from an empty file.
 
 Warning: a factory-built `FileOutput` or `StreamOutput` copies the interaction
 flags, so a flag suppresses a file write and a stream write, and not only a
-terminal write. `--silent` suppresses every write. `--quiet` suppresses a write
-only while the exit code is identical to `ExitCode::SUCCESS`. An output that
-holds the integer `0` therefore writes, and so does one that holds an error
-code. Construct the output directly when the
-destination must take the messages whatever the flags say.
+terminal write (see
+[Interactivity, Quiet, and Silent](#interactivity-quiet-and-silent)). Construct
+the output directly when the destination must take the messages whatever the
+flags say.
 
 `StreamOutput` offers the remainder again while the stream takes part of the
 data, because a non-blocking stream takes a large message over several calls.
@@ -1038,8 +1037,9 @@ intercept any message type the same way.
 
 Every output carries three flags, read from `CliInteractionConfig` at
 creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. A silent output
-writes nothing. A quiet output writes nothing while the exit code is
-`SUCCESS`, so errors still print. A non-interactive output skips question
+writes nothing. A quiet output writes nothing while the exit code is identical
+to `ExitCode::SUCCESS`, so an output that holds an error code still prints, and
+so does one that holds the integer `0`. A non-interactive output skips question
 prompts. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `--silent`/`-s` set the flags for any command. `withIsInteractive()`,
 `withIsQuiet()`, and `withIsSilent()` override them per output.
