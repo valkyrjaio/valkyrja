@@ -48,7 +48,7 @@ final class QuestionWriterTest extends TestCase
         $questionWriter->write(new Output(), new Message('text'));
     }
 
-    public function testWritesQuestionAndInvokesCallableForNonInteractiveOutput(): void
+    public function testWritesQuestionAndInvokesCallableForASilentOutput(): void
     {
         $called   = false;
         $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
@@ -56,7 +56,7 @@ final class QuestionWriterTest extends TestCase
 
             return $output;
         };
-        $question = new Question(
+        $question = new QuestionAskManipulationFixture(
             text: 'text',
             callable: $callable,
             answer: new Answer(defaultResponse: 'default', allowedResponses: ['default', 'other']),
@@ -64,9 +64,35 @@ final class QuestionWriterTest extends TestCase
 
         $writer = new QuestionWriter();
 
+        // The silent flag alone stops the read.
         $result = $writer->write(new Output(isSilent: true), $question);
 
         self::assertTrue($called);
+        self::assertSame(0, $question->getTimesAsked());
+        self::assertInstanceOf(OutputContract::class, $result);
+    }
+
+    public function testReadsNoAnswerForANonInteractiveOutput(): void
+    {
+        $called   = false;
+        $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
+            $called = true;
+
+            return $output;
+        };
+        $question = new QuestionAskManipulationFixture(
+            text: 'text',
+            callable: $callable,
+            answer: new Answer(defaultResponse: 'default', allowedResponses: ['default', 'other']),
+        );
+
+        $writer = new QuestionWriter();
+
+        // The interactive flag alone stops the read.
+        $result = $writer->write(new Output(isInteractive: false), $question);
+
+        self::assertTrue($called);
+        self::assertSame(0, $question->getTimesAsked());
         self::assertInstanceOf(OutputContract::class, $result);
     }
 
