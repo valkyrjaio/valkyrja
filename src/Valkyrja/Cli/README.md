@@ -1429,8 +1429,8 @@ the first two; the interaction options set the output flags:
    middleware, which produces the error output. Boot and argv parsing run
    outside that guard.
 9. The output's messages write to the destination the output holds. A write
-   throwable lands in the `ThrowableCaught` middleware as well, and the
-   recovery output takes the steps below.
+   throwable lands in the `ThrowableCaught` middleware as well, and whichever
+   output that stage produced takes the steps below.
 10. The `ProcessExiting` middleware runs under a guard of its own, and
     `Exiter::exit()` ends the process with the output's exit code.
 
