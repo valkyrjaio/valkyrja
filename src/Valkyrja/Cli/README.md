@@ -882,8 +882,9 @@ the output directly when the destination must take the messages whatever the
 flags say.
 
 Warning: `isInteractive` suppresses no write. A question on a factory-built
-`FileOutput` or `StreamOutput` writes the prompt to that destination, and then
-reads the answer from stdin. The terminal shows no prompt.
+`FileOutput` or `StreamOutput` writes the prompt to that destination. An
+interactive output then reads the answer from stdin. The run therefore waits on
+stdin while the reader sees no prompt, unless the destination is the terminal.
 
 `StreamOutput` offers the remainder again while the stream takes part of the
 data, because a non-blocking stream takes a large message over several calls.
@@ -1070,8 +1071,9 @@ Every output carries three flags, read from `CliInteractionConfig` at
 creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. A silent output
 writes nothing. A quiet output writes nothing while the exit code is identical
 to `ExitCode::SUCCESS`, so an output that holds an error code still prints, and
-so does one that holds the integer `0`. A non-interactive output skips question
-prompts. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
+so does one that holds the integer `0`. A non-interactive output writes the
+question and reads no answer from stdin, so the question keeps the answer it
+already holds. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `--silent`/`-s` set the flags for any command. `withIsInteractive()`,
 `withIsQuiet()`, and `withIsSilent()` override them per output.
 
