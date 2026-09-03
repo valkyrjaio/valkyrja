@@ -22,6 +22,7 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionUnwritableStreamE
 use function error_clear_last;
 use function error_get_last;
 use function fwrite;
+use function is_resource;
 use function stream_get_meta_data;
 use function strlen;
 use function strpbrk;
@@ -123,6 +124,13 @@ class StreamOutput extends Output implements StreamOutputContract
      */
     protected function verifyWritable(): void
     {
+        // Psalm reads the declared resource type and cannot see a closed one, which the runtime
+        // reports as `resource (closed)` and is_resource answers false for.
+        /** @psalm-suppress DocblockTypeContradiction */
+        if (! is_resource($this->stream)) {
+            throw new CliInteractionUnwritableStreamException('The stream is closed');
+        }
+
         $mode = $this->getMode();
 
         // Every writable fopen mode carries one of these characters, and a read mode carries none.

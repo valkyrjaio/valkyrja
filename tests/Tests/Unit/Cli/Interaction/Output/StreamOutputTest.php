@@ -23,6 +23,7 @@ use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputPartialFwriteFixt
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\StreamOutputShortFwriteFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function fclose;
 use function fopen;
 use function ob_get_clean;
 use function ob_start;
@@ -197,6 +198,21 @@ final class StreamOutputTest extends TestCase
 
         self::assertEmpty($contents);
         self::assertSame('', stream_get_contents($stream));
+    }
+
+    public function testOutputMessageThrowsWhenTheStreamIsClosed(): void
+    {
+        $stream = $this->createStream();
+
+        fclose($stream);
+
+        $output = new StreamOutput($stream)
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionUnwritableStreamException::class);
+        $this->expectExceptionMessage('The stream is closed');
+
+        $output->writeMessages();
     }
 
     public function testStream(): void
