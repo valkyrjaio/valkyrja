@@ -118,10 +118,11 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * Verify the stream takes a write.
      *
-     * A stream opened in a read mode takes nothing and raises no diagnostic, so the write reports
-     * no cause. This check names the condition instead.
+     * A closed stream and a stream opened in a read mode both take nothing and raise no
+     * diagnostic, so the write reports no cause. This check names the condition instead.
      *
-     * @throws CliInteractionUnwritableStreamException When the stream mode has no write intent
+     * @throws CliInteractionUnwritableStreamException When the stream is closed, or its mode has
+     *                                                 no write intent
      */
     protected function verifyWritable(): void
     {
