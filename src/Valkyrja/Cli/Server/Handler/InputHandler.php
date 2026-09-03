@@ -184,9 +184,9 @@ class InputHandler implements InputHandlerContract
     /**
      * Get the output that reports a throwable and the throwable a recovery raised.
      *
-     * A first report goes through the `OutputFactory`, so the interaction flags govern it. This
-     * second report takes a plain `Output`, so it carries the default flags and echoes on a
-     * `--quiet` or `--silent` run, and no configured factory can redirect it.
+     * A first report goes through the `OutputFactory`, so a `--silent` run suppresses it. This
+     * second report takes a plain `Output`, so it echoes on a `--quiet` or a `--silent` run, and
+     * no configured factory can redirect it.
      *
      * @param InputContract $input             The input
      * @param Throwable     $throwable         The throwable

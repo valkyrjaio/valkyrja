@@ -902,10 +902,10 @@ sets `ExitCode::ERROR` on that output, so the process reports `1` and not the
 exit code the command set. `InputHandler::run()` replaces the output, so the
 `ProcessExiting` middleware receives the recovery output.
 
-`InputHandler` builds a first report through the `OutputFactory`, so the
-interaction flags govern that report. A second report takes a plain `Output`
-instead. That report carries the default flags, so it echoes on a `--quiet` or
-`--silent` run, and no configured factory can redirect it.
+`InputHandler` builds a first report through the `OutputFactory`, so a
+`--silent` run suppresses that report. A second report takes a plain `Output`
+instead. That report echoes on a `--quiet` or a `--silent` run, and no
+configured factory can redirect it.
 
 `InputHandler::run()` builds that second report when
 `getOutputFromThrowable()` raises, when the `ThrowableCaught` stage raises, or
