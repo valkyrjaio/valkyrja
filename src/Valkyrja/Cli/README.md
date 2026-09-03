@@ -1425,9 +1425,9 @@ the first two; the interaction options set the output flags:
 8. A throwable from steps 3 through 7 lands in the `ThrowableCaught`
    middleware, which produces the error output. Boot and argv parsing run
    outside that guard.
-9. The output's messages write to the terminal. A write throwable lands in
-   the `ThrowableCaught` middleware as well, and the recovery output takes
-   the steps below.
+9. The output's messages write to the destination the output holds. A write
+   throwable lands in the `ThrowableCaught` middleware as well, and the
+   recovery output takes the steps below.
 10. The `ProcessExiting` middleware runs under a guard of its own, and
     `Exiter::exit()` ends the process with the output's exit code.
 
@@ -1435,7 +1435,7 @@ the first two; the interaction options set the output flags:
 flowchart TD
     A([Cli::run]) --> B[Bootstrap - build Input from argv]
     B --> C[Stage 1 - InputReceived]
-    C -->|"short-circuit"| H[Write output to stdout]
+    C -->|"short-circuit"| H[Write output to its destination]
     C -->|throwable| J[Stage 5 - ThrowableCaught]
     C --> D{"Router: command matched?"}
     D -->|"no match"| E["Stage 3 - RouteNotMatched (error output)"]
