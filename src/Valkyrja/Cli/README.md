@@ -882,10 +882,10 @@ the output directly when the destination must take the messages whatever the
 flags say.
 
 Warning: `isInteractive` suppresses no write. A question on a `FileOutput` or a
-`StreamOutput` writes the prompt to that destination, so a destination other
-than the terminal shows the reader no prompt. An interactive output that is
-neither quiet nor silent then reads stdin, and both constructors leave the
-output interactive by default. Such a run waits until stdin gives a line or
+`StreamOutput` writes the prompt to that destination. A destination other than
+the terminal shows the reader no prompt. An interactive output that is neither
+quiet nor silent then reads an answer from stdin, and both constructors leave
+the output interactive by default. Such a run waits until stdin gives a line or
 reaches its end. Pass `isInteractive: false`, or run with `--no-interaction` on
 a factory-built output, when the run must not wait.
 
@@ -1431,13 +1431,13 @@ The HTTP routing component registers `http:list` through its own provider,
 The global options work on every command. The `InputReceived` defaults handle
 the first two; the interaction options set the output flags:
 
-| Option             | Short | Effect                                                                    |
-| ------------------ | ----- | ------------------------------------------------------------------------- |
-| `--help`           | `-h`  | Shows the command's help page                                             |
-| `--version`        | `-v`  | Shows the application version                                             |
-| `--quiet`          | `-q`  | Suppresses output while the exit code is identical to `ExitCode::SUCCESS` |
-| `--silent`         | `-s`  | Suppresses all output                                                     |
-| `--no-interaction` | `-N`  | Keeps the answer each question already holds                              |
+| Option             | Short | Effect                                                                                                    |
+| ------------------ | ----- | --------------------------------------------------------------------------------------------------------- |
+| `--help`           | `-h`  | Shows the command's help page                                                                             |
+| `--version`        | `-v`  | Shows the application version                                                                             |
+| `--quiet`          | `-q`  | Suppresses output while the exit code is identical to `ExitCode::SUCCESS`, and reads no answer from stdin |
+| `--silent`         | `-s`  | Suppresses all output, and reads no answer from stdin                                                     |
+| `--no-interaction` | `-N`  | Reads no answer from stdin                                                                                |
 
 ## Lifecycle
 
