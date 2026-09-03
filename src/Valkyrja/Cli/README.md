@@ -876,8 +876,9 @@ output when a run must start from an empty file.
 Warning: a factory-built `FileOutput` or `StreamOutput` copies the interaction
 flags, so a flag suppresses a file write and a stream write, and not only a
 terminal write. `--silent` suppresses every write. `--quiet` suppresses a write
-only while the exit code is `ExitCode::SUCCESS`, so a command that fails still
-writes each message to its destination. Construct the output directly when the
+only while the exit code is identical to `ExitCode::SUCCESS`. An output that
+holds the integer `0` therefore writes, and so does one that holds an error
+code. Construct the output directly when the
 destination must take the messages whatever the flags say.
 
 `StreamOutput` offers the remainder again while the stream takes part of the
@@ -889,11 +890,12 @@ message throws `CliInteractionFileWriteException`. Each throwable carries the
 diagnostic of the failed write, when PHP records one.
 
 `StreamOutput` throws `CliInteractionUnwritableStreamException` before it
-writes, when the stream mode carries no write intent.
+writes, when the stream is closed and when the stream mode carries no write
+intent.
 
 `InputHandler::run()` writes the messages after `handle()` returns, and it
-routes a write throwable to the `ThrowableCaught` middleware, when dispatch
-itself did not already throw. The recovery output writes to stdout, so the
+routes a write throwable to the `ThrowableCaught` middleware. The recovery
+output writes to stdout, so the
 process still reaches `Exiter::exit()`. A `--silent` run writes nothing,
 because the recovery output copies the interaction flags from the
 `CliInteractionConfig`. `getOutputFromThrowable()` sets `ExitCode::ERROR` on

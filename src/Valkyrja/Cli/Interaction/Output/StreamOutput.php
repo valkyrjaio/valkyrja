@@ -82,7 +82,8 @@ class StreamOutput extends Output implements StreamOutputContract
      * A short write is not a failure. A non-blocking stream takes a large message over several
      * calls, so the loop offers the remainder while the stream takes part of it.
      *
-     * @throws CliInteractionUnwritableStreamException When the stream mode has no write intent
+     * @throws CliInteractionUnwritableStreamException When the stream is closed, or its mode has
+     *                                                 no write intent
      * @throws CliInteractionStreamWriteException      When the stream stops taking the data
      */
     #[Override]
