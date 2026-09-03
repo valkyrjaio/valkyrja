@@ -831,8 +831,9 @@ final class InputHandlerTest extends TestCase
 
         Exiter::unfreeze();
 
-        // The code still reaches the shell, and the run reports an error.
-        self::assertSame((string) ExitCode::ERROR->value, $runOutput);
+        // The guard names what it swallowed, and the code still reaches the shell.
+        self::assertStringContainsString('The exit code failed.', (string) $runOutput);
+        self::assertStringEndsWith((string) ExitCode::ERROR->value, (string) $runOutput);
     }
 
     public function testRunKeepsTheExitCodeOfAnOutputAThrowableCaughtMiddlewareReturns(): void

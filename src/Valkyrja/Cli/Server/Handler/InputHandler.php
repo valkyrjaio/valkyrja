@@ -187,7 +187,12 @@ class InputHandler implements InputHandlerContract
     {
         try {
             $exitCode = $output->getExitCode();
-        } catch (Throwable) {
+        } catch (Throwable $codeThrowable) {
+            // Every other guard names what it swallowed, and this one runs last.
+            new Output(exitCode: ExitCode::ERROR)
+                ->withMessages(...$this->getBareThrowableMessages($codeThrowable))
+                ->writeMessages();
+
             return ExitCode::ERROR->value;
         }
 
@@ -259,12 +264,26 @@ class InputHandler implements InputHandlerContract
     private function getFallbackThrowableMessages(Throwable $throwable, Throwable $recoveryThrowable): array
     {
         return [
+            ...$this->getBareThrowableMessages($throwable),
+            ...$this->getRecoveryMessages($recoveryThrowable),
+        ];
+    }
+
+    /**
+     * Get the messages that report one throwable without reading the input.
+     *
+     * @param Throwable $throwable The throwable
+     *
+     * @return MessageContract[]
+     */
+    private function getBareThrowableMessages(Throwable $throwable): array
+    {
+        return [
             new Banner(new ErrorMessage('Cli Server Error:')),
             new NewLine(),
             new ErrorMessage('Message:'),
             new Message(' ' . $throwable->getMessage()),
             new NewLine(),
-            ...$this->getRecoveryMessages($recoveryThrowable),
         ];
     }
 
