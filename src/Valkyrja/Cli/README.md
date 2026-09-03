@@ -928,8 +928,8 @@ not land on the line the report wrote last.
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
 `--silent` run suppresses. A raise inside that report makes `run()` write the
-recovery report, which echoes. `Exiter::exit()` then runs, with the code the
-output holds or with `ExitCode::ERROR`.
+recovery report, which echoes. A failure in this stage leaves the exit code
+alone, so the code the run's own output reports still reaches `Exiter::exit()`.
 
 Warning: the guard on the `ProcessExiting` stage routes nothing to the
 `ThrowableCaught` stage. A `ProcessExiting` failure therefore writes no log
