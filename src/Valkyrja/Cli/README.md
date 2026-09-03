@@ -226,34 +226,12 @@ two instance methods. `getControllerClasses()` returns classes that carry
 `#[Route]` attributes. This method is the common way, because the command
 definition sits beside the command code. `getRoutes()` returns pre-built
 `RouteContract` objects. Use `getRoutes()` for commands built at runtime, or
-when you cannot annotate the class. One provider can use both. The framework's
-own provider registers the built-in commands:
+when you cannot annotate the class. One provider can use both. A provider that
+uses only attributes returns an empty array from `getRoutes()`. The example
+under [Pre-Built Routes](#pre-built-routes) shows both methods on one provider.
 
-```php
-use Valkyrja\Cli\Routing\Provider\Contract\CliRouteProviderContract;
-use Valkyrja\Cli\Server\Command\HelpCommand;
-use Valkyrja\Cli\Server\Command\ListBashCommand;
-use Valkyrja\Cli\Server\Command\ListCommand;
-use Valkyrja\Cli\Server\Command\VersionCommand;
-
-class CliRoutingCliRouteProvider implements CliRouteProviderContract
-{
-    public function getControllerClasses(): array
-    {
-        return [
-            HelpCommand::class,
-            ListBashCommand::class,
-            ListCommand::class,
-            VersionCommand::class,
-        ];
-    }
-
-    public function getRoutes(): array
-    {
-        return [];
-    }
-}
-```
+The framework registers its own built-in commands through the same contract.
+Run `php myapp list` to read the current set.
 
 A component provider returns route providers from its `getCliProviders()`
 method, and `CliConfig`'s `providers` array lists the component providers:
@@ -383,17 +361,16 @@ names from one method:
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Attribute\Route;
 use Valkyrja\Cli\Routing\Attribute\Route\RouteHandler;
-use Valkyrja\Cli\Routing\Provider\CliRoutingCliRouteProvider;
 
-class ListCommand
+class GreetCommand
 {
-    #[Route(name: 'list', description: 'List all commands')]
-    #[Route(name: 'commands', description: 'List all commands')]
-    #[RouteHandler([CliRoutingCliRouteProvider::class, 'listHandler'])]
+    #[Route(name: 'user:greet', description: 'Greet a user')]
+    #[Route(name: 'greet', description: 'Greet a user')]
+    #[RouteHandler([AppCliRouteProvider::class, 'greetHandler'])]
     public function run(): OutputContract
     {
-        // php myapp list
-        // php myapp commands
+        // php myapp user:greet
+        // php myapp greet
     }
 }
 ```
@@ -477,12 +454,11 @@ resolves the command class from the container and calls it:
 ```php
 use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
-use Valkyrja\Cli\Server\Command\ListCommand;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 
-public static function listHandler(ContainerContract $container, RouteContract $route): OutputContract
+public static function greetHandler(ContainerContract $container, RouteContract $route): OutputContract
 {
-    return $container->getSingleton(ListCommand::class)->run();
+    return $container->getSingleton(GreetCommand::class)->run();
 }
 ```
 
@@ -697,19 +673,19 @@ public function run(): OutputContract
 }
 ```
 
-A `REQUIRED` option must arrive. The built-in `help` command declares one:
+A `REQUIRED` option must arrive:
 
 ```php
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Enum\OptionMode;
 
 new OptionParameter(
-    name:             'command',
-    description:      'The name of the command to get help for',
-    valueDisplayName: 'command',
+    name:             'format',
+    description:      'The output format to write',
+    valueDisplayName: 'format',
     mode:             OptionMode::REQUIRED,
 );
-// php myapp help --command=list
+// php myapp user:list --format=json
 ```
 
 Reusable option parameters for the global options ship in
@@ -762,7 +738,7 @@ use Valkyrja\Cli\Interaction\Message\Message;
 
 public static function help(): MessageContract
 {
-    return new Message('A command to get help for a specific command.');
+    return new Message('A command to greet a user by name.');
 }
 ```
 
