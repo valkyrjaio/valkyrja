@@ -188,7 +188,7 @@ class InputHandler implements InputHandlerContract
         try {
             $exitCode = $output->getExitCode();
         } catch (Throwable $codeThrowable) {
-            // Every other guard names what it swallowed, and this one runs last.
+            // This read runs last, so the report is the only trace the failure leaves.
             new Output(exitCode: ExitCode::ERROR)
                 ->withMessages(...$this->getBareThrowableMessages($codeThrowable))
                 ->writeMessages();
@@ -206,7 +206,7 @@ class InputHandler implements InputHandlerContract
      *
      * A first report goes through the `OutputFactory`, so a `--silent` run suppresses it. This
      * second report takes a plain `Output`, which no configured factory can redirect and no flag
-     * suppresses. The two writes in `run()` that carry no guard rest on that, so this method and
+     * suppresses. Each write in `run()` that carries no guard rests on that, so this method and
      * the messages it builds take no override.
      *
      * @param InputContract $input             The input

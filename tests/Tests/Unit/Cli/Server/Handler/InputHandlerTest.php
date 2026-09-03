@@ -880,6 +880,37 @@ final class InputHandlerTest extends TestCase
         self::assertSame(ExitCode::USAGE_ERROR, $container->get(OutputContract::class)->getExitCode());
     }
 
+    public function testRunExitsWithAnIntegerExitCodeTheOutputHolds(): void
+    {
+        // The contract takes an int as well as the enum, and the read passes it through.
+        $output = new Output(exitCode: 5);
+        $input  = new Input();
+
+        $router = $this->createMock(Router::class);
+        $router
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($input)
+            ->willReturn($output);
+
+        $container = new Container();
+
+        $inputHandler = new InputHandler(
+            container: $container,
+            router: $router,
+        );
+
+        Exiter::freeze();
+
+        ob_start();
+        $inputHandler->run($input);
+        $runOutput = ob_get_clean();
+
+        Exiter::unfreeze();
+
+        self::assertSame('5', $runOutput);
+    }
+
     public function testRunRegistersTheWrittenOutputOnTheSuccessPath(): void
     {
         $output = new Output()->withMessages(new Message('This is a test.'));
