@@ -882,9 +882,11 @@ the output directly when the destination must take the messages whatever the
 flags say.
 
 Warning: `isInteractive` suppresses no write. A question on a factory-built
-`FileOutput` or `StreamOutput` writes the prompt to that destination. An
-interactive output then reads the answer from stdin. The run therefore waits on
-stdin while the reader sees no prompt, unless the destination is the terminal.
+`FileOutput` or `StreamOutput` writes the prompt to that destination, so a
+destination other than the terminal shows the reader no prompt. The output
+reads an answer from stdin only while it is interactive, and neither quiet nor
+silent. A run that writes the prompt and reads no answer keeps the answer the
+question already holds.
 
 `StreamOutput` offers the remainder again while the stream takes part of the
 data, because a non-blocking stream takes a large message over several calls.
