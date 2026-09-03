@@ -1397,13 +1397,13 @@ public function run(): OutputContract
 }
 ```
 
-| Stage             | Contract                            | When it fires                                | Per-route |
-| ----------------- | ----------------------------------- | -------------------------------------------- | --------- |
-| `InputReceived`   | `InputReceivedMiddlewareContract`   | Before route matching                        | No        |
-| `RouteMatched`    | `RouteMatchedMiddlewareContract`    | After match, before dispatch                 | Yes       |
-| `RouteNotMatched` | `RouteNotMatchedMiddlewareContract` | When no command matches                      | No        |
-| `RouteDispatched` | `RouteDispatchedMiddlewareContract` | After dispatch                               | Yes       |
-| `ThrowableCaught` | `ThrowableCaughtMiddlewareContract` | When a throwable is caught                   | Yes       |
+| Stage             | Contract                            | When it fires                                                | Per-route |
+| ----------------- | ----------------------------------- | ------------------------------------------------------------ | --------- |
+| `InputReceived`   | `InputReceivedMiddlewareContract`   | Before route matching                                        | No        |
+| `RouteMatched`    | `RouteMatchedMiddlewareContract`    | After match, before dispatch                                 | Yes       |
+| `RouteNotMatched` | `RouteNotMatchedMiddlewareContract` | When no command matches                                      | No        |
+| `RouteDispatched` | `RouteDispatchedMiddlewareContract` | After dispatch                                               | Yes       |
+| `ThrowableCaught` | `ThrowableCaughtMiddlewareContract` | When a throwable is caught                                   | Yes       |
 | `ProcessExiting`  | `ProcessExitingMiddlewareContract`  | After the write of the output runs, before the process exits | Yes       |
 
 ## Built-In Commands
