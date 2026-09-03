@@ -916,13 +916,12 @@ report names the command. It names no command when reading the command name
 from the input is itself one of the raises it answers.
 
 `run()` builds one more plain `Output` when reading the exit code from the
-output raises. That report names the raise alone, because reading the input is
-not what it answers.
+output raises. That report reads no input at all, so it names the raise alone.
 
 The `ProcessExiting` stage runs under a guard of its own. A middleware that
 throws there makes `InputHandler::run()` write a first report, which a
 `--silent` run suppresses. A raise inside that report makes `run()` write the
-second report, which echoes. The code the output holds at that point still
+second report, which echoes. The code that output reports at that point still
 reaches `Exiter::exit()`.
 
 Warning: the guard on the `ProcessExiting` stage routes nothing to the
@@ -1346,7 +1345,7 @@ class FlushLogsMiddleware implements ProcessExitingMiddlewareContract
 ```
 
 `InputHandler::run()` runs this stage under a guard. A middleware that throws
-here does not stop the run, and the code the output holds still reaches
+here does not stop the run, and the code the output reports still reaches
 `Exiter::exit()`. The throwable reaches no `ThrowableCaught` middleware.
 Report a failure from inside the middleware when a run must record it.
 
