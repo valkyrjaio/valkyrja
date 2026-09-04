@@ -508,6 +508,42 @@ final class ChildContainerTest extends TestCase
         self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
     }
 
+    public function testGetAliasedReusesAParentTargetTheParentAlreadyPublished(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
+        // The parent publishes at boot, so the request reuses what it holds
+        $shared = $this->parent->get(ProvidedFixture::class);
+        $child  = $this->createChild();
+
+        self::assertSame($shared, $child->getAliased('providedAlias'));
+    }
+
+    public function testGetAliasedStopsAtAParentServiceInTheChain(): void
+    {
+        // The parent answers 'middle' as a service, so it never reaches the rest
+        $this->parent->bindAlias('outer', 'middle');
+        $this->parent->bind('middle', [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('middle', SingletonFixture::class);
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+        $child = $this->createChild();
+
+        self::assertInstanceOf(ServiceFixture::class, $child->getAliased('outer'));
+        self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
+    }
+
+    public function testIsSingletonBindingReadsTheChildThenTheParent(): void
+    {
+        $child = $this->createChild();
+        $child->bindSingleton(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        // A snapshot copies the parent's bindings, so only a later one reaches the fallback
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+
+        self::assertTrue($child->isSingletonBinding(ServiceFixture::class));
+        self::assertTrue($child->isSingletonBinding(SingletonFixture::class));
+        self::assertFalse($child->isSingletonBinding('unknown'));
+    }
+
     /**
      * Create a ChildContainer from the current parent state.
      * The ContainerData is built from the parent and passed explicitly.

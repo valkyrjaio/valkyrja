@@ -511,4 +511,37 @@ final class NativeChildContainerTest extends TestCase
         // Publishing in child must not pollute parent
         self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
     }
+
+    public function testGetAliasedReusesAParentTargetTheParentAlreadyPublished(): void
+    {
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
+        // The parent publishes at boot, so the request reuses what it holds
+        $shared = $this->parent->get(ProvidedFixture::class);
+
+        self::assertSame($shared, $this->child->getAliased('providedAlias'));
+    }
+
+    public function testGetAliasedStopsAtAParentServiceInTheChain(): void
+    {
+        // The parent answers 'middle' as a service, so it never reaches the rest
+        $this->parent->bindAlias('outer', 'middle');
+        $this->parent->bind('middle', [ServiceFixture::class, 'make']);
+        $this->parent->bindAlias('middle', SingletonFixture::class);
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+
+        self::assertInstanceOf(ServiceFixture::class, $this->child->getAliased('outer'));
+        self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
+    }
+
+    public function testIsSingletonBindingReadsTheChildThenTheParent(): void
+    {
+        $this->child->bindSingleton(ServiceFixture::class, [ServiceFixture::class, 'make']);
+        // A snapshot copies the parent's bindings, so only a later one reaches the fallback
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+
+        self::assertTrue($this->child->isSingletonBinding(ServiceFixture::class));
+        self::assertTrue($this->child->isSingletonBinding(SingletonFixture::class));
+        self::assertFalse($this->child->isSingletonBinding('unknown'));
+    }
 }
