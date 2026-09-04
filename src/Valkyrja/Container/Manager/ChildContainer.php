@@ -15,6 +15,7 @@ namespace Valkyrja\Container\Manager;
 use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 
 class ChildContainer extends Container
 {
@@ -166,8 +167,10 @@ class ChildContainer extends Container
         $target  = null;
 
         while (($aliasedId = $this->parent->getAliasedId($current)) !== null) {
+            // bindAlias() rejects a cycle, so one here arrived through setFromData().
+            // Delegating to the parent would follow it until the stack ends.
             if (isset($seen[$aliasedId])) {
-                break;
+                throw new ContainerCyclicAliasException($current, $aliasedId);
             }
 
             $seen[$aliasedId] = true;

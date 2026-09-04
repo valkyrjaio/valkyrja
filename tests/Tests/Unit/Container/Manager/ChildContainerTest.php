@@ -16,6 +16,7 @@ use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\ChildContainer;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
@@ -305,6 +306,19 @@ final class ChildContainerTest extends TestCase
         self::assertInstanceOf(SingletonFixture::class, $instance);
         self::assertSame($instance, $child->get(SingletonFixture::class));
         self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
+    }
+
+    public function testGetAliasedThrowsForACycleThatArrivedThroughData(): void
+    {
+        // setFromData() bypasses bindAlias(), so the parent's map can hold a cycle
+        $this->parent->setFromData(new ContainerData(
+            aliases: ['first' => 'second', 'second' => 'first'],
+        ));
+        $child = $this->createChild();
+
+        $this->expectException(ContainerCyclicAliasException::class);
+
+        $child->get('first');
     }
 
     public function testGetAliasedFromParent(): void
