@@ -16,6 +16,7 @@ use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\NativeChildContainer;
+use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
@@ -543,5 +544,48 @@ final class NativeChildContainerTest extends TestCase
         self::assertTrue($this->child->isSingletonBinding(ServiceFixture::class));
         self::assertTrue($this->child->isSingletonBinding(SingletonFixture::class));
         self::assertFalse($this->child->isSingletonBinding('unknown'));
+    }
+
+    public function testGetAliasedStopsAtADeferredHopInTheChain(): void
+    {
+        // The parent publishes before it reads any map, so it stops at the deferred hop
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('outer', ProvidedFixture::class);
+        $this->parent->bindAlias(ProvidedFixture::class, ServiceFixture::class);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+
+        // The child holds the same callback, so it publishes into itself
+        $fromId = $this->child->get(ProvidedFixture::class);
+
+        self::assertSame($fromId, $this->child->getAliased('outer'));
+        self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(ProvidedFixture::class));
+    }
+
+    public function testGetAliasedStopsAtAParentInstanceInTheChain(): void
+    {
+        // The parent holds 'middle' as an instance, so it never reaches the rest
+        $this->parent->bindAlias('outer', 'middle');
+        $this->parent->setSingleton('middle', $shared = new SingletonFixture());
+        $this->parent->bindAlias('middle', ServiceFixture::class);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+
+        self::assertSame($shared, $this->child->getAliased('outer'));
+    }
+
+    public function testSetFromDataLeavesTheAliasMapAloneWhenItIsCyclic(): void
+    {
+        $this->parent->bindAlias('kept', ServiceFixture::class);
+
+        try {
+            $this->parent->setFromData(new ContainerData(
+                aliases: ['first' => 'second', 'second' => 'first'],
+            ));
+        } catch (ContainerCyclicAliasException) {
+            // The container a caller keeps holds no part of the rejected map
+        }
+
+        self::assertSame(ServiceFixture::class, $this->parent->getAliasedId('kept'));
+        self::assertNull($this->parent->getAliasedId('first'));
     }
 }

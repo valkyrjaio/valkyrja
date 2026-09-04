@@ -196,9 +196,10 @@ class NativeChildContainer extends Container
             $target  = $aliasedId;
             $current = $aliasedId;
 
-            // The parent answers a singleton or a service before it follows an alias,
-            // so it never reaches the rest of the chain.
-            if (isset($this->parent->singletons[$current])
+            // The parent publishes, then reads its maps, and only then follows an
+            // alias, so it never reaches the rest of the chain from any of these.
+            if (isset($this->parent->callbacks[$current])
+                || isset($this->parent->singletons[$current])
                 || isset($this->parent->instances[$current])
                 || isset($this->parent->services[$current])
             ) {

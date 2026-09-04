@@ -180,9 +180,12 @@ class ChildContainer extends Container
             $target  = $aliasedId;
             $current = $aliasedId;
 
-            // The parent answers a singleton or a service before it follows an alias,
-            // so it never reaches the rest of the chain.
-            if ($this->parent->isSingleton($current) || $this->parent->isService($current)) {
+            // The parent publishes, then reads its maps, and only then follows an
+            // alias, so it never reaches the rest of the chain from any of these.
+            if ($this->parent->isDeferred($current)
+                || $this->parent->isSingleton($current)
+                || $this->parent->isService($current)
+            ) {
                 break;
             }
         }
