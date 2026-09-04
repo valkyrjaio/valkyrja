@@ -198,7 +198,10 @@ class NativeChildContainer extends Container
 
             // The parent answers a singleton or a service before it follows an alias,
             // so it never reaches the rest of the chain.
-            if ((isset($this->parent->singletons[$current]) || isset($this->parent->instances[$current])) || isset($this->parent->services[$current])) {
+            if (isset($this->parent->singletons[$current])
+                || isset($this->parent->instances[$current])
+                || isset($this->parent->services[$current])
+            ) {
                 break;
             }
         }
