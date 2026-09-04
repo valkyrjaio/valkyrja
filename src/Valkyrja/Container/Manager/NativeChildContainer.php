@@ -121,8 +121,17 @@ class NativeChildContainer extends Container
             return parent::getAliasedWithoutChecks($id, $arguments);
         }
 
-        if (! isset($this->parent->aliases[$id])) {
+        $aliasedId = $this->parent->aliases[$id] ?? null;
+
+        if ($aliasedId === null) {
             return null;
+        }
+
+        // The parent holds the target as a singleton it has not built. Resolving it
+        // there would build a second copy for a request that already holds the
+        // binding, so the child builds its own.
+        if (isset($this->parent->singletons[$aliasedId]) && ! isset($this->parent->instances[$aliasedId])) {
+            return $this->get($aliasedId, $arguments);
         }
 
         return $this->parent->getAliased($id, $arguments);
