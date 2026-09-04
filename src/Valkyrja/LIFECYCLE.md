@@ -297,11 +297,9 @@ from the data, builds the id fresh in the child's own scope. That is correct,
 and the build costs time on every request.
 
 An id the child cannot answer from its own maps goes to the parent, and the
-parent answers it as it would for any caller. The child answers more than the
-list above suggests: it holds the parent's publish callbacks and singleton
-markers, so it publishes a deferred id and builds an unbuilt singleton in its
-own scope, and a parent-declared alias onto a target the parent has not resolved
-resolves in the child for the same reason. Resolve here whatever every
+parent answers it as it would for any caller. A parent-declared alias is the
+exception: when its target is one the parent has not resolved, the child holds
+the same registration and resolves it itself. Resolve here whatever every
 request should share. See
 [Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
 

@@ -737,14 +737,13 @@ receives a fresh child container built from one snapshot of the parent, so the
 child holds the parent's singleton markers and publish callbacks and answers
 almost everything itself.
 
-The child checks its own maps first. It holds the parent's singleton markers and
-publish callbacks, so it answers a deferred id and an unbuilt singleton itself,
-in its own scope. An id the child cannot answer at all goes to the parent, and
-the parent answers it as it would for any caller. That is a shared service
-resolving once, not a leak. What the child never does is rebuild
-something the parent already holds, and what it never leaks is its own state: a
-registration made during a request stays in the child, and the child is discarded
-when the request ends.
+The child checks its own maps first, so it answers a deferred id and an unbuilt
+singleton itself, in its own scope. An id the child cannot answer at all goes to
+the parent, and the parent answers it as it would for any caller. That is a
+shared service resolving once, not a leak. What the child never does is rebuild something the
+parent already holds, and what it never leaks is its own state: a registration
+made during a request stays in the child, and the child is discarded when the
+request ends.
 
 Deferred services stay available in a child. The child receives the parent's
 publish callbacks through `ContainerData`, so the first lookup of an
@@ -863,15 +862,15 @@ direct child lookup reuses the parent's instance.
 
 The parent answers the target as it would for any caller, with one exception.
 When the parent would resolve the target for the first time — a singleton it
-registered and never built, or a publisher it has not run — the child resolves it
-instead. The child holds the same registration, so letting the parent do it would
-leave the request with one copy for the alias and another for the id. Anything the
-parent has already built or published is reused as it stands.
+registered and never built, or a publisher it has not run — the child resolves
+it instead. The child holds the same registration, so letting the parent do it
+would leave the request with one copy for the alias and another for the id.
+Anything the parent has already built or published is reused as it stands.
 
 Warning: that exception also decides which binding the alias reaches. Give the
 parent a singleton the parent never builds, and a child that shadows the target
-gets its **own** binding through the alias, because the child resolves the target
-itself.
+gets its **own** binding through the alias, because the child resolves the
+target itself.
 
 Warning: a **parent-declared** alias onto a target the parent has already
 resolved hands the call to the parent in both implementations, so a parent-bound
@@ -885,10 +884,10 @@ Off that path the receiver follows the implementation, not the alias.
 child. `ChildContainer` hands the same call to the parent and gives it the
 parent.
 
-The two answer `isDeferred()` about **themselves** differently, because they hold
-different state. `ChildContainer` copies the callbacks, so it answers for its own
-map. `NativeChildContainer` copies nothing, so it answers for the child and the
-parent.
+The two answer `isDeferred()` about **themselves** differently, because they
+hold different state. `ChildContainer` copies the callbacks, so it answers for
+its own map. `NativeChildContainer` copies nothing, so it answers for the child
+and the parent.
 
 ### Using a Child Container
 
@@ -930,11 +929,11 @@ type. It extends the SPL `InvalidArgumentException`.
 `publishers()` map entry that is not callable. It extends the SPL
 `RuntimeException`.
 
-**`ContainerCyclicAliasException`** — an alias points at a chain that returns to
-it, so the chain has no end. Every entry point checks: `bindAlias()` for the pair
-it is asked to store, and the constructor and `setFromData()` for the map they
-receive. The check runs at registration, not at resolution. It extends the SPL
-`InvalidArgumentException`.
+**`ContainerCyclicAliasException`** — an alias points at a chain that returns
+to it, so the chain has no end. Every entry point checks: `bindAlias()` for the
+pair it is asked to store, and the constructor and `setFromData()` for the map
+they receive. The check runs at registration, not at resolution. It extends the
+SPL `InvalidArgumentException`.
 
 All three implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
 so one catch covers everything the container throws:
