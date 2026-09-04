@@ -886,8 +886,8 @@ Warning: `isInteractive` suppresses no write. A question on a `FileOutput` or a
 the terminal shows the reader no prompt. Both constructors leave the output
 interactive by default, so the run reads stdin unless a flag stops the read.
 Such a run waits until stdin gives a line or reaches its end.
-[Interactivity, Quiet, and Silent](#interactivity-quiet-and-silent) gives every
-flag that stops that read.
+[Interactivity, Quiet, and Silent](#interactivity-quiet-and-silent) gives the
+flags that stop that read.
 
 Pass `isInteractive: false`, or run with `--no-interaction` on a factory-built
 output, when the run must not wait.
