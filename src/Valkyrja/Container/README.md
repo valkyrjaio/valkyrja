@@ -737,10 +737,11 @@ receives a fresh child container built from one snapshot of the parent, so the
 child holds the parent's singleton markers and publish callbacks and answers
 almost everything itself.
 
-The child checks its own maps first. An id it cannot answer goes to the parent,
-and the parent answers it as it would for any caller, which for a deferred id or
-an unbuilt singleton means the parent resolves and keeps the result. That is a
-shared service resolving once, not a leak. What the child never does is rebuild
+The child checks its own maps first. It holds the parent's singleton markers and
+publish callbacks, so it answers a deferred id and an unbuilt singleton itself,
+in its own scope. An id the child cannot answer at all goes to the parent, and
+the parent answers it as it would for any caller. That is a shared service
+resolving once, not a leak. What the child never does is rebuild
 something the parent already holds, and what it never leaks is its own state: a
 registration made during a request stays in the child, and the child is discarded
 when the request ends.
@@ -841,8 +842,8 @@ access also removes the method-call overhead on the fallback path.
 
 An alias resolves in the container that declares it, so **where you declare an
 alias selects the resolution scope.** A child lookup of an alias that only the
-parent declares resolves in the parent. This is the one way to reach the
-parent's copy of a service that the child also binds:
+parent declares resolves in the parent. That is the way to reach the parent's
+copy of a **service** that the child also binds:
 
 ```php
 // Once, at bootstrap. The child never declares this alias.
@@ -860,14 +861,24 @@ The example binds a service. The three-step strategy above takes precedence over
 an alias. When the parent holds a resolved instance and the child holds none, a
 direct child lookup reuses the parent's instance.
 
-The parent answers the target as it would for any caller. A deferred target
-publishes in the parent, and a singleton the parent builds caches there, so every
-later child reuses it.
+The parent answers the target as it would for any caller, with one exception.
+When the parent would resolve the target for the first time — a singleton it
+registered and never built, or a publisher it has not run — the child resolves it
+instead. The child holds the same registration, so letting the parent do it would
+leave the request with one copy for the alias and another for the id. Anything the
+parent has already built or published is reused as it stands.
 
-Warning: a **parent-declared** alias hands the call to the parent in both
-implementations, so a parent-bound factory receives the parent. This is the one
-path where `NativeChildContainer` gives the parent for a lookup it could have
-answered itself.
+Warning: that exception also decides which binding the alias reaches. Give the
+parent a singleton the parent never builds, and a child that shadows the target
+gets its **own** binding through the alias, because the child resolves the target
+itself.
+
+Warning: a **parent-declared** alias onto a target the parent has already
+resolved hands the call to the parent in both implementations, so a parent-bound
+factory receives the parent. This is the one path where `NativeChildContainer`
+gives the parent for a lookup it could have answered itself. On the exception
+path above the child resolves the target, so the factory receives the child in
+both implementations.
 
 Off that path the receiver follows the implementation, not the alias.
 `NativeChildContainer` invokes a parent-bound factory itself and gives it the

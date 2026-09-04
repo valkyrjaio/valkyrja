@@ -297,10 +297,11 @@ from the data, builds the id fresh in the child's own scope. That is correct,
 and the build costs time on every request.
 
 An id the child cannot answer from its own maps goes to the parent, and the
-parent answers it as it would for any caller: it publishes a deferred id, and it
-caches a singleton it builds, which every later child then shares. The exception
-is a parent-declared alias onto a target the parent has not resolved — the child
-holds the same registration, so it resolves that one itself. Resolve here whatever every
+parent answers it as it would for any caller. The child answers more than the
+list above suggests: it holds the parent's publish callbacks and singleton
+markers, so it publishes a deferred id and builds an unbuilt singleton in its
+own scope, and a parent-declared alias onto a target the parent has not resolved
+resolves in the child for the same reason. Resolve here whatever every
 request should share. See
 [Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
 
@@ -316,8 +317,8 @@ Two implementations are available for the per-request child container:
 
 The two differ on the factory receiver: a factory bound on the parent receives
 the child under `NativeChildContainer`, and the parent under `ChildContainer`. A
-parent-declared alias is the exception, because both hand that call to the
-parent.
+parent-declared alias onto a target the parent has already resolved is the
+exception, because both hand that call to the parent.
 
 ## Focus on Configuration
 
