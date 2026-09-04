@@ -85,12 +85,21 @@ class Container implements ContainerContract
     #[Override]
     public function setFromData(ContainerData $data): void
     {
+        $originalAliases = $this->aliases;
+
         $this->aliases          = array_merge($this->aliases, $data->aliases);
         $this->callbacks        = array_merge($this->callbacks, $data->callbacks);
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
 
-        $this->validateAliasesAreNotCyclic();
+        try {
+            $this->validateAliasesAreNotCyclic();
+        } catch (ContainerCyclicAliasException $exception) {
+            // A caller that catches this keeps the container it had, not a cyclic map
+            $this->aliases = $originalAliases;
+
+            throw $exception;
+        }
     }
 
     /**
