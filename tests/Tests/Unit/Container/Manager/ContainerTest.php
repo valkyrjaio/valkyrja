@@ -131,15 +131,21 @@ final class ContainerTest extends TestCase
         $container->bindAlias(ServiceFixture::class, ServiceFixture::class);
     }
 
-    public function testBindAliasStopsOnACycleThatArrivedThroughData(): void
+    public function testSetFromDataRejectsACyclicAliasMap(): void
     {
         $container = $this->container;
-        // setFromData() bypasses bindAlias(), so the map can already hold a cycle
+
+        $this->expectException(ContainerCyclicAliasException::class);
+
+        // setFromData() is an entry point for aliases, so it validates them too
         $container->setFromData(new ContainerData(aliases: ['first' => 'second', 'second' => 'first']));
+    }
 
-        $container->bindAlias('third', 'first');
+    public function testConstructorRejectsACyclicAliasMap(): void
+    {
+        $this->expectException(ContainerCyclicAliasException::class);
 
-        self::assertSame('first', $container->getAliasedId('third'));
+        new Container(new ContainerData(aliases: ['first' => 'second', 'second' => 'first']));
     }
 
     public function testBindAliasRejectsAChainThatReturnsToTheAlias(): void

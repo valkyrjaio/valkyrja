@@ -61,6 +61,8 @@ class Container implements ContainerContract
         $this->callbacks        = $data->callbacks;
         $this->services         = $data->services;
         $this->singletons       = $data->singletons;
+
+        $this->validateAliasesAreNotCyclic();
     }
 
     /**
@@ -87,6 +89,8 @@ class Container implements ContainerContract
         $this->callbacks        = array_merge($this->callbacks, $data->callbacks);
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
+
+        $this->validateAliasesAreNotCyclic();
     }
 
     /**
@@ -374,7 +378,6 @@ class Container implements ContainerContract
             throw new ContainerCyclicAliasException($alias, $id);
         }
 
-        $seen    = [];
         $current = $id;
 
         while (($aliasedId = $this->getAliasedId($current)) !== null) {
@@ -382,14 +385,19 @@ class Container implements ContainerContract
                 throw new ContainerCyclicAliasException($alias, $id);
             }
 
-            // A map that arrived through setFromData() can already hold a cycle this
-            // binding is no part of, so the walk stops rather than spinning on it.
-            if (isset($seen[$aliasedId])) {
-                return;
-            }
+            $current = $aliasedId;
+        }
+    }
 
-            $seen[$aliasedId] = true;
-            $current          = $aliasedId;
+    /**
+     * Validate that no alias in the map points at a chain that returns to it.
+     */
+    protected function validateAliasesAreNotCyclic(): void
+    {
+        foreach ($this->aliases as $alias => $id) {
+            /** @var class-string $alias */
+            /** @var class-string $id */
+            $this->validateAliasIsNotCyclic($alias, $id);
         }
     }
 

@@ -16,7 +16,6 @@ use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\NativeChildContainer;
-use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
@@ -313,16 +312,30 @@ final class NativeChildContainerTest extends TestCase
         self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
     }
 
-    public function testGetAliasedThrowsForACycleThatArrivedThroughData(): void
+    public function testGetAliasedPublishesADeferredParentTargetInTheChild(): void
     {
-        // setFromData() bypasses bindAlias(), so the parent's map can hold a cycle
-        $this->parent->setFromData(new ContainerData(
-            aliases: ['first' => 'second', 'second' => 'first'],
-        ));
+        $this->parent->register(new PublishingProviderFixture());
+        $this->parent->bindAlias('providedAlias', ProvidedFixture::class);
 
-        $this->expectException(ContainerCyclicAliasException::class);
+        // The child holds the same callback, so it publishes into itself
+        $fromId    = $this->child->get(ProvidedFixture::class);
+        $fromAlias = $this->child->get('providedAlias');
 
-        $this->child->get('first');
+        self::assertSame($fromId, $fromAlias);
+        self::assertFalse($this->parent->isPublished(ProvidedFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(ProvidedFixture::class));
+    }
+
+    public function testGetAliasedStopsWhereTheParentStops(): void
+    {
+        // The parent answers 'middle' as a singleton, so it never reaches the rest
+        $this->parent->bindAlias('outer', 'middle');
+        $this->parent->bindSingleton('middle', [SingletonFixture::class, 'make']);
+        $this->parent->bindAlias('middle', ServiceFixture::class);
+        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
+
+        self::assertInstanceOf(SingletonFixture::class, $this->child->getAliased('outer'));
+        self::assertFalse($this->parent->isSingletonInstance('middle'));
     }
 
     public function testGetAliasedFromParent(): void

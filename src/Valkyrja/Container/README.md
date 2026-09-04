@@ -919,9 +919,10 @@ type. It extends the SPL `InvalidArgumentException`.
 `publishers()` map entry that is not callable. It extends the SPL
 `RuntimeException`.
 
-**`ContainerCyclicAliasException`** — `bindAlias()` received a target that
-already resolves back to the alias, so the pair would form a chain with no end.
-The check runs at registration, not at resolution. It extends the SPL
+**`ContainerCyclicAliasException`** — an alias points at a chain that returns to
+it, so the chain has no end. Every entry point checks: `bindAlias()` for the pair
+it is asked to store, and the constructor and `setFromData()` for the map they
+receive. The check runs at registration, not at resolution. It extends the SPL
 `InvalidArgumentException`.
 
 All three implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,

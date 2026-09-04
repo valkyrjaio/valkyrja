@@ -14,7 +14,6 @@ namespace Valkyrja\Container\Manager;
 
 use Override;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 
 class NativeChildContainer extends Container
 {
@@ -128,10 +127,10 @@ class NativeChildContainer extends Container
             return null;
         }
 
-        // The parent holds the target as a singleton it has not built. Resolving it
-        // there would build a second copy for a request that already holds the
-        // binding, so the child builds its own.
-        if (isset($this->parent->singletons[$target]) && ! isset($this->parent->instances[$target])) {
+        // The parent would resolve this target for the first time, and the child holds
+        // the same registration, so letting the parent do it would leave the request
+        // with one copy for the alias and another for the id.
+        if ($this->isUnbuiltInParent($target)) {
             return $this->get($target, $arguments);
         }
 
@@ -182,7 +181,7 @@ class NativeChildContainer extends Container
     }
 
     /**
-     * Walk the parent's chain of aliases to the id it ends at.
+     * Walk the parent's chain of aliases to the id the parent would answer.
      *
      * @param class-string $id The alias
      *
@@ -190,22 +189,39 @@ class NativeChildContainer extends Container
      */
     private function getParentAliasTarget(string $id): string|null
     {
-        $seen    = [];
         $current = $id;
         $target  = null;
 
         while (($aliasedId = $this->parent->aliases[$current] ?? null) !== null) {
-            // bindAlias() rejects a cycle, so one here arrived through setFromData().
-            // Delegating to the parent would follow it until the stack ends.
-            if (isset($seen[$aliasedId])) {
-                throw new ContainerCyclicAliasException($current, $aliasedId);
-            }
+            $target  = $aliasedId;
+            $current = $aliasedId;
 
-            $seen[$aliasedId] = true;
-            $target           = $aliasedId;
-            $current          = $aliasedId;
+            // The parent answers a singleton or a service before it follows an alias,
+            // so it never reaches the rest of the chain.
+            if ((isset($this->parent->singletons[$current]) || isset($this->parent->instances[$current])) || isset($this->parent->services[$current])) {
+                break;
+            }
         }
 
         return $target;
+    }
+
+    /**
+     * Check whether the parent would resolve an id for the first time.
+     *
+     * @param class-string $id The target id
+     */
+    private function isUnbuiltInParent(string $id): bool
+    {
+        // The parent publishes before it reads any map, so this test comes first.
+        if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
+            return true;
+        }
+
+        if (isset($this->parent->instances[$id])) {
+            return false;
+        }
+
+        return $this->parent->isSingletonBinding($id);
     }
 }

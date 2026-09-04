@@ -299,8 +299,8 @@ and the build costs time on every request.
 An id the child cannot answer from its own maps goes to the parent, and the
 parent answers it as it would for any caller: it publishes a deferred id, and it
 caches a singleton it builds, which every later child then shares. The exception
-is a parent-declared alias onto a singleton the parent never built — the child
-holds the same marker, so it builds that one itself. Resolve here whatever every
+is a parent-declared alias onto a target the parent has not resolved — the child
+holds the same registration, so it resolves that one itself. Resolve here whatever every
 request should share. See
 [Where an Alias Resolves](Container/README.md#where-an-alias-resolves).
 

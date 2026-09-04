@@ -15,7 +15,6 @@ namespace Valkyrja\Container\Manager;
 use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
-use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 
 class ChildContainer extends Container
 {
@@ -65,6 +64,18 @@ class ChildContainer extends Container
     {
         return parent::isService($id)
             || $this->parent->isService($id);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @param class-string $id The service id
+     */
+    #[Override]
+    public function isSingletonBinding(string $id): bool
+    {
+        return parent::isSingletonBinding($id)
+            || $this->parent->isSingletonBinding($id);
     }
 
     /**
@@ -143,10 +154,10 @@ class ChildContainer extends Container
             return null;
         }
 
-        // The parent holds the target as a singleton it has not built. Resolving it
-        // there would build a second copy for a request that already holds the
-        // binding, so the child builds its own.
-        if ($this->parent->isSingletonBinding($target) && ! $this->parent->isSingletonInstance($target)) {
+        // The parent would resolve this target for the first time, and the child holds
+        // the same registration, so letting the parent do it would leave the request
+        // with one copy for the alias and another for the id.
+        if ($this->isUnbuiltInParent($target)) {
             return $this->get($target, $arguments);
         }
 
@@ -154,7 +165,7 @@ class ChildContainer extends Container
     }
 
     /**
-     * Walk the parent's chain of aliases to the id it ends at.
+     * Walk the parent's chain of aliases to the id the parent would answer.
      *
      * @param class-string $id The alias
      *
@@ -162,22 +173,39 @@ class ChildContainer extends Container
      */
     private function getParentAliasTarget(string $id): string|null
     {
-        $seen    = [];
         $current = $id;
         $target  = null;
 
         while (($aliasedId = $this->parent->getAliasedId($current)) !== null) {
-            // bindAlias() rejects a cycle, so one here arrived through setFromData().
-            // Delegating to the parent would follow it until the stack ends.
-            if (isset($seen[$aliasedId])) {
-                throw new ContainerCyclicAliasException($current, $aliasedId);
-            }
+            $target  = $aliasedId;
+            $current = $aliasedId;
 
-            $seen[$aliasedId] = true;
-            $target           = $aliasedId;
-            $current          = $aliasedId;
+            // The parent answers a singleton or a service before it follows an alias,
+            // so it never reaches the rest of the chain.
+            if ($this->parent->isSingleton($current) || $this->parent->isService($current)) {
+                break;
+            }
         }
 
         return $target;
+    }
+
+    /**
+     * Check whether the parent would resolve an id for the first time.
+     *
+     * @param class-string $id The target id
+     */
+    private function isUnbuiltInParent(string $id): bool
+    {
+        // The parent publishes before it reads any map, so this test comes first.
+        if ($this->parent->isDeferred($id) && ! $this->parent->isPublished($id)) {
+            return true;
+        }
+
+        if ($this->parent->isSingletonInstance($id)) {
+            return false;
+        }
+
+        return $this->parent->isSingletonBinding($id);
     }
 }
