@@ -14,6 +14,7 @@ namespace Valkyrja\Cli\Interaction\Output\Contract;
 
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\Abstract\CliInteractionRuntimeException;
 use Valkyrja\Cli\Interaction\Writer\Contract\WriterContract;
 
 interface OutputContract
@@ -72,6 +73,9 @@ interface OutputContract
 
     /**
      * Write all unwritten messages.
+     *
+     * @throws CliInteractionRuntimeException When a destination refuses the message, or takes
+     *                                        less than the whole of it
      */
     public function writeMessages(): static;
 
@@ -79,6 +83,9 @@ interface OutputContract
      * Write a message.
      *
      * @param MessageContract $message The message
+     *
+     * @throws CliInteractionRuntimeException When a destination refuses the message, or takes
+     *                                        less than the whole of it
      */
     public function writeMessage(MessageContract $message): static;
 

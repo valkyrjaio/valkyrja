@@ -165,6 +165,48 @@ the container, and calls `InputHandler::run()`. The handler runs the
 middleware pipeline, writes the output messages, and calls `Exiter::exit()`
 with the output's exit code.
 
+`CliServerServiceProvider` publishes `InputHandler` under
+`InputHandlerContract`, and that binding is the extension point. An
+application that wants a different handler binds its own class to the same
+contract in its own service provider. `Cli::run()` resolves the contract, so
+it takes whatever the application bound.
+
+```php
+use Valkyrja\Cli\Routing\Dispatcher\Contract\RouterContract;
+use Valkyrja\Cli\Server\Handler\Contract\InputHandlerContract;
+use Valkyrja\Container\Manager\Contract\ContainerContract;
+use Valkyrja\Container\Provider\Contract\ServiceProviderContract;
+
+final class AppCliServerServiceProvider implements ServiceProviderContract
+{
+    public function publishers(): array
+    {
+        return [
+            InputHandlerContract::class => [self::class, 'publishInputHandler'],
+        ];
+    }
+
+    public static function publishInputHandler(ContainerContract $container): void
+    {
+        $container->setSingleton(
+            InputHandlerContract::class,
+            new AppInputHandler(
+                container: $container,
+                router: $container->getSingleton(RouterContract::class),
+            )
+        );
+    }
+}
+```
+
+`publishers()` maps the service id to the publisher, so a publisher that no
+entry names never runs. Pass the dependencies the handler needs, because the
+constructor defaults build an empty container and an empty route collection.
+
+Every other contract this component publishes works the same way. The
+framework ships one default for each, and the application replaces the ones
+it needs.
+
 A binary is one executable file that calls `Cli::run()`:
 
 ```php
@@ -822,6 +864,88 @@ formatted text to stdout. `PlainOutput` echoes the unformatted text. Every
 factory method accepts an `ExitCode|int` and any number of messages, and
 copies the interaction flags from the `CliInteractionConfig`.
 
+`FileOutput` and `StreamOutput` write the same formatted text to a different
+destination. `FileOutput` appends to the filepath, and it makes the file when
+the file does not exist. It makes no directory, so a filepath under a
+directory that does not exist fails the write. `StreamOutput` writes to the
+stream resource at the current position. A sequence of messages concatenates.
+
+`FileOutput` never truncates. The file keeps the messages from each earlier
+run, and the caller owns truncation. Delete the file before you construct the
+output when a run must start from an empty file.
+
+Warning: a factory-built `FileOutput` or `StreamOutput` copies the interaction
+flags, so a flag suppresses a file write and a stream write, and not only a
+terminal write (see
+[Interactivity, Quiet, and Silent](#interactivity-quiet-and-silent)). Construct
+the output directly when the destination must take the messages whatever the
+flags say.
+
+Warning: `isInteractive` suppresses no write. A question on a `FileOutput` or a
+`StreamOutput` writes the prompt to that destination. A destination other than
+the terminal shows the reader no prompt. Both constructors leave the output
+interactive by default, so the run reads stdin unless a flag stops the read.
+Such a run waits until stdin gives a line or reaches its end.
+[Interactivity, Quiet, and Silent](#interactivity-quiet-and-silent) gives the
+flags that stop that read.
+
+Pass `isInteractive: false`, or run with `--no-interaction` on a factory-built
+output, when the run must not wait.
+
+`StreamOutput` offers the remainder again while the stream takes part of the
+data, because a non-blocking stream takes a large message over several calls.
+A stream that takes no byte of an offer throws
+`CliInteractionStreamWriteException`, which covers a stream that failed and a
+stream whose buffer is full. A file write that stores less than the whole
+message throws `CliInteractionFileWriteException`. Each throwable carries the
+diagnostic of the failed write, when PHP records one.
+
+`StreamOutput` throws `CliInteractionUnwritableStreamException` before it
+writes, when the stream is closed, or when the stream mode carries no write
+intent.
+
+`InputHandler::run()` writes the messages after `handle()` returns, and it
+routes a write throwable to the `ThrowableCaught` middleware. The guard around
+that write carries the run to `Exiter::exit()`. `run()` keeps whichever output
+the recovery produced, so the `ProcessExiting` middleware receives that output
+and the process reports the exit code that output reports. A command that only
+failed to write therefore exits `1`. It exits with another code when a
+`ThrowableCaught` middleware returns an output holding one and the write of
+that output returns.
+
+`InputHandler` builds a first report through the `OutputFactory`, so a
+`--silent` run suppresses that report. Every report this handler builds
+carries `ExitCode::ERROR`, so a `--quiet` run leaves each one alone.
+`InputHandler` builds a recovery report itself instead, which no configured
+factory can redirect and no flag suppresses.
+
+`InputHandler::handle()` and `InputHandler::run()` both build a recovery
+report. Each builds it when `getOutputFromThrowable()` raises or when the
+`ThrowableCaught` stage raises. `run()` builds it at three more points:
+
+- when the write of the output that stage returned fails
+- when the report `run()` writes for a `ProcessExiting` throwable fails
+- when reading the exit code from the output raises
+
+Every recovery report names the command. It names no command when reading the
+command name from the input is itself what raised.
+
+Every report this handler builds ends with a new line, so the shell prompt does
+not land on the line the report wrote last.
+
+The `ProcessExiting` stage runs under a guard of its own. A middleware that
+throws there makes `InputHandler::run()` write a first report, which a
+`--silent` run suppresses. A raise inside that report makes `run()` write the
+recovery report, which echoes. A failure in this stage leaves the exit code
+alone, so the code the run's own output reports still reaches `Exiter::exit()`.
+
+Warning: the guard on the `ProcessExiting` stage routes nothing to the
+`ThrowableCaught` stage. A `ProcessExiting` failure therefore writes no log
+entry on any run. A `--silent` run leaves the failure no output either, unless
+the first report raises. The recovery report then echoes. Register a
+`ProcessExiting` middleware that reports its own failures when a run must
+record them.
+
 An output is immutable: `withMessages()` replaces the unwritten messages,
 `withAddedMessages()`/`withAddedMessage()` append, and `withExitCode()` sets
 the exit code. The `InputHandler` calls `writeMessages()` after dispatch, so
@@ -896,11 +1020,13 @@ your own house style.
 
 ### Questions
 
-A `Question` is a message that prompts the user and reads a line from stdin
-when the output writes it. It pairs with an `Answer`, which holds the default
-response, the allowed responses, and an optional validation callable. The
-question's callable receives the output and the final answer, and returns the
-output to continue with:
+A `Question` is a message that the output writes to its destination.
+`QuestionWriter` then calls the question's `ask()`, which reads an answer from
+stdin. [Interactivity, Quiet, and Silent](#interactivity-quiet-and-silent)
+gives the flags that stop that read. A `Question` pairs with an `Answer`, which
+holds the default response, the allowed responses, and an optional validation
+callable. The question's callable receives the output and the final answer, and
+returns the output to continue with:
 
 ```php
 use Valkyrja\Cli\Interaction\Message\Answer;
@@ -934,9 +1060,7 @@ The rendered prompt lists the allowed responses and the default. A new
 `Answer` starts with the default response as its user response. An empty
 response leaves the supplied answer unchanged, so the default response
 stands. A response outside the allowed list re-asks the question, unless
-the validation callable accepts it. A non-interactive, quiet, or silent
-output does not read from stdin. The supplied answer applies, so a
-scripted run never blocks.
+the validation callable accepts it.
 
 `ask()` returns the supplied answer unchanged when the stdin stream
 does not open. `ask()` returns the answer unchanged when a read from the
@@ -952,10 +1076,21 @@ intercept any message type the same way.
 ### Interactivity, Quiet, and Silent
 
 Every output carries three flags, read from `CliInteractionConfig` at
-creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. A silent output
-writes nothing. A quiet output writes nothing while the exit code is
-`SUCCESS`, so errors still print. A non-interactive output skips question
-prompts. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
+creation: `isInteractive()`, `isQuiet()`, and `isSilent()`. The flags act on
+the write and on the answer a question reads:
+
+- A silent output writes nothing.
+- A quiet output writes nothing while the exit code is identical to
+  `ExitCode::SUCCESS`. An output that holds an error code still writes, and so
+  does one that holds the integer `0`.
+- A question reads an answer from stdin only on an interactive output that is
+  neither quiet nor silent. Every other output keeps the answer the question
+  already holds.
+
+A quiet run whose output holds an error code therefore writes the whole prompt
+and reads no answer.
+
+The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `--silent`/`-s` set the flags for any command. `withIsInteractive()`,
 `withIsQuiet()`, and `withIsSilent()` override them per output.
 
@@ -964,7 +1099,9 @@ prompts. The global options `--no-interaction`/`-N`, `--quiet`/`-q`, and
 `ExitCode` mirrors most of the BSD sysexits codes. Two cases deviate:
 `sysexits.h` assigns 66 to a missing input and 67 to an unknown user, while
 `ExitCode` assigns 67 and 68. `InputHandler::run()` passes the code's integer
-value to `Exiter::exit()` after the `ProcessExiting` middleware runs:
+value to `Exiter::exit()` after the `ProcessExiting` middleware runs. It
+passes `ERROR` instead when reading the code from the output raises, and it
+reports that raise:
 
 | Case             | Value | Meaning                           |
 | ---------------- | ----- | --------------------------------- |
@@ -1147,8 +1284,26 @@ class CommandAuditMiddleware implements RouteDispatchedMiddlewareContract
 ### ThrowableCaught
 
 `ThrowableCaughtMiddlewareContract` fires when a throwable escapes any part
-of dispatch. It receives a default error output and the throwable, and
-returns the output to write:
+of dispatch, and it fires when the output write throws.
+
+The write runs after `handle()` returns, so the stage sees a throwable that no
+command raised. A middleware that reads the throwable receives
+`CliInteractionFileWriteException`, `CliInteractionStreamWriteException`, and
+`CliInteractionUnwritableStreamException` as well.
+
+A middleware of this stage can itself throw. `handle()` and `run()` each build
+a recovery report then, which names the throwable it answered and the
+middleware's. `handle()` returns that report, and `run()` writes it.
+
+Warning: the run in `run()` resumes the chain rather than restarting it.
+`Handler` advances its index once for each middleware it resolves and never
+rewinds it, and `CliMiddlewareServiceProvider` publishes one handler as a
+singleton. A command that throws makes `handle()` run the stage first, so a
+first run that reached the end of the chain leaves no middleware for the one
+in `run()`.
+
+`ThrowableCaughtMiddlewareContract` receives a default error output and the
+throwable, and returns the output to write:
 
 ```php
 use Throwable;
@@ -1184,9 +1339,9 @@ message.
 
 ### ProcessExiting
 
-`ProcessExitingMiddlewareContract` fires after the output is written and
-before the process exits. The middleware returns nothing, because the output
-is already on the terminal. Use this stage for deferred cleanup:
+`ProcessExitingMiddlewareContract` fires after the write of the output runs
+and before the process exits. The middleware returns nothing, because no later
+stage writes the output again. Use this stage for deferred cleanup:
 
 ```php
 use Valkyrja\Cli\Interaction\Input\Contract\InputContract;
@@ -1214,6 +1369,13 @@ class FlushLogsMiddleware implements ProcessExitingMiddlewareContract
 }
 ```
 
+`InputHandler::run()` runs this stage under a guard. A middleware that throws
+here does not stop the run, and the code the output reports still reaches
+`Exiter::exit()`. The guard writes a first report naming the throwable, which
+a `--silent` run suppresses. The throwable reaches no `ThrowableCaught`
+middleware. Report a failure from inside the middleware when a run must record
+it.
+
 ### Registering Middleware
 
 Every stage accepts global middleware through its `CliConfig` array (see
@@ -1238,14 +1400,14 @@ public function run(): OutputContract
 }
 ```
 
-| Stage             | Contract                            | When it fires                                | Per-route |
-| ----------------- | ----------------------------------- | -------------------------------------------- | --------- |
-| `InputReceived`   | `InputReceivedMiddlewareContract`   | Before route matching                        | No        |
-| `RouteMatched`    | `RouteMatchedMiddlewareContract`    | After match, before dispatch                 | Yes       |
-| `RouteNotMatched` | `RouteNotMatchedMiddlewareContract` | When no command matches                      | No        |
-| `RouteDispatched` | `RouteDispatchedMiddlewareContract` | After dispatch                               | Yes       |
-| `ThrowableCaught` | `ThrowableCaughtMiddlewareContract` | When a throwable is caught                   | Yes       |
-| `ProcessExiting`  | `ProcessExitingMiddlewareContract`  | After output is written, before process exit | Yes       |
+| Stage             | Contract                            | When it fires                                                | Per-route |
+| ----------------- | ----------------------------------- | ------------------------------------------------------------ | --------- |
+| `InputReceived`   | `InputReceivedMiddlewareContract`   | Before route matching                                        | No        |
+| `RouteMatched`    | `RouteMatchedMiddlewareContract`    | After match, before dispatch                                 | Yes       |
+| `RouteNotMatched` | `RouteNotMatchedMiddlewareContract` | When no command matches                                      | No        |
+| `RouteDispatched` | `RouteDispatchedMiddlewareContract` | After dispatch                                               | Yes       |
+| `ThrowableCaught` | `ThrowableCaughtMiddlewareContract` | When a throwable is caught                                   | Yes       |
+| `ProcessExiting`  | `ProcessExitingMiddlewareContract`  | After the write of the output runs, before the process exits | Yes       |
 
 ## Built-In Commands
 
@@ -1272,13 +1434,13 @@ The HTTP routing component registers `http:list` through its own provider,
 The global options work on every command. The `InputReceived` defaults handle
 the first two; the interaction options set the output flags:
 
-| Option             | Short | Effect                                   |
-| ------------------ | ----- | ---------------------------------------- |
-| `--help`           | `-h`  | Shows the command's help page            |
-| `--version`        | `-v`  | Shows the application version            |
-| `--quiet`          | `-q`  | Suppresses output unless an error occurs |
-| `--silent`         | `-s`  | Suppresses all output                    |
-| `--no-interaction` | `-N`  | Answers every question with its default  |
+| Option             | Short | Effect                                                                                             |
+| ------------------ | ----- | -------------------------------------------------------------------------------------------------- |
+| `--help`           | `-h`  | Shows the command's help page                                                                      |
+| `--version`        | `-v`  | Shows the application version                                                                      |
+| `--quiet`          | `-q`  | Writes nothing while the exit code is identical to `ExitCode::SUCCESS`. Reads no answer from stdin |
+| `--silent`         | `-s`  | Writes nothing. Reads no answer from stdin                                                         |
+| `--no-interaction` | `-N`  | Reads no answer from stdin                                                                         |
 
 ## Lifecycle
 
@@ -1297,17 +1459,19 @@ the first two; the interaction options set the output flags:
 7. The route handler runs as `$handler($container, $route)`. Then the
    `RouteDispatched` middleware runs on the handler's output.
 8. A throwable from steps 3 through 7 lands in the `ThrowableCaught`
-   middleware, which produces the error output. Boot, argv parsing, and the
-   steps below all run outside that guard.
-9. The output's messages write to the terminal.
-10. The `ProcessExiting` middleware runs, and `Exiter::exit()` ends the
-    process with the output's exit code.
+   middleware, which produces the error output. Boot and argv parsing run
+   outside that guard.
+9. The output's messages write to the destination the output holds. A write
+   throwable lands in the `ThrowableCaught` middleware as well, and whichever
+   output the recovery produced takes the steps below.
+10. The `ProcessExiting` middleware runs under a guard of its own, and
+    `Exiter::exit()` ends the process with the code the output reports.
 
 ```mermaid
 flowchart TD
     A([Cli::run]) --> B[Bootstrap - build Input from argv]
     B --> C[Stage 1 - InputReceived]
-    C -->|"short-circuit"| H[Write output to stdout]
+    C -->|"short-circuit"| H[Write output to its destination]
     C -->|throwable| J[Stage 5 - ThrowableCaught]
     C --> D{"Router: command matched?"}
     D -->|"no match"| E["Stage 3 - RouteNotMatched (error output)"]
@@ -1322,6 +1486,7 @@ flowchart TD
     I -->|throwable| J
     I --> H
     J --> H
+    H -->|throwable| J
     H --> K[Stage 6 - ProcessExiting]
     K --> L["Exiter::exit(ExitCode)"]
     L --> M([Process ends])

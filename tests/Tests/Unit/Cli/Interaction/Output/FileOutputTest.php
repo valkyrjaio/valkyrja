@@ -12,10 +12,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Output;
 
+use Valkyrja\Application\Directory\Directory;
+use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Message\Question;
+use Valkyrja\Cli\Interaction\Message\SuccessMessage;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\FileOutput;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionFileWriteException;
+use Valkyrja\Tests\Fixtures\Cli\Interaction\Output\FileOutputShortFilePutContentsFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
 
+use function file_get_contents;
 use function ob_get_clean;
 use function ob_start;
 
@@ -26,10 +34,11 @@ final class FileOutputTest extends TestCase
 {
     public function testOutputMessage(): void
     {
-        $text    = 'text';
-        $message = new Message($text);
+        $text     = 'text';
+        $message  = new Message($text);
+        $filepath = $this->getFilepath();
 
-        $output = new FileOutput(__DIR__ . '/../../../../storage/file-output-test.txt')
+        $output = new FileOutput($filepath)
             ->withAddedMessage($message);
 
         ob_start();
@@ -42,12 +51,113 @@ final class FileOutputTest extends TestCase
         self::assertTrue($outputWritten->hasWrittenMessage());
         self::assertFalse($outputWritten->hasUnwrittenMessage());
         self::assertEmpty($contents);
+        self::assertSame($message->getFormattedText(), file_get_contents($filepath));
+    }
+
+    public function testOutputMessageAppends(): void
+    {
+        $first    = new Message('first');
+        $second   = new Message('second');
+        $filepath = $this->getFilepath();
+
+        $output = new FileOutput($filepath)
+            ->withAddedMessages($first, $second);
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        self::assertSame(
+            $first->getFormattedText() . $second->getFormattedText(),
+            file_get_contents($filepath)
+        );
+    }
+
+    public function testOutputMessageWritesTheFormattedText(): void
+    {
+        $filepath = $this->getFilepath();
+        $message  = new SuccessMessage('text');
+
+        $output = new FileOutput($filepath)
+            ->withAddedMessage($message);
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        self::assertSame("\e[97;42mtext\e[39;49m", file_get_contents($filepath));
+    }
+
+    public function testOutputMessageThrowsAndReportsTheDiagnosticWhenTheWriteFails(): void
+    {
+        $filepath = Directory::storagePath('missing/file-output-test.txt');
+
+        $output = new FileOutput($filepath)
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionFileWriteException::class);
+        $this->expectExceptionMessage("Unable to write the whole message to the file `$filepath`: file_put_contents");
+
+        $output->writeMessages();
+    }
+
+    public function testOutputMessageThrowsWhenTheWriteIsShort(): void
+    {
+        $filepath = $this->getFilepath();
+
+        $output = new FileOutputShortFilePutContentsFixture($filepath)
+            ->withAddedMessage(new Message('text'));
+
+        $this->expectException(CliInteractionFileWriteException::class);
+        $this->expectExceptionMessage(
+            "Unable to write the whole message to the file `$filepath`: no diagnostic available"
+        );
+
+        $output->writeMessages();
+    }
+
+    public function testOutputMessageWritesNothingWhenTheOutputIsQuiet(): void
+    {
+        $filepath = $this->getFilepath();
+
+        $output = new FileOutput($filepath, isQuiet: true)
+            ->withAddedMessage(new Message('text'));
+
+        ob_start();
+        $output->writeMessages();
+        ob_get_clean();
+
+        // A quiet run that succeeds leaves the destination empty.
+        self::assertFileDoesNotExist($filepath);
+    }
+
+    public function testOutputMessageWritesAQuestionToTheFile(): void
+    {
+        $filepath = $this->getFilepath();
+
+        $question = new Question(
+            text: 'Continue?',
+            callable: static fn (OutputContract $output): OutputContract => $output,
+            answer: new Answer('yes')
+        );
+
+        // The output reads no answer while it is not interactive, and it writes the prompt to
+        // the file all the same.
+        $output = new FileOutput($filepath, isInteractive: false)
+            ->withAddedMessage($question);
+
+        ob_start();
+        $output->writeMessages();
+        $terminal = ob_get_clean();
+
+        self::assertStringContainsString('Continue?', (string) file_get_contents($filepath));
+        self::assertSame('', (string) $terminal);
     }
 
     public function testFilePath(): void
     {
-        $filepath  = __DIR__ . '/../../../../storage/file-output-test.txt';
-        $filepath2 = __DIR__ . '/../../../../storage/file-output-test2.txt';
+        $filepath  = $this->getFilepath();
+        $filepath2 = Directory::storagePath('file-output-test2.txt');
 
         $output  = (new FileOutput($filepath));
         $output2 = $output->withFilepath($filepath2);
@@ -55,5 +165,13 @@ final class FileOutputTest extends TestCase
         self::assertNotSame($output, $output2);
         self::assertSame($filepath, $output->getFilepath());
         self::assertSame($filepath2, $output2->getFilepath());
+    }
+
+    /**
+     * @return non-empty-string
+     */
+    private function getFilepath(): string
+    {
+        return Directory::storagePath('file-output-test.txt');
     }
 }

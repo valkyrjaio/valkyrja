@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Cli\Interaction\Writer;
 
+use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Answer;
 use Valkyrja\Cli\Interaction\Message\Message;
 use Valkyrja\Cli\Interaction\Message\Question;
@@ -22,6 +23,9 @@ use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionExpectedQuestionO
 use Valkyrja\Cli\Interaction\Writer\QuestionWriter;
 use Valkyrja\Tests\Fixtures\Cli\Interaction\Message\QuestionAskManipulationFixture;
 use Valkyrja\Tests\Unit\Abstract\TestCase;
+
+use function ob_get_clean;
+use function ob_start;
 
 final class QuestionWriterTest extends TestCase
 {
@@ -47,7 +51,7 @@ final class QuestionWriterTest extends TestCase
         $questionWriter->write(new Output(), new Message('text'));
     }
 
-    public function testWritesQuestionAndInvokesCallableForNonInteractiveOutput(): void
+    public function testReadsNoAnswerForASilentOutput(): void
     {
         $called   = false;
         $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
@@ -55,7 +59,7 @@ final class QuestionWriterTest extends TestCase
 
             return $output;
         };
-        $question = new Question(
+        $question = new QuestionAskManipulationFixture(
             text: 'text',
             callable: $callable,
             answer: new Answer(defaultResponse: 'default', allowedResponses: ['default', 'other']),
@@ -63,9 +67,74 @@ final class QuestionWriterTest extends TestCase
 
         $writer = new QuestionWriter();
 
-        $result = $writer->write(new Output(isSilent: true), $question);
+        // The silent flag alone stops the read.
+        ob_start();
+        $result  = $writer->write(new Output(isSilent: true), $question);
+        $printed = ob_get_clean();
 
         self::assertTrue($called);
+        // A silent output writes no prompt, and the silent flag also stops the read.
+        self::assertSame('', (string) $printed);
+        self::assertSame(0, $question->getTimesAsked());
+        self::assertInstanceOf(OutputContract::class, $result);
+    }
+
+    public function testReadsNoAnswerForANonInteractiveOutput(): void
+    {
+        $called   = false;
+        $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
+            $called = true;
+
+            return $output;
+        };
+        $question = new QuestionAskManipulationFixture(
+            text: 'text',
+            callable: $callable,
+            answer: new Answer(defaultResponse: 'default', allowedResponses: ['default', 'other']),
+        );
+
+        $writer = new QuestionWriter();
+
+        // The interactive flag alone stops the read.
+        ob_start();
+        $result  = $writer->write(new Output(isInteractive: false), $question);
+        $printed = ob_get_clean();
+
+        self::assertTrue($called);
+        // The prompt still reaches the destination, and the interactive flag stops the read.
+        self::assertStringContainsString('text', (string) $printed);
+        self::assertSame(0, $question->getTimesAsked());
+        self::assertInstanceOf(OutputContract::class, $result);
+    }
+
+    public function testReadsNoAnswerForAQuietOutputThatHoldsAnErrorCode(): void
+    {
+        $called   = false;
+        $callable = static function (OutputContract $output, Answer $answer) use (&$called): OutputContract {
+            $called = true;
+
+            return $output;
+        };
+        $question = new QuestionAskManipulationFixture(
+            text: 'text',
+            callable: $callable,
+            answer: new Answer(defaultResponse: 'defaultResponse', allowedResponses: ['defaultResponse']),
+        );
+
+        $writer = new QuestionWriter();
+
+        // A quiet output that holds an error code writes, and the quiet flag alone stops the
+        // read.
+        $output = new Output(isQuiet: true)->withExitCode(ExitCode::ERROR);
+
+        ob_start();
+        $result  = $writer->write($output, $question);
+        $printed = ob_get_clean();
+
+        self::assertTrue($called);
+        // The prompt still reaches the destination, and the quiet flag stops the read.
+        self::assertStringContainsString('text', (string) $printed);
+        self::assertSame(0, $question->getTimesAsked());
         self::assertInstanceOf(OutputContract::class, $result);
     }
 

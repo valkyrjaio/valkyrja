@@ -16,6 +16,14 @@ use Override;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Output\Contract\FileOutputContract;
+use Valkyrja\Cli\Interaction\Throwable\Exception\CliInteractionFileWriteException;
+
+use function error_clear_last;
+use function error_get_last;
+use function file_put_contents;
+use function strlen;
+
+use const FILE_APPEND;
 
 class FileOutput extends Output implements FileOutputContract
 {
@@ -63,10 +71,38 @@ class FileOutput extends Output implements FileOutputContract
 
     /**
      * @inheritDoc
+     *
+     * @throws CliInteractionFileWriteException When the write does not store the whole message
      */
     #[Override]
     protected function outputMessage(MessageContract $message): void
     {
-        // TODO: Implement
+        $data = $message->getFormattedText();
+
+        error_clear_last();
+
+        if ($this->filePutContents($this->filepath, $data) !== strlen($data)) {
+            $reason = error_get_last()['message'] ?? 'no diagnostic available';
+
+            throw new CliInteractionFileWriteException(
+                "Unable to write the whole message to the file `$this->filepath`: $reason"
+            );
+        }
+    }
+
+    /**
+     * Append data to a file.
+     *
+     * This call suppresses the diagnostic, because the return value reports the failure. An enabled
+     * error handler turns the diagnostic into an ErrorException, which would replace the throwable.
+     *
+     * @param non-empty-string $filepath The filepath
+     * @param string           $data     The data
+     *
+     * @return int<0, max>|false
+     */
+    protected function filePutContents(string $filepath, string $data): int|false
+    {
+        return @file_put_contents(filename: $filepath, data: $data, flags: FILE_APPEND);
     }
 }
