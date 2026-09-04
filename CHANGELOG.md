@@ -1,6 +1,14 @@
 # Release Notes for 26.x
 
-## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.14.11...26.x)
+## [Unreleased](https://github.com/valkyrjaio/valkyrja/compare/v26.15.0...26.x)
+
+## [v26.15.0](https://github.com/valkyrjaio/valkyrja/compare/v26.14.11...v26.15.0) - 2026-09-04
+
+* [Cli] fix: Write CLI output to the configured file and stream by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1225
+* [Cli] feat(#1263)!: Separate a provided parameter from one with a value by [@MelechMizrachi](https://github.com/MelechMizrachi) in https://github.com/valkyrjaio/valkyrja-php/pull/1266
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1272
+* [Workflow] ci: Update .github workflow refs to v26.25.6 by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1274
+* [Dependency] build: Update composer dependencies by [@valkyrja-volundr](https://github.com/valkyrja-volundr)[bot] in https://github.com/valkyrjaio/valkyrja-php/pull/1273
 
 ## [v26.14.11](https://github.com/valkyrjaio/valkyrja/compare/v26.14.10...v26.14.11) - 2026-09-03
 
