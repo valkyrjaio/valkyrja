@@ -129,7 +129,7 @@ class Container implements ContainerContract
     #[Override]
     public function bindAlias(string $alias, string $id): static
     {
-        $this->assertAliasIsNotCyclic($alias, $id);
+        $this->validateAliasIsNotCyclic($alias, $id);
 
         $this->aliases[$alias] = $id;
 
@@ -363,12 +363,12 @@ class Container implements ContainerContract
     }
 
     /**
-     * Assert that an alias does not point at a chain that returns to it.
+     * Validate that an alias does not point at a chain that returns to it.
      *
      * @param class-string $alias The alias being bound
      * @param class-string $id    The id the alias points at
      */
-    protected function assertAliasIsNotCyclic(string $alias, string $id): void
+    protected function validateAliasIsNotCyclic(string $alias, string $id): void
     {
         $current = $id;
 
