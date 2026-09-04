@@ -827,9 +827,10 @@ the handler before the runtime writes the response out.
 Override `bootstrapParentServices()` to resolve in the parent whatever every
 request should share. An id resolved here lives in the frozen parent, and each
 child reuses that one instance. A child still delegates any other id to the
-parent, and the parent answers it as it would for any caller. The base
-implementation resolves the route collection, so an override calls
-`parent::bootstrapParentServices($app)` first.
+parent, and the parent answers it as it would for any caller, except a
+parent-declared alias onto a singleton the parent never built, which the child
+builds itself. The base implementation resolves the route collection, so an
+override calls `parent::bootstrapParentServices($app)` first.
 
 ### Swapping the Child Container
 

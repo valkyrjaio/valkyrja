@@ -298,6 +298,20 @@ final class NativeChildContainerTest extends TestCase
         self::assertFalse($this->parent->isSingletonInstance('Unresolved'));
     }
 
+    public function testAChainOntoAnUnbuiltParentSingletonResolvesInTheChild(): void
+    {
+        // outer → middle → the singleton, none of it built in the parent
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+        $this->parent->bindAlias('middle', SingletonFixture::class);
+        $this->parent->bindAlias('outer', 'middle');
+
+        $instance = $this->child->get('outer');
+
+        self::assertInstanceOf(SingletonFixture::class, $instance);
+        self::assertSame($instance, $this->child->get(SingletonFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
+    }
+
     public function testGetAliasedFromParent(): void
     {
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);

@@ -292,6 +292,21 @@ final class ChildContainerTest extends TestCase
         self::assertFalse($this->parent->isSingletonInstance('Unresolved'));
     }
 
+    public function testAChainOntoAnUnbuiltParentSingletonResolvesInTheChild(): void
+    {
+        // outer → middle → the singleton, none of it built in the parent
+        $this->parent->bindSingleton(SingletonFixture::class, [SingletonFixture::class, 'make']);
+        $this->parent->bindAlias('middle', SingletonFixture::class);
+        $this->parent->bindAlias('outer', 'middle');
+        $child = $this->createChild();
+
+        $instance = $child->get('outer');
+
+        self::assertInstanceOf(SingletonFixture::class, $instance);
+        self::assertSame($instance, $child->get(SingletonFixture::class));
+        self::assertFalse($this->parent->isSingletonInstance(SingletonFixture::class));
+    }
+
     public function testGetAliasedFromParent(): void
     {
         $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
@@ -352,15 +367,6 @@ final class ChildContainerTest extends TestCase
         $this->expectException(ContainerInvalidReferenceException::class);
 
         $child->getAliased('svcAlias');
-    }
-
-    public function testGetAliasedResolvesASelfAliasInTheParent(): void
-    {
-        $this->parent->bind(ServiceFixture::class, [ServiceFixture::class, 'make']);
-        $this->parent->bindAlias(ServiceFixture::class, ServiceFixture::class);
-        $child = $this->createChild();
-
-        self::assertInstanceOf(ServiceFixture::class, $child->getAliased(ServiceFixture::class));
     }
 
     public function testIsDeferredReportsOnlyTheChildsOwnCallbacks(): void

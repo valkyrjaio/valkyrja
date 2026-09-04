@@ -137,9 +137,20 @@ $logger = $container->get(LoggerContract::class);
 $same   = $container->get(FileLogger::class);
 ```
 
-`bindAlias()` stores the mapping only. The target id needs its own binding.
-The container checks the target when the alias resolves, not when you bind
-the alias.
+`bindAlias()` stores the mapping only. The target id needs its own binding, and
+the container checks that target when the alias resolves, not when you bind the
+alias.
+
+The alias itself is checked at once. `bindAlias()` throws
+`ContainerCyclicAliasException` when the target already resolves back to the
+alias, and when the two are the same id, because such a chain has no end:
+
+```php
+$container->bindAlias(NotifierContract::class, SlackNotifier::class);
+
+// Throws: SlackNotifier already resolves to NotifierContract.
+$container->bindAlias(SlackNotifier::class, NotifierContract::class);
+```
 
 ### setSingleton()
 
@@ -720,12 +731,19 @@ OpenSwoole, RoadRunner) use to keep request-scoped state out of the parent.
 
 ### The Parent/Child Invariant
 
-The parent container bootstraps once when the worker process starts. The
-parent is then **frozen**. Nothing may write to the parent again. Each
-incoming request receives a fresh child container. The child checks its own
-maps first; when an id is not registered locally, the child falls back to the
-parent read-only. When the request ends, the child is discarded and the
-parent is unchanged.
+The parent container bootstraps once when the worker process starts. The parent
+is then **frozen**: its registrations do not change again. Each incoming request
+receives a fresh child container built from one snapshot of the parent, so the
+child holds the parent's singleton markers and publish callbacks and answers
+almost everything itself.
+
+The child checks its own maps first. An id it cannot answer goes to the parent,
+and the parent answers it as it would for any caller, which for a deferred id or
+an unbuilt singleton means the parent resolves and keeps the result. That is a
+shared service resolving once, not a leak. What the child never does is rebuild
+something the parent already holds, and what it never leaks is its own state: a
+registration made during a request stays in the child, and the child is discarded
+when the request ends.
 
 Deferred services stay available in a child. The child receives the parent's
 publish callbacks through `ContainerData`, so the first lookup of an
@@ -738,11 +756,6 @@ or the singleton binding from the data. An id that the method force-resolves
 before the request loop is cached in the frozen parent once, and every child
 reuses that instance. An id left unresolved is built again in each child that
 requests it.
-
-The method is about cost. An id the child cannot answer from its own maps goes to
-the parent, and the parent answers it as it would for any caller: it publishes a
-deferred id, and it caches a singleton it builds. That instance is then shared by
-every later child, which is what resolving the id here buys.
 
 ### The Child's Copy of the Data
 
@@ -861,18 +874,9 @@ Off that path the receiver follows the implementation, not the alias.
 child. `ChildContainer` hands the same call to the parent and gives it the
 parent.
 
-The guard asks the parent the same questions the parent's own `get()` asks, in
-the same order:
-
-1. Is a publish callback registered and still unrun? `isDeferred()` reports the
-   registration, and `isPublished()` reports the run.
-2. Is an instance cached?
-3. Is a singleton bound?
-
-Both containers ask the parent these questions the same way. They answer
-`isDeferred()` about **themselves** differently, because they hold different
-state. `ChildContainer` copies the callbacks, so it answers for its own map.
-`NativeChildContainer` copies nothing, so it answers for the child and the
+The two answer `isDeferred()` about **themselves** differently, because they hold
+different state. `ChildContainer` copies the callbacks, so it answers for its own
+map. `NativeChildContainer` copies nothing, so it answers for the child and the
 parent.
 
 ### Using a Child Container

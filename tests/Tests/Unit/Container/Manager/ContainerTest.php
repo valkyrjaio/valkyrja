@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Container\Manager;
 
 use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
+use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
 use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
@@ -119,6 +120,26 @@ final class ContainerTest extends TestCase
         $container->bindAlias('first', 'second');
 
         self::assertSame('second', $container->getAliasedId('first'));
+    }
+
+    public function testBindAliasRejectsAnAliasOfItself(): void
+    {
+        $container = $this->container;
+
+        $this->expectException(ContainerCyclicAliasException::class);
+
+        $container->bindAlias(ServiceFixture::class, ServiceFixture::class);
+    }
+
+    public function testBindAliasStopsOnACycleThatArrivedThroughData(): void
+    {
+        $container = $this->container;
+        // setFromData() bypasses bindAlias(), so the map can already hold a cycle
+        $container->setFromData(new ContainerData(aliases: ['first' => 'second', 'second' => 'first']));
+
+        $container->bindAlias('third', 'first');
+
+        self::assertSame('first', $container->getAliasedId('third'));
     }
 
     public function testBindAliasRejectsAChainThatReturnsToTheAlias(): void

@@ -370,6 +370,11 @@ class Container implements ContainerContract
      */
     protected function validateAliasIsNotCyclic(string $alias, string $id): void
     {
+        if ($alias === $id) {
+            throw new ContainerCyclicAliasException($alias, $id);
+        }
+
+        $seen    = [];
         $current = $id;
 
         while (($aliasedId = $this->getAliasedId($current)) !== null) {
@@ -377,7 +382,14 @@ class Container implements ContainerContract
                 throw new ContainerCyclicAliasException($alias, $id);
             }
 
-            $current = $aliasedId;
+            // A map that arrived through setFromData() can already hold a cycle this
+            // binding is no part of, so the walk stops rather than spinning on it.
+            if (isset($seen[$aliasedId])) {
+                return;
+            }
+
+            $seen[$aliasedId] = true;
+            $current          = $aliasedId;
         }
     }
 

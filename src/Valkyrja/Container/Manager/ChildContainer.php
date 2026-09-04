@@ -136,19 +136,45 @@ class ChildContainer extends Container
             return parent::getAliasedWithoutChecks($id, $arguments);
         }
 
-        $aliasedId = $this->parent->getAliasedId($id);
+        $target = $this->getParentAliasTarget($id);
 
-        if ($aliasedId === null) {
+        if ($target === null) {
             return null;
         }
 
         // The parent holds the target as a singleton it has not built. Resolving it
         // there would build a second copy for a request that already holds the
         // binding, so the child builds its own.
-        if ($this->parent->isSingletonBinding($aliasedId) && ! $this->parent->isSingletonInstance($aliasedId)) {
-            return $this->get($aliasedId, $arguments);
+        if ($this->parent->isSingletonBinding($target) && ! $this->parent->isSingletonInstance($target)) {
+            return $this->get($target, $arguments);
         }
 
         return $this->parent->getAliased($id, $arguments);
+    }
+
+    /**
+     * Walk the parent's chain of aliases to the id it ends at.
+     *
+     * @param class-string $id The alias
+     *
+     * @return class-string|null
+     */
+    private function getParentAliasTarget(string $id): string|null
+    {
+        $seen    = [];
+        $current = $id;
+        $target  = null;
+
+        while (($aliasedId = $this->parent->getAliasedId($current)) !== null) {
+            if (isset($seen[$aliasedId])) {
+                break;
+            }
+
+            $seen[$aliasedId] = true;
+            $target           = $aliasedId;
+            $current          = $aliasedId;
+        }
+
+        return $target;
     }
 }
