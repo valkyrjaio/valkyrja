@@ -84,7 +84,7 @@ class HelpCommand
     #[RouteHandler([CliRoutingCliRouteProvider::class, 'helpHandler'])]
     public function run(): OutputContract
     {
-        $commandName = $this->route->getOption('command')->getFirstValue();
+        $commandName = $this->route->getOptionValue('command');
 
         if (! $this->collection->has($commandName)) {
             return $this->outputFactory

@@ -70,17 +70,13 @@ class ListBashCommand
             ->createOutput();
 
         $routes    = $this->collection->all();
+        $namespace = $this->route->getArgumentValue('namespace');
         $colonAt   = false;
 
-        if ($this->route->hasArgument('namespace')) {
-            $namespaceArgument = $this->route->getArgument('namespace');
+        if ($namespace !== '') {
+            $colonAt = strpos($namespace, ':');
 
-            if ($namespaceArgument->hasFirstValue()) {
-                $namespace = $namespaceArgument->getFirstValue();
-                $colonAt   = strpos($namespace, ':');
-
-                $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
-            }
+            $routes = array_filter($routes, static fn (RouteContract $route) => str_starts_with($route->getName(), $namespace));
         }
 
         $routesForBash = array_map(

@@ -424,4 +424,22 @@ final class ArgumentParameterTest extends TestCase
 
         self::assertSame($parameter, $parameter->validateValues());
     }
+
+    public function testIsProvidedAndHasFirstValue(): void
+    {
+        $parameter = new ArgumentParameter(name: self::NAME, description: self::DESCRIPTION);
+
+        self::assertFalse($parameter->isProvided());
+        self::assertFalse($parameter->hasFirstValue());
+
+        $empty = $parameter->withArguments(new Argument(''));
+
+        self::assertTrue($empty->isProvided());
+        self::assertFalse($empty->hasFirstValue());
+
+        $withValue = $parameter->withArguments(new Argument('value'));
+
+        self::assertTrue($withValue->isProvided());
+        self::assertTrue($withValue->hasFirstValue());
+    }
 }

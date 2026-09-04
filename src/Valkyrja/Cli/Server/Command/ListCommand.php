@@ -70,16 +70,11 @@ class ListCommand
     #[RouteHandler([CliRoutingCliRouteProvider::class, 'listHandler'])]
     public function run(): OutputContract
     {
-        $namespace = '';
         $routes    = $this->collection->all();
+        $namespace = $this->route->getOptionValue('namespace');
 
-        if ($this->route->hasOption('namespace')) {
-            $namespaceOption = $this->route->getOption('namespace');
-
-            if ($namespaceOption->hasFirstValue()) {
-                $namespace = $namespaceOption->getFirstValue();
-                $routes    = $this->filterRoutesByNamespace($routes, $namespace);
-            }
+        if ($namespace !== '') {
+            $routes = $this->filterRoutesByNamespace($routes, $namespace);
         }
 
         if ($routes === []) {

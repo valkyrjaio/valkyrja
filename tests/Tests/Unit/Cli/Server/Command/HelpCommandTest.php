@@ -16,11 +16,12 @@ use Valkyrja\Application\Data\CliConfig;
 use Valkyrja\Cli\Interaction\Enum\ExitCode;
 use Valkyrja\Cli\Interaction\Message\Contract\MessageContract;
 use Valkyrja\Cli\Interaction\Message\Message;
+use Valkyrja\Cli\Interaction\Option\Option;
+use Valkyrja\Cli\Interaction\Output\Contract\OutputContract;
 use Valkyrja\Cli\Interaction\Output\Factory\Contract\OutputFactoryContract;
 use Valkyrja\Cli\Interaction\Output\PlainOutput;
 use Valkyrja\Cli\Routing\Collection\Contract\RouteCollectionContract;
 use Valkyrja\Cli\Routing\Data\ArgumentParameter;
-use Valkyrja\Cli\Routing\Data\Contract\OptionParameterContract;
 use Valkyrja\Cli\Routing\Data\Contract\RouteContract;
 use Valkyrja\Cli\Routing\Data\OptionParameter;
 use Valkyrja\Cli\Routing\Data\Route;
@@ -39,15 +40,7 @@ final class HelpCommandTest extends TestCase
     {
         $commandName = 'foo';
 
-        $option = $this->createMock(OptionParameterContract::class);
-        $option->expects($this->once())
-            ->method('getFirstValue')
-            ->willReturn($commandName);
-        $route = $this->createMock(RouteContract::class);
-        $route->expects($this->once())
-            ->method('getOption')
-            ->with('command')
-            ->willReturn($option);
+        $route      = $this->makeHelpRoute($commandName);
         $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
@@ -121,21 +114,7 @@ final class HelpCommandTest extends TestCase
             ]
         );
 
-        $option = $this->createMock(OptionParameterContract::class);
-        $option->expects($this->once())
-            ->method('getFirstValue')
-            ->willReturn($commandName);
-        $route = $this->createMock(RouteContract::class);
-        $route->expects($this->once())
-            ->method('getOption')
-            ->with('command')
-            ->willReturn($option);
-        $route->expects($this->once())
-            ->method('getDescription')
-            ->willReturn('Help for a command');
-        $route->expects($this->once())
-            ->method('getName')
-            ->willReturn('help');
+        $route      = $this->makeHelpRoute($commandName);
         $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
@@ -199,21 +178,7 @@ final class HelpCommandTest extends TestCase
             handler: static fn (): null => null,
         );
 
-        $option = $this->createMock(OptionParameterContract::class);
-        $option->expects($this->once())
-            ->method('getFirstValue')
-            ->willReturn($commandName);
-        $route = $this->createMock(RouteContract::class);
-        $route->expects($this->once())
-            ->method('getOption')
-            ->with('command')
-            ->willReturn($option);
-        $route->expects($this->once())
-            ->method('getDescription')
-            ->willReturn('Help for a command');
-        $route->expects($this->once())
-            ->method('getName')
-            ->willReturn('help');
+        $route      = $this->makeHelpRoute($commandName);
         $collection = $this->createMock(RouteCollectionContract::class);
         $collection->expects($this->once())
             ->method('has')
@@ -259,11 +224,53 @@ final class HelpCommandTest extends TestCase
         return new Message(text: 'Help Command Output');
     }
 
+    public function testRunWithARouteThatDeclaresNoCommandOption(): void
+    {
+        $collection = $this->createMock(RouteCollectionContract::class);
+        $collection->expects($this->once())
+            ->method('has')
+            ->with('')
+            ->willReturn(false);
+
+        $route = new Route(
+            name: 'help',
+            description: 'Help for a command',
+            handler: static fn (): OutputContract => new PlainOutput(),
+        );
+
+        $command = new HelpCommand(
+            config: new CliConfig(),
+            route: $route,
+            collection: $collection,
+            outputFactory: $this->makeOutputFactory(),
+        );
+
+        $output = $command->run();
+
+        self::assertSame(ExitCode::ERROR, $output->getExitCode());
+    }
+
     private function makeOutputFactory(): OutputFactoryContract
     {
         $outputFactory = $this->createMock(OutputFactoryContract::class);
         $outputFactory->expects($this->once())->method('createOutput')->willReturn(new PlainOutput());
 
         return $outputFactory;
+    }
+
+    /**
+     * Build a help route that declares the command option and carries the provided value.
+     */
+    private function makeHelpRoute(string $commandName): RouteContract
+    {
+        return new Route(
+            name: 'help',
+            description: 'Help for a command',
+            handler: static fn (): OutputContract => new PlainOutput(),
+            options: [
+                new OptionParameter(name: 'command', description: 'The name of the command')
+                    ->withOptions(new Option('command', $commandName)),
+            ],
+        );
     }
 }

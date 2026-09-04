@@ -977,4 +977,22 @@ final class OptionParameterTest extends TestCase
 
         self::assertSame($valid, $valid->validateValues());
     }
+
+    public function testIsProvidedAndHasFirstValue(): void
+    {
+        $parameter = new OptionParameter(name: self::NAME, description: self::DESCRIPTION);
+
+        self::assertFalse($parameter->isProvided());
+        self::assertFalse($parameter->hasFirstValue());
+
+        $flag = $parameter->withOptions(new Option(self::NAME));
+
+        self::assertTrue($flag->isProvided());
+        self::assertFalse($flag->hasFirstValue());
+
+        $withValue = $parameter->withOptions(new Option(self::NAME, 'value'));
+
+        self::assertTrue($withValue->isProvided());
+        self::assertTrue($withValue->hasFirstValue());
+    }
 }

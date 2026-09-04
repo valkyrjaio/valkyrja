@@ -125,6 +125,15 @@ abstract class Parameter implements ParameterContract
      * @inheritDoc
      */
     #[Override]
+    public function hasFirstValue(): bool
+    {
+        return $this->getFirstValue() !== '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
     abstract public function getCastValues(): array;
 
     /**

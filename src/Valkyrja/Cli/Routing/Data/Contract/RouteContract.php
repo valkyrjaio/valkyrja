@@ -101,6 +101,21 @@ interface RouteContract
     public function getArgument(string $name): ArgumentParameterContract;
 
     /**
+     * Determine if the input provided an argument that the route declares.
+     *
+     * @param string $name The argument name
+     */
+    public function hasProvidedArgument(string $name): bool;
+
+    /**
+     * Get the first value the input gave an argument, or the default.
+     *
+     * @param string $name    The argument name
+     * @param string $default The value to return if the first value is empty
+     */
+    public function getArgumentValue(string $name, string $default = ''): string;
+
+    /**
      * Create a new route with the specified argument parameters.
      *
      * @param ArgumentParameterContract ...$arguments The argument parameters
@@ -137,6 +152,25 @@ interface RouteContract
      * @param string $name The option name
      */
     public function getOption(string $name): OptionParameterContract;
+
+    /**
+     * Determine if the input provided an option that the route declares.
+     *
+     * @param string $name The option name
+     */
+    public function hasProvidedOption(string $name): bool;
+
+    /**
+     * Get the first value the input gave an option, or a default.
+     *
+     * A default given here wins, and `null` is the only value that reaches the
+     * option's own declared default value. The method returns an empty string
+     * when the option declares no default value.
+     *
+     * @param string      $name    The option name
+     * @param string|null $default The value to return if the first value is empty, or null for the declared default
+     */
+    public function getOptionValue(string $name, string|null $default = null): string;
 
     /**
      * Create a new route with the specified option parameters.

@@ -465,8 +465,8 @@ class GreetCommand
     {
         // php myapp user:greet Melech
         // php myapp user:greet Melech --shout
-        $name     = $this->route->getArgument('name')->getFirstValue();
-        $shout    = $this->route->getOption('shout')->hasFirstValue();
+        $name     = $this->route->getArgumentValue('name');
+        $shout    = $this->route->hasProvidedOption('shout');
         $greeting = "Hello, $name!";
 
         return $this->outputFactory
@@ -517,23 +517,53 @@ The route carries the parsed argument and option values. Read them by
 parameter name:
 
 ```php
-$commandName = $route->getOption('command')->getFirstValue();
-$appName     = $route->getArgument('applicationName')->getFirstValue();
+$commandName = $route->getOptionValue('command');
+$appName     = $route->getArgumentValue('applicationName');
 ```
 
 `RouteContract::hasArgument()` and `hasOption()` report whether the route
-**declares** a parameter with that name. These methods do not report whether
-the invocation provided a value. The parameter's `hasFirstValue()` reports
-whether a value arrived, so use `hasFirstValue()` to test for an optional
-value or flag:
+**declares** a parameter with that name. The router keeps every declared
+parameter on the route, so these two report nothing about the invocation.
+
+Three other methods report what the invocation provided:
+
+- `RouteContract::hasProvidedOption()` and `hasProvidedArgument()` report that
+  the invocation provided the parameter, with or without a value. Use one of
+  these for a flag.
+- `ParameterContract::isProvided()` reports the same for a parameter you hold.
+
+`ParameterContract::hasFirstValue()` answers a third question. It reports that
+the invocation provided a first value that is not empty, so use it for an
+optional value rather than for a flag.
+
+`RouteContract::getOptionValue()` and `getArgumentValue()` read the first value.
+An invocation that provided nothing and one that provided an empty value both
+reach the default. `getOptionValue()` reads three sources in this order:
+
+1. The first value the caller gave, when that value is not empty.
+2. A default given at the call site, when the call gives one.
+3. The `defaultValue` the option declares.
+
+An empty string given at the call site counts as a default, so it suppresses
+the declared one. Omit the default, or pass `null`, to reach step 3.
+
+`getArgumentValue()` reads step 1 and step 2 only, because an argument declares
+no default. Each method takes the parameter name first and the default second:
 
 ```php
-$formatOption = $route->getOption('format');
+// The `format` option declares `defaultValue: 'json'`.
+$format = $route->getOptionValue('format');
 
-$format = $formatOption->hasFirstValue()
-    ? $formatOption->getFirstValue()
-    : $formatOption->getDefaultValue();
+$namespace = $route->getArgumentValue('namespace', 'all');
 ```
+
+`hasProvidedOption()`, `hasProvidedArgument()`, `getOptionValue()`, and
+`getArgumentValue()` never throw. A name the route does not declare therefore
+reads as "the caller passed nothing" through those methods. `getOption()` and
+`getArgument()` throw on that name instead. `Route` matches a parameter by the
+long name only, so pass the long name and not a short name. Read the parameter's
+own `getOptions()` or `getArguments()` for every value of a parameter in
+`ARRAY` value mode.
 
 ### Command Name Grouping
 
@@ -666,20 +696,18 @@ public function run(): OutputContract
     // php myapp user:export --format=csv
     // php myapp user:export -f=csv
     // php myapp user:export --format=xml   -> validation exception
-    $formatOption = $this->route->getOption('format');
-
-    $format = $formatOption->hasFirstValue()
-        ? $formatOption->getFirstValue()
-        : $formatOption->getDefaultValue();
+    $format = $this->route->getOptionValue('format');
 }
 ```
 
-`defaultValue` is informational: help output marks it among the valid values,
-and `getDefaultValue()` returns it. The framework does not insert it into a
-missing option, so apply the fallback yourself as shown.
+Help output marks `defaultValue` among the valid values, and
+`getOptionValue()` returns it when the invocation gave the option no value. An
+option that also declares `validValues` rejects an empty value before the read,
+so the fallback there covers the invocation that omits the option.
 
-A `NONE` option takes no value. This option is a pure flag. Test the option
-with `hasFirstValue()`:
+A `NONE` option takes no value. This option is a pure flag, so
+`hasFirstValue()` is always `false` for it. Test the option with
+`hasProvidedOption()`:
 
 ```php
 use Valkyrja\Cli\Routing\Attribute\OptionParameter;
@@ -697,7 +725,7 @@ public function run(): OutputContract
 {
     // php myapp db:migrate --dry-run
     // php myapp db:migrate -d
-    $isDryRun = $this->route->getOption('dry-run')->hasFirstValue();
+    $isDryRun = $this->route->hasProvidedOption('dry-run');
 }
 ```
 
