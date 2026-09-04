@@ -924,7 +924,7 @@ report. Each builds it when `getOutputFromThrowable()` raises or when the
 `ThrowableCaught` stage raises. `run()` builds it at three more points:
 
 - when the write of the output that stage returned fails
-- when the exit stage's own first report raises
+- when the `ProcessExiting` stage's own first report fails to build or to write
 - when reading the exit code from the output raises
 
 Every recovery report names the command. It names no command when reading the
