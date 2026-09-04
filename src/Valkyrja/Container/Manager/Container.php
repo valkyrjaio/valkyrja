@@ -16,6 +16,7 @@ use Override;
 use Valkyrja\Container\Data\ContainerData;
 use Valkyrja\Container\Manager\Contract\ContainerContract;
 use Valkyrja\Container\Manager\Trait\ProvidersAware;
+use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 
 use function array_merge;
@@ -128,6 +129,8 @@ class Container implements ContainerContract
     #[Override]
     public function bindAlias(string $alias, string $id): static
     {
+        $this->assertAliasIsNotCyclic($alias, $id);
+
         $this->aliases[$alias] = $id;
 
         return $this;
@@ -357,6 +360,25 @@ class Container implements ContainerContract
 
         // Make the object by dispatching the service
         return $service($this, $arguments);
+    }
+
+    /**
+     * Assert that an alias does not point at a chain that returns to it.
+     *
+     * @param class-string $alias The alias being bound
+     * @param class-string $id    The id the alias points at
+     */
+    protected function assertAliasIsNotCyclic(string $alias, string $id): void
+    {
+        $current = $id;
+
+        while (($aliasedId = $this->getAliasedId($current)) !== null) {
+            if ($aliasedId === $alias) {
+                throw new ContainerCyclicAliasException($alias, $id);
+            }
+
+            $current = $aliasedId;
+        }
     }
 
     /**

@@ -16,6 +16,7 @@ use Throwable;
 use Valkyrja\Application\Kernel\Contract\ApplicationContract;
 use Valkyrja\Container\Manager\Container;
 use Valkyrja\Container\Throwable\Exception\Abstract\ContainerInvalidArgumentException;
+use Valkyrja\Container\Throwable\Exception\ContainerCyclicAliasException;
 use Valkyrja\Container\Throwable\Exception\ContainerInvalidReferenceException;
 use Valkyrja\Tests\Fixtures\Container\Provider\ProvidedFixture;
 use Valkyrja\Tests\Fixtures\Container\Provider\PublishingProviderFixture;
@@ -118,6 +119,40 @@ final class ContainerTest extends TestCase
         $container->bindAlias('first', 'second');
 
         self::assertSame('second', $container->getAliasedId('first'));
+    }
+
+    public function testBindAliasRejectsAChainThatReturnsToTheAlias(): void
+    {
+        $container = $this->container;
+
+        $container->bindAlias('first', 'second');
+
+        $this->expectException(ContainerCyclicAliasException::class);
+
+        $container->bindAlias('second', 'first');
+    }
+
+    public function testBindAliasRejectsALongerChainThatReturnsToTheAlias(): void
+    {
+        $container = $this->container;
+
+        $container->bindAlias('first', 'second');
+        $container->bindAlias('second', 'third');
+
+        $this->expectException(ContainerCyclicAliasException::class);
+
+        $container->bindAlias('third', 'first');
+    }
+
+    public function testBindAliasAllowsAChainThatDoesNotReturn(): void
+    {
+        $container = $this->container;
+
+        $container->bindAlias('first', 'second');
+        $container->bindAlias('second', ServiceFixture::class);
+
+        self::assertSame('second', $container->getAliasedId('first'));
+        self::assertSame(ServiceFixture::class, $container->getAliasedId('second'));
     }
 
     public function testBindSingleton(): void

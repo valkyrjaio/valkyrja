@@ -739,20 +739,10 @@ before the request loop is cached in the frozen parent once, and every child
 reuses that instance. An id left unresolved is built again in each child that
 requests it.
 
-Warning: the method is about correctness whenever a child must reach an id
-through a parent that would write while answering it. The child refuses instead
-of delegating.
-
-- A direct lookup the child cannot answer raises
-  `ContainerUnpublishedParentTargetException` when the parent holds an unrun
-  publish callback for the id.
-- A lookup through an alias that only the parent declares raises
-  `ContainerUnresolvedParentAliasException`. Two parent states raise it: an
-  unrun publish callback for the target, and a singleton binding the parent has
-  not resolved ([Where an Alias Resolves](#where-an-alias-resolves)).
-
-A parent that answers without writing delegates as before, and so does an id the
-child can answer from its own maps.
+The method is about cost. An id the child cannot answer from its own maps goes to
+the parent, and the parent answers it as it would for any caller: it publishes a
+deferred id, and it caches a singleton it builds. That instance is then shared by
+every later child, which is what resolving the id here buys.
 
 ### The Child's Copy of the Data
 
@@ -857,15 +847,9 @@ The example binds a service. The three-step strategy above takes precedence over
 an alias. When the parent holds a resolved instance and the child holds none, a
 direct child lookup reuses the parent's instance.
 
-Warning: the parent must already answer the target without caching it. When the
-parent would build and cache the target for the first time, a child container
-throws `ContainerUnresolvedParentAliasException` instead of writing to the
-frozen parent. Resolve or publish that target in `bootstrapParentServices()`.
-
-Both implementations follow this rule and apply the same guard.
-`ChildContainer` reads the parent through `ContainerContract`, and
-`NativeChildContainer` reads the parent's maps. Both ask the same questions in
-the same order.
+The parent answers the target as it would for any caller. A deferred target
+publishes in the parent, and a singleton the parent builds caches there, so every
+later child reuses it.
 
 Warning: a **parent-declared** alias hands the call to the parent in both
 implementations, so a parent-bound factory receives the parent. This is the one
@@ -919,7 +903,7 @@ the full lifecycle.
 
 ## Exceptions
 
-The container throws four exceptions, all under
+The container throws three exceptions, all under
 `Valkyrja\Container\Throwable\Exception`.
 
 **`ContainerInvalidReferenceException`** — A resolution method received an id
@@ -931,25 +915,12 @@ type. It extends the SPL `InvalidArgumentException`.
 `publishers()` map entry that is not callable. It extends the SPL
 `RuntimeException`.
 
-**`ContainerUnresolvedParentAliasException`** — A child container lookup of an
-alias that only the parent declares would make the parent build and cache the
-target for the first time
-([Where an Alias Resolves](#where-an-alias-resolves)). It extends the SPL
-`RuntimeException`. The same lookup raises
-`ContainerInvalidReferenceException` for a cyclic chain of parent aliases,
-because such a chain reaches no target.
+**`ContainerCyclicAliasException`** — `bindAlias()` received a target that
+already resolves back to the alias, so the pair would form a chain with no end.
+The check runs at registration, not at resolution. It extends the SPL
+`InvalidArgumentException`.
 
-**`ContainerUnpublishedParentTargetException`** — A `ChildContainer` lookup
-would delegate an id to a parent that still holds an unrun publish callback for
-it, so the parent would publish during the request loop. It covers a service
-and a singleton alike. It extends the SPL `RuntimeException`. Three remedies
-answer it:
-
-- Resolve the id in `bootstrapParentServices()`.
-- Call `publish()` there instead, when the publisher binds a service.
-- Give the child the publish callbacks.
-
-All four implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
+All three implement `Valkyrja\Container\Throwable\Contract\ContainerThrowable`,
 so one catch covers everything the container throws:
 
 ```php
