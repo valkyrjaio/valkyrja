@@ -378,6 +378,7 @@ class Container implements ContainerContract
             throw new ContainerCyclicAliasException($alias, $id);
         }
 
+        $seen    = [];
         $current = $id;
 
         while (($aliasedId = $this->getAliasedId($current)) !== null) {
@@ -385,7 +386,14 @@ class Container implements ContainerContract
                 throw new ContainerCyclicAliasException($alias, $id);
             }
 
-            $current = $aliasedId;
+            // A cycle this alias is no part of would spin here. The sweep below reaches
+            // every alias, so the walk that starts inside that cycle throws for it.
+            if (isset($seen[$aliasedId])) {
+                return;
+            }
+
+            $seen[$aliasedId] = true;
+            $current          = $aliasedId;
         }
     }
 

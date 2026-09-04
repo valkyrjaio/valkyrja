@@ -141,6 +141,29 @@ final class ContainerTest extends TestCase
         $container->setFromData(new ContainerData(aliases: ['first' => 'second', 'second' => 'first']));
     }
 
+    public function testConstructorRejectsACyclicAliasMapAnAliasIsNoPartOf(): void
+    {
+        $this->expectException(ContainerCyclicAliasException::class);
+
+        // 'third' sits outside the cycle and is swept first, so its walk needs a bound
+        new Container(new ContainerData(aliases: [
+            'third'  => 'first',
+            'first'  => 'second',
+            'second' => 'first',
+        ]));
+    }
+
+    public function testConstructorAcceptsAMapOfAliasesThatDoNotReturn(): void
+    {
+        $container = new Container(new ContainerData(aliases: [
+            'first'  => 'second',
+            'second' => ServiceFixture::class,
+        ]));
+
+        self::assertSame('second', $container->getAliasedId('first'));
+        self::assertSame(ServiceFixture::class, $container->getAliasedId('second'));
+    }
+
     public function testConstructorRejectsACyclicAliasMap(): void
     {
         $this->expectException(ContainerCyclicAliasException::class);
