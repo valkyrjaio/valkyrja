@@ -57,12 +57,12 @@ class Container implements ContainerContract
     public function __construct(
         protected ContainerData $data = new ContainerData()
     ) {
+        $this->validateAliasMapIsNotCyclic($data->aliases);
+
         $this->aliases          = $data->aliases;
         $this->callbacks        = $data->callbacks;
         $this->services         = $data->services;
         $this->singletons       = $data->singletons;
-
-        $this->validateAliasesAreNotCyclic();
     }
 
     /**
@@ -85,21 +85,16 @@ class Container implements ContainerContract
     #[Override]
     public function setFromData(ContainerData $data): void
     {
-        $originalAliases = $this->aliases;
+        $aliases = array_merge($this->aliases, $data->aliases);
 
-        $this->aliases          = array_merge($this->aliases, $data->aliases);
+        // The whole merged map is validated before any of the four is installed, so a
+        // caller that catches the throw keeps every map the container already had.
+        $this->validateAliasMapIsNotCyclic($aliases);
+
+        $this->aliases          = $aliases;
         $this->callbacks        = array_merge($this->callbacks, $data->callbacks);
         $this->services         = array_merge($this->services, $data->services);
         $this->singletons       = array_merge($this->singletons, $data->singletons);
-
-        try {
-            $this->validateAliasesAreNotCyclic();
-        } catch (ContainerCyclicAliasException $exception) {
-            // A caller that catches this keeps the container it had, not a cyclic map
-            $this->aliases = $originalAliases;
-
-            throw $exception;
-        }
     }
 
     /**
@@ -408,13 +403,25 @@ class Container implements ContainerContract
 
     /**
      * Validate that no alias in the map points at a chain that returns to it.
+     *
+     * @param array<class-string, class-string> $aliases The alias map
      */
-    protected function validateAliasesAreNotCyclic(): void
+    protected function validateAliasMapIsNotCyclic(array $aliases): void
     {
-        foreach ($this->aliases as $alias => $id) {
-            /** @var class-string $alias */
-            /** @var class-string $id */
-            $this->validateAliasIsNotCyclic($alias, $id);
+        foreach ($aliases as $alias => $id) {
+            $seen    = [$alias => true];
+            $current = $alias;
+
+            while (($aliasedId = $aliases[$current] ?? null) !== null) {
+                // The walk reached this id once already, so the edge that closes the
+                // chain is the one it just took. Name that pair.
+                if (isset($seen[$aliasedId])) {
+                    throw new ContainerCyclicAliasException($current, $aliasedId);
+                }
+
+                $seen[$aliasedId] = true;
+                $current          = $aliasedId;
+            }
         }
     }
 

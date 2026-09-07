@@ -153,6 +153,13 @@ final class ContainerTest extends TestCase
         ]));
     }
 
+    public function testConstructorRejectsAnAliasOfItselfInTheMap(): void
+    {
+        $this->expectException(ContainerCyclicAliasException::class);
+
+        new Container(new ContainerData(aliases: [ServiceFixture::class => ServiceFixture::class]));
+    }
+
     public function testConstructorAcceptsAMapOfAliasesThatDoNotReturn(): void
     {
         $container = new Container(new ContainerData(aliases: [
