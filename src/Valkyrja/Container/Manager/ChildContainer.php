@@ -182,7 +182,7 @@ class ChildContainer extends Container
 
             // The parent publishes, then reads its maps, and only then follows an
             // alias, so it never reaches the rest of the chain from any of these.
-            if ($this->parent->isDeferred($current)
+            if (($this->parent->isDeferred($current) && ! $this->parent->isPublished($current))
                 || $this->parent->isSingleton($current)
                 || $this->parent->isService($current)
             ) {

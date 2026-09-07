@@ -198,7 +198,7 @@ class NativeChildContainer extends Container
 
             // The parent publishes, then reads its maps, and only then follows an
             // alias, so it never reaches the rest of the chain from any of these.
-            if (isset($this->parent->callbacks[$current])
+            if (($this->parent->isDeferred($current) && ! $this->parent->isPublished($current))
                 || isset($this->parent->singletons[$current])
                 || isset($this->parent->instances[$current])
                 || isset($this->parent->services[$current])
