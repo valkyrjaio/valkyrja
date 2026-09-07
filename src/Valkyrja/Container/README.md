@@ -740,10 +740,10 @@ almost everything itself.
 The child checks its own maps first, so it answers a deferred id and an unbuilt
 singleton itself, in its own scope. An id the child cannot answer at all goes to
 the parent, and the parent answers it as it would for any caller. That is a
-shared service resolving once, not a leak. What the child never does is rebuild something the
-parent already holds, and what it never leaks is its own state: a registration
-made during a request stays in the child, and the child is discarded when the
-request ends.
+shared service resolving once, not a leak. What the child never does is rebuild
+something the parent already holds, and what it never leaks is its own state: a
+registration made during a request stays in the child, and the child is
+discarded when the request ends.
 
 Deferred services stay available in a child. The child receives the parent's
 publish callbacks through `ContainerData`, so the first lookup of an
@@ -875,14 +875,14 @@ target itself.
 Warning: a **parent-declared** alias onto a target the parent has already
 resolved hands the call to the parent in both implementations, so a parent-bound
 factory receives the parent. This is the one path where `NativeChildContainer`
-gives the parent for a lookup it could have answered itself. On the exception
-path above the child resolves the target, so the factory receives the child in
-both implementations.
+gives the parent for a lookup it could have answered itself.
 
 Off that path the receiver follows the implementation, not the alias.
 `NativeChildContainer` invokes a parent-bound factory itself and gives it the
 child. `ChildContainer` hands the same call to the parent and gives it the
-parent.
+parent. The exception path above follows the same rule, and caches the instance
+in the child either way. A deferred target is the one case both give the child,
+because the publish callback runs in the container that publishes it.
 
 The two answer `isDeferred()` about **themselves** differently, because they
 hold different state. `ChildContainer` copies the callbacks, so it answers for
